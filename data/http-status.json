@@ -1,0 +1,80 @@
+[
+  {
+    "code": 200,
+    "name": "OK",
+    "category": "Success",
+    "meaning": "The request succeeded. Client receives requested body payload."
+  },
+  {
+    "code": 201,
+    "name": "Created",
+    "category": "Success",
+    "meaning": "The request succeeded and a new resource was created as a result."
+  },
+  {
+    "code": 204,
+    "name": "No Content",
+    "category": "Success",
+    "meaning": "There is no content to send for this request, but headers are valid."
+  },
+  {
+    "code": 301,
+    "name": "Moved Permanently",
+    "category": "Redirection",
+    "meaning": "The URL of the requested resource has been changed permanently. New URL given in response."
+  },
+  {
+    "code": 302,
+    "name": "Found",
+    "category": "Redirection",
+    "meaning": "The resource is temporarily located at a different URL. Clients should reuse the original URL."
+  },
+  {
+    "code": 400,
+    "name": "Bad Request",
+    "category": "Client Error",
+    "meaning": "The server cannot process the request due to client error (e.g., malformed syntax, size limit)."
+  },
+  {
+    "code": 401,
+    "name": "Unauthorized",
+    "category": "Client Error",
+    "meaning": "Authentication is required and has failed or has not yet been provided."
+  },
+  {
+    "code": 403,
+    "name": "Forbidden",
+    "category": "Client Error",
+    "meaning": "Client does not have access rights to the content; unlike 401, identity is known to the server."
+  },
+  {
+    "code": 404,
+    "name": "Not Found",
+    "category": "Client Error",
+    "meaning": "The server cannot find the requested resource. URL is not recognized."
+  },
+  {
+    "code": 429,
+    "name": "Too Many Requests",
+    "category": "Client Error",
+    "meaning": "The user has sent too many requests in a given amount of time (rate limiting)."
+  },
+  {
+    "code": 500,
+    "name": "Internal Server Error",
+    "category": "Server Error",
+    "meaning": "The server encountered an unexpected condition that prevented it from fulfilling the request."
+  },
+  {
+    "code": 502,
+    "name": "Bad Gateway",
+    "category": "Server Error",
+    "meaning": "The server, while acting as a gateway or proxy, received an invalid response from the upstream server."
+  },
+  {
+    "code": 503,
+    "name": "Service Unavailable",
+    "category": "Server Error",
+    "meaning": "The server is not ready to handle the request. Common causes are server maintenance or overload."
+  }
+]

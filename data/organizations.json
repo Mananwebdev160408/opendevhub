@@ -1,0 +1,84 @@
+[
+  {
+    "login": "vercel",
+    "name": "Vercel",
+    "description": "Vercel provides the developer experience and infrastructure to build, deploy, and scale the web.",
+    "stars": 185000,
+    "popularProjects": [
+      "next.js",
+      "hyper",
+      "swr",
+      "turbopack"
+    ],
+    "languages": [
+      "TypeScript",
+      "Rust",
+      "JavaScript",
+      "Go"
+    ],
+    "website": "https://vercel.com",
+    "githubLink": "https://github.com/vercel",
+    "category": "Frontend & Serverless"
+  },
+  {
+    "login": "supabase",
+    "name": "Supabase",
+    "description": "Supabase is an open source Firebase alternative. It provides a Postgres database, Authentication, instant APIs, Edge Functions, Realtime subscriptions, and Storage.",
+    "stars": 94000,
+    "popularProjects": [
+      "supabase",
+      "postgrest-js",
+      "realtime",
+      "auth-helpers"
+    ],
+    "languages": [
+      "TypeScript",
+      "Go",
+      "PostgreSQL",
+      "Rust"
+    ],
+    "website": "https://supabase.com",
+    "githubLink": "https://github.com/supabase",
+    "category": "Backend & Database"
+  },
+  {
+    "login": "docker",
+    "name": "Docker",
+    "description": "Docker is a platform designed to help developers build, share, and run modern applications using container technology.",
+    "stars": 62000,
+    "popularProjects": [
+      "cli",
+      "compose",
+      "buildx"
+    ],
+    "languages": [
+      "Go",
+      "Shell",
+      "TypeScript"
+    ],
+    "website": "https://docker.com",
+    "githubLink": "https://github.com/docker",
+    "category": "DevOps & Infrastructure"
+  },
+  {
+    "login": "meta",
+    "name": "Meta Open Source",
+    "description": "Meta's open-source projects, ranging from React to PyTorch, power some of the world's largest apps.",
+    "stars": 480000,
+    "popularProjects": [
+      "react",
+      "react-native",
+      "pytorch",
+      "docusaurus"
+    ],
+    "languages": [
+      "C++",
+      "Python",
+      "JavaScript",
+      "TypeScript"
+    ],
+    "website": "https://opensource.fb.com",
+    "githubLink": "https://github.com/facebook",
+    "category": "Big Tech / Frameworks"
+  }
+]

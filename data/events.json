@@ -1,0 +1,86 @@
+[
+  {
+    "name": "Hacktoberfest",
+    "timeline": "October 1 - October 31 (Annual)",
+    "eligibility": "Open to everyone worldwide. Beginners and experienced developers alike.",
+    "website": "https://hacktoberfest.com",
+    "description": "A month-long celebration of open-source software. Run by DigitalOcean, it encourages participation in the open-source community by submitting pull requests.",
+    "importantDates": [
+      {
+        "event": "Registration Opens",
+        "date": "September 26"
+      },
+      {
+        "event": "Hacking Begins",
+        "date": "October 1"
+      },
+      {
+        "event": "PR Submission Deadline",
+        "date": "October 31"
+      }
+    ]
+  },
+  {
+    "name": "Google Summer of Code (GSoC)",
+    "timeline": "March - November (Annual Cycle)",
+    "eligibility": "Students and beginners to open source who are 18+ years old.",
+    "website": "https://summerofcode.withgoogle.com",
+    "description": "A global, online program focused on bringing new contributors into open source software development. Contributors work with an open source organization on a 12+ week programming project.",
+    "importantDates": [
+      {
+        "event": "Mentoring Organizations Announced",
+        "date": "February 22"
+      },
+      {
+        "event": "Contributor Application Period",
+        "date": "March 18 - April 2"
+      },
+      {
+        "event": "Coding Period Starts",
+        "date": "June 1"
+      }
+    ]
+  },
+  {
+    "name": "Outreachy",
+    "timeline": "Bi-annual cycles (May to August & December to March)",
+    "eligibility": "People subject to systemic bias or underrepresented in tech.",
+    "website": "https://www.outreachy.org",
+    "description": "Outreachy provides paid, remote internships to people newly participating in open source. Internships are for 3 months with a $7,000 USD stipend.",
+    "importantDates": [
+      {
+        "event": "Initial Applications Open",
+        "date": "August / January"
+      },
+      {
+        "event": "Contribution Period",
+        "date": "October / March"
+      },
+      {
+        "event": "Internships Begin",
+        "date": "December / May"
+      }
+    ]
+  },
+  {
+    "name": "LFX Mentorship",
+    "timeline": "Quarterly cycles (Spring, Summer, Fall)",
+    "eligibility": "Open globally, developers looking to contribute to Linux Foundation projects.",
+    "website": "https://mentorship.lfx.linuxfoundation.org",
+    "description": "A platform created by the Linux Foundation to help open-source projects find, align, and onboard developers to advance community projects.",
+    "importantDates": [
+      {
+        "event": "Spring Application",
+        "date": "January - February"
+      },
+      {
+        "event": "Summer Application",
+        "date": "May - June"
+      },
+      {
+        "event": "Fall Application",
+        "date": "August - September"
+      }
+    ]
+  }
+]

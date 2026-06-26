@@ -1,0 +1,37 @@
+[
+  {
+    "title": "React Official Documentation",
+    "description": "The absolute best place to learn React, covering hooks, states, rendering lifecycles, and advanced server components.",
+    "category": "React",
+    "officialLink": "https://react.dev",
+    "difficulty": "Beginner to Advanced"
+  },
+  {
+    "title": "TypeScript Handbook",
+    "description": "The official guide to learning TypeScript, covering typing systems, generics, type assertion, structural types, and narrowing.",
+    "category": "TypeScript",
+    "officialLink": "https://www.typescriptlang.org/docs/handbook/intro.html",
+    "difficulty": "Intermediate"
+  },
+  {
+    "title": "System Design Primer",
+    "description": "An incredible open-source GitHub repository detailing scalability, server loads, caching, message queues, CDNs, and database partitioning.",
+    "category": "System Design",
+    "officialLink": "https://github.com/donnemartin/system-design-primer",
+    "difficulty": "Advanced"
+  },
+  {
+    "title": "Next.js Learn Course",
+    "description": "Interactive tutorial covering router layouts, fetching methods, SQL database connectivity, server components, and styling configurations.",
+    "category": "Next.js",
+    "officialLink": "https://nextjs.org/learn",
+    "difficulty": "Beginner"
+  },
+  {
+    "title": "Linux Command Line Journey",
+    "description": "A complete walkthrough of shell operations, navigation, text manipulation, permissions, scripting, and processes.",
+    "category": "Linux",
+    "officialLink": "https://linuxjourney.com",
+    "difficulty": "Beginner to Intermediate"
+  }
+]

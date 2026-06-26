@@ -1,0 +1,38 @@
+[
+  {
+    "id": "news-1",
+    "title": "Tailwind CSS v4.0 is Now Stable with All-New Rust Engine",
+    "description": "A major update featuring a new compile engine built in Rust, CSS-first configuration, native support for cascade layers, and automatic element discovery.",
+    "category": "Styling",
+    "date": "2026-01-22",
+    "source": "Tailwind CSS Blog",
+    "url": "https://tailwindcss.com"
+  },
+  {
+    "id": "news-2",
+    "title": "React 19 Enters General Availability with Server Components & Actions",
+    "description": "React 19 is officially ready. Key changes include Document Metadata support, Action Hooks (useActionState, useFormStatus), and the use() API for dynamic promises.",
+    "category": "Frameworks",
+    "date": "2025-12-05",
+    "source": "React Blog",
+    "url": "https://react.dev"
+  },
+  {
+    "id": "news-3",
+    "title": "Next.js 16 Drops Support for Node.js 18, Moving to React 19 Server Components by Default",
+    "description": "Next.js announces version 16, optimizing router memory usage by 40%, introducing a new local compiler runtime, and deprecating older server runtimes.",
+    "category": "Next.js",
+    "date": "2026-05-18",
+    "source": "Vercel News",
+    "url": "https://nextjs.org"
+  },
+  {
+    "id": "news-4",
+    "title": "TypeScript 5.8 Introduces Return Type Inference Improvements and Fast Module Compiling",
+    "description": "The TS team announces TS 5.8, refining module resolution checks, allowing checks on parameter property fields in constructors, and boosting incremental builds.",
+    "category": "Languages",
+    "date": "2026-03-02",
+    "source": "TypeScript Dev Blog",
+    "url": "https://typescriptlang.org"
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "slug": "react",
+    "name": "React",
+    "description": "Component-based user interface engineering."
+  },
+  {
+    "slug": "nextjs",
+    "name": "Next.js",
+    "description": "Production-ready fullstack web framework."
+  },
+  {
+    "slug": "typescript",
+    "name": "TypeScript",
+    "description": "Strict syntactical superset of JavaScript adding optional static typing."
+  },
+  {
+    "slug": "rust",
+    "name": "Rust",
+    "description": "Safe, concurrent, high-performance systems programming language."
+  },
+  {
+    "slug": "go",
+    "name": "Go",
+    "description": "Simple, reliable, compile-speed language developed by Google."
+  },
+  {
+    "slug": "python",
+    "name": "Python",
+    "description": "Highly readable general-purpose language, heavily used in AI/ML."
+  },
+  {
+    "slug": "machine-learning",
+    "name": "Machine Learning",
+    "description": "Algorithms and models for data predictions and analytics."
+  },
+  {
+    "slug": "gamedev",
+    "name": "Game Development",
+    "description": "Creating interactive graphical simulations and games."
+  }
+]

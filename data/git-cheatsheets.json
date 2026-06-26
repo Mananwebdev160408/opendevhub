@@ -1,0 +1,66 @@
+[
+  {
+    "category": "Git Basics",
+    "commands": [
+      {
+        "cmd": "git init",
+        "description": "Initialize a local Git repository in the current directory.",
+        "syntax": "git init [directory-name]",
+        "example": "git init my-awesome-app",
+        "mistake": "Running git init in a folder that is already inside a Git repository, which creates nested .git files."
+      },
+      {
+        "cmd": "git clone",
+        "description": "Clone a remote repository to your local system.",
+        "syntax": "git clone <url>",
+        "example": "git clone https://github.com/vercel/next.js.git",
+        "mistake": "Forgetting to cd into the newly cloned directory after cloning, and running commands in the parent folder."
+      },
+      {
+        "cmd": "git commit",
+        "description": "Record staged snapshots in version history.",
+        "syntax": "git commit -m \"<message>\"",
+        "example": "git commit -m \"feat: implement client-side regex tester\"",
+        "mistake": "Writing generic commit messages like 'fix' or 'update' which make history hard to search."
+      }
+    ]
+  },
+  {
+    "category": "Branching & Merging",
+    "commands": [
+      {
+        "cmd": "git checkout -b",
+        "description": "Create a new branch and switch to it immediately.",
+        "syntax": "git checkout -b <branch-name>",
+        "example": "git checkout -b feat/devtools",
+        "mistake": "Creating a branch from a dirty worktree (uncommitted modifications), which pulls local changes into the new branch."
+      },
+      {
+        "cmd": "git merge",
+        "description": "Merge target branch history into the active head branch.",
+        "syntax": "git merge <branch>",
+        "example": "git merge main",
+        "mistake": "Merging without running git pull first, leading to conflicts on outdated commits."
+      }
+    ]
+  },
+  {
+    "category": "Advanced / Recovery",
+    "commands": [
+      {
+        "cmd": "git reset --hard",
+        "description": "Discard all uncommitted changes and revert to a specific commit. Warning: destructive operation!",
+        "syntax": "git reset --hard <commit-hash>",
+        "example": "git reset --hard HEAD~1",
+        "mistake": "Executing reset --hard when you have valuable uncommitted modifications; they will be permanently lost."
+      },
+      {
+        "cmd": "git reflog",
+        "description": "Show a record of all commits, branch switches, and resets. Best tool to recover 'lost' commits.",
+        "syntax": "git reflog",
+        "example": "git reflog",
+        "mistake": "Assuming deleted branches or hard resets are unrecoverable without checking reflog first."
+      }
+    ]
+  }
+]

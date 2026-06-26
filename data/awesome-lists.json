@@ -1,0 +1,34 @@
+[
+  {
+    "name": "Awesome React",
+    "description": "A collection of awesome things regarding the React ecosystem, including state management, animation, forms, and tools.",
+    "stars": 64000,
+    "owner": "enaqx",
+    "repo": "awesome-react",
+    "githubLink": "https://github.com/enaqx/awesome-react"
+  },
+  {
+    "name": "Awesome Selfhosted",
+    "description": "A list of Free Software network services and web applications which can be hosted on your own servers.",
+    "stars": 185000,
+    "owner": "awesome-selfhosted",
+    "repo": "awesome-selfhosted",
+    "githubLink": "https://github.com/awesome-selfhosted/awesome-selfhosted"
+  },
+  {
+    "name": "Awesome Python",
+    "description": "A curated list of awesome Python frameworks, libraries, software, and resources.",
+    "stars": 205000,
+    "owner": "vinta",
+    "repo": "awesome-python",
+    "githubLink": "https://github.com/vinta/awesome-python"
+  },
+  {
+    "name": "Awesome Rust",
+    "description": "A curated list of Rust code, libraries, developer frameworks, utilities, and resources.",
+    "stars": 45000,
+    "owner": "rust-unofficial",
+    "repo": "awesome-rust",
+    "githubLink": "https://github.com/rust-unofficial/awesome-rust"
+  }
+]

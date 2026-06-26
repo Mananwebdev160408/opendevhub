@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Open-Meteo API",
+    "description": "Free weather forecast API for non-commercial use. Offers global hourly and daily forecasts, historical data, and atmospheric variables.",
+    "category": "Weather",
+    "authentication": "None (Free for under 10k req/day)",
+    "rateLimit": "10,000 requests/day",
+    "freeTier": "Yes",
+    "documentation": "https://open-meteo.com/en/docs",
+    "website": "https://open-meteo.com"
+  },
+  {
+    "name": "The Movie Database (TMDB) API",
+    "description": "Access metadata about millions of movies, TV shows, actors, and images. Highly popular for developer portfolio projects.",
+    "category": "Movies & TV",
+    "authentication": "API Key (OAuth2)",
+    "rateLimit": "No strict limits, but requires fair usage",
+    "freeTier": "Yes (For non-commercial use)",
+    "documentation": "https://developer.themoviedb.org/docs",
+    "website": "https://www.themoviedb.org"
+  },
+  {
+    "name": "CoinGecko API",
+    "description": "Get cryptocurrency prices, trading volumes, market charts, and exchange details instantly from the largest independent crypto data aggregator.",
+    "category": "Finance",
+    "authentication": "None (Public Demo tier) / API Key",
+    "rateLimit": "30 requests/minute",
+    "freeTier": "Yes",
+    "documentation": "https://www.coingecko.com/en/api/documentation",
+    "website": "https://www.coingecko.com"
+  },
+  {
+    "name": "JSONPlaceholder",
+    "description": "Free online REST API that you can use when you need some mock data. Perfect for tutorials, testing prototypes, and sharing code examples.",
+    "category": "Developer Tools",
+    "authentication": "None",
+    "rateLimit": "Unlimited",
+    "freeTier": "Yes (Always free)",
+    "documentation": "https://jsonplaceholder.typicode.com",
+    "website": "https://jsonplaceholder.typicode.com"
+  },
+  {
+    "name": "PokeAPI",
+    "description": "All the Pokémon data you'll ever need in one place, easily accessible through a modern RESTful API.",
+    "category": "Games & Entertainment",
+    "authentication": "None",
+    "rateLimit": "100 requests per IP per minute",
+    "freeTier": "Yes",
+    "documentation": "https://pokeapi.co/docs/v2",
+    "website": "https://pokeapi.co"
+  }
+]

@@ -1,0 +1,68 @@
+[
+  {
+    "owner": "facebook",
+    "name": "react",
+    "description": "The library for web and native user interfaces.",
+    "stars": 221000,
+    "forks": 46000,
+    "language": "JavaScript",
+    "license": "MIT",
+    "starsToday": 142,
+    "lastUpdated": "2026-06-25"
+  },
+  {
+    "owner": "vercel",
+    "name": "next.js",
+    "description": "The React Framework for the Web.",
+    "stars": 122500,
+    "forks": 26500,
+    "language": "TypeScript",
+    "license": "MIT",
+    "starsToday": 89,
+    "lastUpdated": "2026-06-26"
+  },
+  {
+    "owner": "rust-lang",
+    "name": "rust",
+    "description": "Empowering everyone to build reliable and efficient software.",
+    "stars": 97800,
+    "forks": 18400,
+    "language": "Rust",
+    "license": "MIT / Apache-2.0",
+    "starsToday": 55,
+    "lastUpdated": "2026-06-24"
+  },
+  {
+    "owner": "golang",
+    "name": "go",
+    "description": "The Go programming language.",
+    "stars": 119800,
+    "forks": 17200,
+    "language": "Go",
+    "license": "BSD-3-Clause",
+    "starsToday": 62,
+    "lastUpdated": "2026-06-26"
+  },
+  {
+    "owner": "shadcn-ui",
+    "name": "ui",
+    "description": "Beautifully designed components that you can copy and paste into your apps.",
+    "stars": 71200,
+    "forks": 6400,
+    "language": "TypeScript",
+    "license": "MIT",
+    "starsToday": 210,
+    "lastUpdated": "2026-06-26"
+  },
+  {
+    "owner": "features",
+    "name": "awesome-lists",
+    "description": "A directory of lists containing collections of awesome open source assets.",
+    "stars": 298000,
+    "forks": 28400,
+    "language": "Markdown",
+    "license": "CC0-1.0",
+    "starsToday": 304,
+    "lastUpdated": "2026-06-25"
+  }
+]

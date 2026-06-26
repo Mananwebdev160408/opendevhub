@@ -1,0 +1,67 @@
+[
+  {
+    "slug": "mit",
+    "name": "MIT License",
+    "description": "A short and simple permissive license with conditions only requiring preservation of copyright and license notices.",
+    "permissions": [
+      "Commercial use",
+      "Modification",
+      "Distribution",
+      "Private use"
+    ],
+    "conditions": [
+      "License and copyright notice must be included"
+    ],
+    "limitations": [
+      "Liability",
+      "Warranty"
+    ],
+    "example": "React, Vue, jQuery, and Express are licensed under MIT."
+  },
+  {
+    "slug": "apache-2.0",
+    "name": "Apache License 2.0",
+    "description": "A permissive license whose main conditions require preservation of copyright and license notices. Contributors provide an express grant of patent rights.",
+    "permissions": [
+      "Commercial use",
+      "Modification",
+      "Distribution",
+      "Patent use",
+      "Private use"
+    ],
+    "conditions": [
+      "License and copyright notice",
+      "State changes",
+      "Include NOTICE file"
+    ],
+    "limitations": [
+      "Liability",
+      "Trademark use",
+      "Warranty"
+    ],
+    "example": "Kubernetes, Docker, and TensorFlow are licensed under Apache 2.0."
+  },
+  {
+    "slug": "gpl-3.0",
+    "name": "GNU GPLv3",
+    "description": "A copyleft license that requires source code of derivative works to be made available under the same license. Patent grants are also provided.",
+    "permissions": [
+      "Commercial use",
+      "Modification",
+      "Distribution",
+      "Patent use",
+      "Private use"
+    ],
+    "conditions": [
+      "Disclose source",
+      "License and copyright notice",
+      "State changes",
+      "Use identical license (GPLv3)"
+    ],
+    "limitations": [
+      "Liability",
+      "Warranty"
+    ],
+    "example": "Git, Linux, and WordPress are licensed under GPL."
+  }
+]
