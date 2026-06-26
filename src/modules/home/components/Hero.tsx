@@ -54,20 +54,20 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto text-center relative z-10 space-y-6">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 border-2 border-foreground bg-accent text-accent-foreground font-mono text-[10px] font-black uppercase tracking-wider shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
-          <Cpu className="h-3 w-3 animate-spin" />
+      <div className="max-w-5xl mx-auto text-center relative z-10 space-y-10">
+        <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 border-2 border-foreground bg-accent text-accent-foreground font-mono text-[10px] font-black uppercase tracking-wider shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
+          <Cpu className="h-3.5 w-3.5 animate-spin" />
           <span>ZERO-COMPUTE INFRASTRUCTURE READY</span>
         </div>
 
-        <h1 className="font-mono text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground uppercase leading-none">
+        <h1 className="font-mono text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tighter text-foreground uppercase leading-none">
           DISCOVER & BUILD <br />
-          <span className="text-primary bg-foreground px-2 py-0.5 inline-block mt-2">
+          <span className="text-primary bg-foreground px-3 py-1 inline-block mt-3 shadow-[4px_4px_0px_0px_var(--accent)]">
             OPEN SOURCE
           </span>
         </h1>
 
-        <p className="max-w-2xl mx-auto font-mono text-xs sm:text-sm text-muted-foreground leading-relaxed">
+        <p className="max-w-3xl mx-auto font-mono text-sm sm:text-base lg:text-lg text-muted-foreground leading-relaxed">
           OpenDev Hub compiles everything you need to discover new repositories,
           find good first issues, read public APIs, explore open-source
           licenses, and access 32+ developer utilities in one supercharged, boxy
@@ -75,31 +75,51 @@ export function Hero() {
         </p>
 
         {/* Big styled search bar */}
-        <form onSubmit={handleSearchSubmit} className="max-w-xl mx-auto pt-4">
-          <div className="relative flex items-center shadow-[4px_4px_0px_0px_var(--primary)] border-2 border-foreground bg-black focus-within:shadow-[4px_4px_0px_0px_var(--accent)] transition-all">
+        <form onSubmit={handleSearchSubmit} className="max-w-2xl mx-auto pt-4">
+          <div className="relative flex items-center shadow-[6px_6px_0px_0px_var(--primary)] border-2 border-foreground bg-black focus-within:shadow-[6px_6px_0px_0px_var(--accent)] transition-all">
             <Search className="absolute left-4 h-5 w-5 text-muted-foreground pointer-events-none" />
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search repositories, issues or dev tools..."
-              className="w-full h-14 pl-12 pr-28 bg-transparent text-sm font-mono text-foreground focus:outline-none placeholder:text-zinc-600"
+              className="w-full h-16 pl-12 pr-32 bg-transparent text-sm sm:text-base font-mono text-foreground focus:outline-none placeholder:text-zinc-650"
             />
             <button
               type="submit"
-              className="absolute right-2 h-10 px-4 border-2 border-foreground bg-accent text-accent-foreground font-mono font-bold text-xs uppercase tracking-wider hover:bg-teal-400 active:translate-x-[1px] active:translate-y-[1px] cursor-pointer"
+              className="absolute right-3 h-11 px-5 border-2 border-foreground bg-accent text-accent-foreground font-mono font-black text-xs sm:text-sm uppercase tracking-wider hover:bg-teal-400 active:translate-x-[1px] active:translate-y-[1px] cursor-pointer"
             >
               RUN SEARCH
             </button>
           </div>
-          <div className="mt-2.5 flex items-center justify-center gap-1.5 font-mono text-[9px] text-zinc-500">
+          <div className="mt-3.5 flex items-center justify-center gap-1.5 font-mono text-[10px] text-zinc-500">
             <span>Press</span>
-            <span className="bg-zinc-900 border border-border px-1.5 py-0.5 rounded text-foreground font-bold">
+            <span className="bg-zinc-900 border border-border px-2 py-0.5 rounded text-foreground font-bold">
               CTRL + K
             </span>
             <span>anywhere to trigger global command menu.</span>
           </div>
         </form>
+
+        {/* Quick action metrics bar to fill the viewport estate */}
+        <div className="pt-10 max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="border-2 border-foreground bg-zinc-950 p-4 shadow-[4px_4px_0px_0px_var(--primary)] text-center font-mono">
+            <div className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider">UTILITIES</div>
+            <div className="text-base font-black text-foreground mt-1">32+ OFFLINE</div>
+          </div>
+          <div className="border-2 border-foreground bg-zinc-950 p-4 shadow-[4px_4px_0px_0px_var(--accent)] text-center font-mono">
+            <div className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider">EXPLORER</div>
+            <div className="text-base font-black text-foreground mt-1">GITHUB RADAR</div>
+          </div>
+          <div className="border-2 border-foreground bg-zinc-950 p-4 shadow-[4px_4px_0px_0px_#ffffff] text-center font-mono">
+            <div className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider">OPEN SOURCE</div>
+            <div className="text-base font-black text-foreground mt-1">GOOD FIRST ISSUES</div>
+          </div>
+          <div className="border-2 border-foreground bg-zinc-950 p-4 shadow-[4px_4px_0px_0px_var(--primary)] text-center font-mono">
+            <div className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider">REFERENCE</div>
+            <div className="text-base font-black text-foreground mt-1">APIs & CHEATS</div>
+          </div>
+        </div>
       </div>
     </section>
   );
