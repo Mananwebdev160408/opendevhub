@@ -1,2 +1,6 @@
 export { Hero } from "./components/Hero"
 export { BentoGrid } from "./components/BentoGrid"
+export { Philosophy } from "./components/Philosophy"
+export { GitVisualizer } from "./components/GitVisualizer"
+export { DeepDive } from "./components/DeepDive"
+export { FAQ } from "./components/FAQ"
