@@ -38,6 +38,7 @@ export function Header() {
     { label: "APIs", href: "/apis" },
     { label: "RESOURCES", href: "/resources" },
     { label: "EVENTS", href: "/events" },
+    { label: "LICENSES", href: "/licenses" },
   ]
 
   const isActive = (href: string) => {
