@@ -221,6 +221,7 @@ export function GitVisualizer() {
       const newHash = generateHash()
       const newC: Commit = {
         ...item,
+        id: `c_${newHash}`,
         hash: newHash,
         x: startX + idx,
         parents: [lastParentId]
