@@ -20,6 +20,7 @@ export default async function RepositoryDetailsPage({ params }: PageProps) {
 
   let repo
   let issues: any[] = []
+  let otherIssues: any[] = []
 
   try {
     repo = await getRepository(owner, name)
@@ -33,6 +34,17 @@ export default async function RepositoryDetailsPage({ params }: PageProps) {
       issues = issueData.items
     } catch (e) {
       console.warn("Failed to fetch repo specific issues:", e)
+    }
+
+    // Attempt to pull latest 5 other open issues from this repo
+    try {
+      const otherIssueData = await searchIssues({
+        q: `repo:${owner}/${name} state:open -label:\"good first issue\"`,
+        perPage: 5
+      })
+      otherIssues = otherIssueData.items
+    } catch (e) {
+      console.warn("Failed to fetch general repo issues:", e)
     }
   } catch (error) {
     console.error("Repository Details Fetch Error:", error)
@@ -212,6 +224,64 @@ export default async function RepositoryDetailsPage({ params }: PageProps) {
                     className="px-2 py-1 border border-foreground bg-black text-[9px] uppercase hover:text-accent flex items-center gap-0.5"
                   >
                     SOLVE ↗
+                  </a>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+
+      {/* General Open Issues List */}
+      <div className="border-4 border-foreground bg-card shadow-[4px_4px_0px_0px_var(--accent)] hover:translate-y-[-2px] transition-all">
+        <div className="bg-zinc-900 border-b-2 border-foreground p-4 font-mono font-bold flex items-center justify-between bg-stripes-pattern select-none">
+          <div className="flex items-center gap-2">
+            <AlertCircle className="h-4 w-4 text-primary" />
+            <span>OTHER OPEN ISSUES FROM THIS REPO ({repo.open_issues_count - issues.length > 0 ? repo.open_issues_count - issues.length : otherIssues.length})</span>
+          </div>
+          <a
+            href={`${repo.html_url}/issues`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[10px] underline tracking-wider font-black hover:text-primary"
+          >
+            VIEW ALL ON GITHUB
+          </a>
+        </div>
+        <div className="p-6 divide-y divide-border">
+          {otherIssues.length === 0 ? (
+            <div className="py-4 text-center text-xs text-zinc-500">
+              No other open issues found inside this repository.
+            </div>
+          ) : (
+            otherIssues.map((issue) => (
+              <div key={issue.id} className="py-4 first:pt-0 last:pb-0 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h4 className="text-xs font-black text-foreground hover:underline">
+                    <a href={issue.html_url} target="_blank" rel="noopener noreferrer">
+                      #{issue.number} - {issue.title}
+                    </a>
+                  </h4>
+                  <div className="mt-1.5 flex flex-wrap gap-1">
+                    {issue.labels.slice(0, 3).map((lbl: any) => (
+                      <span
+                        key={lbl.id}
+                        className="text-[8px] px-1 border border-border text-zinc-400 uppercase font-black"
+                      >
+                        {lbl.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 shrink-0 font-bold text-xs text-zinc-500">
+                  <span>💬 {issue.comments} comments</span>
+                  <a
+                    href={issue.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-2 py-1 border border-foreground bg-black text-[9px] uppercase hover:text-primary flex items-center gap-0.5"
+                  >
+                    DISCUSS ↗
                   </a>
                 </div>
               </div>
