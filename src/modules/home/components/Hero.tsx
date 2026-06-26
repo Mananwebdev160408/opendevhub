@@ -16,10 +16,43 @@ export function Hero() {
   };
 
   return (
-    <section className="relative w-full min-h-[100vh] border-b-4 border-foreground py-16 px-4 sm:px-6 lg:px-8 bg-dot-pattern overflow-hidden flex flex-col justify-center">
-      {/* Absolute floating abstract boxes/shapes */}
-      <div className="absolute top-4 right-10 h-16 w-16 bg-stripes-pattern border-2 border-foreground rotate-6 opacity-40 hidden sm:block" />
-      <div className="absolute bottom-4 left-10 h-12 w-24 bg-checkered-pattern border-2 border-foreground -rotate-12 opacity-30 hidden sm:block" />
+    <section className="relative w-full min-h-[calc(100vh-90px)] border-b-4 border-foreground py-16 px-4 sm:px-6 lg:px-8 bg-dot-pattern overflow-hidden flex flex-col justify-center">
+      {/* Absolute floating abstract boxes/shapes - Geometric Maximalist Piles */}
+      {/* Top Right Pile */}
+      <div className="absolute top-8 right-10 hidden sm:block pointer-events-none select-none">
+        <div className="relative w-28 h-28">
+          <div className="absolute top-0 right-0 h-20 w-20 bg-stripes-pattern border-2 border-foreground rotate-12 opacity-35" />
+          <div className="absolute top-4 right-4 h-16 w-16 bg-primary border-2 border-foreground -rotate-6 opacity-20" />
+          <div className="absolute top-8 right-8 h-12 w-12 bg-checkered-pattern border-2 border-foreground rotate-3 opacity-40" />
+        </div>
+      </div>
+
+      {/* Bottom Left Pile */}
+      <div className="absolute bottom-8 left-10 hidden sm:block pointer-events-none select-none">
+        <div className="relative w-32 h-28">
+          <div className="absolute bottom-0 left-0 h-24 w-16 bg-checkered-pattern border-2 border-foreground -rotate-12 opacity-25" />
+          <div className="absolute bottom-3 left-4 h-14 w-28 bg-accent border-2 border-foreground rotate-6 opacity-15" />
+          <div className="absolute bottom-6 left-8 h-12 w-20 bg-stripes-pattern border-2 border-foreground -rotate-3 opacity-35" />
+        </div>
+      </div>
+
+      {/* Top Left Pile */}
+      <div className="absolute top-12 left-10 hidden md:block pointer-events-none select-none">
+        <div className="relative w-28 h-28">
+          <div className="absolute top-0 left-0 h-16 w-24 bg-checkered-pattern border-2 border-foreground -rotate-6 opacity-20" />
+          <div className="absolute top-4 left-4 h-20 w-16 bg-stripes-pattern border-2 border-foreground rotate-12 opacity-30" />
+          <div className="absolute top-8 left-8 h-14 w-14 bg-accent border-2 border-foreground -rotate-12 opacity-20" />
+        </div>
+      </div>
+
+      {/* Bottom Right Pile */}
+      <div className="absolute bottom-12 right-12 hidden md:block pointer-events-none select-none">
+        <div className="relative w-32 h-28">
+          <div className="absolute bottom-0 right-0 h-14 w-28 bg-stripes-pattern border-2 border-foreground rotate-6 opacity-35" />
+          <div className="absolute bottom-3 right-4 h-20 w-20 bg-primary border-2 border-foreground -rotate-12 opacity-15" />
+          <div className="absolute bottom-6 right-8 h-16 w-16 bg-checkered-pattern border-2 border-foreground rotate-3 opacity-25" />
+        </div>
+      </div>
 
       <div className="max-w-4xl mx-auto text-center relative z-10 space-y-6">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 border-2 border-foreground bg-accent text-accent-foreground font-mono text-[10px] font-black uppercase tracking-wider shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
