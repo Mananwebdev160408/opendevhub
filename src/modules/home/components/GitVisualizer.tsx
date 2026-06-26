@@ -271,7 +271,7 @@ export function GitVisualizer() {
   const viewWidth = Math.max(720, nextX * 65 + 50)
 
   return (
-    <section className="border-t-4 border-foreground py-16 px-4 sm:px-6 lg:px-8 bg-black">
+    <section className="w-full min-h-[100vh] border-t-4 border-foreground py-16 px-4 sm:px-6 lg:px-8 bg-black flex flex-col justify-center">
       <div className="max-w-5xl mx-auto">
         
         {/* Header Title */}

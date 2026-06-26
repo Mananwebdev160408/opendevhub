@@ -65,7 +65,7 @@ export function DeepDive() {
   ]
 
   return (
-    <section className="border-t-4 border-foreground py-16 px-4 sm:px-6 lg:px-8 bg-zinc-950 bg-checkered-pattern">
+    <section className="w-full min-h-[100vh] border-t-4 border-foreground py-16 px-4 sm:px-6 lg:px-8 bg-zinc-950 bg-checkered-pattern flex flex-col justify-center">
       <div className="max-w-7xl mx-auto">
         
         {/* Title */}

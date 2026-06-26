@@ -4,7 +4,7 @@ import { EyeOff, Radio, Terminal } from "lucide-react"
 
 export function Philosophy() {
   return (
-    <section className="border-t-4 border-foreground py-16 px-4 sm:px-6 lg:px-8 bg-zinc-950 bg-grid-pattern">
+    <section className="w-full min-h-[100vh] border-t-4 border-foreground py-16 px-4 sm:px-6 lg:px-8 bg-zinc-950 bg-grid-pattern flex flex-col justify-center">
       <div className="max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <div className="inline-block border-2 border-foreground bg-accent text-accent-foreground font-mono text-xs font-black px-3 py-1 uppercase tracking-wider">

@@ -1,22 +1,22 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { useRouter } from "next/navigation"
-import { Search, Sparkles, Terminal, Cpu } from "lucide-react"
+import * as React from "react";
+import { useRouter } from "next/navigation";
+import { Search, Sparkles, Terminal, Cpu } from "lucide-react";
 
 export function Hero() {
-  const router = useRouter()
-  const [query, setQuery] = React.useState("")
+  const router = useRouter();
+  const [query, setQuery] = React.useState("");
 
   const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!query.trim()) return
+    e.preventDefault();
+    if (!query.trim()) return;
     // Route to repositories search with query
-    router.push(`/repos?q=${encodeURIComponent(query)}`)
-  }
+    router.push(`/repos?q=${encodeURIComponent(query)}`);
+  };
 
   return (
-    <section className="relative w-full border-b-4 border-foreground py-16 px-4 sm:px-6 lg:px-8 bg-dot-pattern overflow-hidden">
+    <section className="relative w-full min-h-[100vh] border-b-4 border-foreground py-16 px-4 sm:px-6 lg:px-8 bg-dot-pattern overflow-hidden flex flex-col justify-center">
       {/* Absolute floating abstract boxes/shapes */}
       <div className="absolute top-4 right-10 h-16 w-16 bg-stripes-pattern border-2 border-foreground rotate-6 opacity-40 hidden sm:block" />
       <div className="absolute bottom-4 left-10 h-12 w-24 bg-checkered-pattern border-2 border-foreground -rotate-12 opacity-30 hidden sm:block" />
@@ -29,11 +29,16 @@ export function Hero() {
 
         <h1 className="font-mono text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground uppercase leading-none">
           DISCOVER & BUILD <br />
-          <span className="text-primary bg-foreground px-2 py-0.5 inline-block mt-2">OPEN SOURCE</span>
+          <span className="text-primary bg-foreground px-2 py-0.5 inline-block mt-2">
+            OPEN SOURCE
+          </span>
         </h1>
 
         <p className="max-w-2xl mx-auto font-mono text-xs sm:text-sm text-muted-foreground leading-relaxed">
-          OpenDev Hub compiles everything you need to discover new repositories, find good first issues, read public APIs, explore open-source licenses, and access 32+ developer utilities in one supercharged, boxy dashboard.
+          OpenDev Hub compiles everything you need to discover new repositories,
+          find good first issues, read public APIs, explore open-source
+          licenses, and access 32+ developer utilities in one supercharged, boxy
+          dashboard.
         </p>
 
         {/* Big styled search bar */}
@@ -56,11 +61,13 @@ export function Hero() {
           </div>
           <div className="mt-2.5 flex items-center justify-center gap-1.5 font-mono text-[9px] text-zinc-500">
             <span>Press</span>
-            <span className="bg-zinc-900 border border-border px-1.5 py-0.5 rounded text-foreground font-bold">CTRL + K</span>
+            <span className="bg-zinc-900 border border-border px-1.5 py-0.5 rounded text-foreground font-bold">
+              CTRL + K
+            </span>
             <span>anywhere to trigger global command menu.</span>
           </div>
         </form>
       </div>
     </section>
-  )
+  );
 }

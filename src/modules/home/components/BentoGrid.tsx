@@ -43,8 +43,9 @@ export function BentoGrid() {
   ]
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <section className="w-full min-h-[100vh] border-b-4 border-foreground py-16 px-4 sm:px-6 lg:px-8 flex flex-col justify-center bg-background">
+      <div className="max-w-7xl mx-auto w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         
         {/* Bento Card 1: Trending Repositories (Double-width, Double-height) */}
         <div className="border-4 border-foreground bg-card shadow-[4px_4px_0px_0px_var(--primary)] flex flex-col hover:translate-y-[-2px] transition-all lg:col-span-2 lg:row-span-2">
@@ -259,5 +260,6 @@ export function BentoGrid() {
 
       </div>
     </div>
+  </section>
   )
 }
