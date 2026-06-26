@@ -1,5 +1,6 @@
 "use client"
 
+import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { 
@@ -13,7 +14,8 @@ import {
   Code,
   ArrowRight,
   Info,
-  ExternalLink
+  ExternalLink,
+  Loader2
 } from "lucide-react"
 
 // Import static data files
@@ -21,6 +23,7 @@ import newsData from "../../../../data/news.json"
 import trendingData from "../../../../data/trending-repositories.json"
 import eventsData from "../../../../data/events.json"
 import apisData from "../../../../data/apis.json"
+import { getTrendingRepositories, searchIssues } from "@/core/services/github"
 
 export function BentoGrid() {
   const router = useRouter()
@@ -37,10 +40,44 @@ export function BentoGrid() {
   ]
 
   const mockIssues = [
-    { repo: "facebook/react", title: "fix(docs): update hooks render cycle tutorial link", label: "documentation", difficulty: "Easy" },
-    { repo: "vercel/next.js", title: "feat: add support for dynamic local route pre-renders", label: "feature", difficulty: "Medium" },
-    { repo: "shadcn/ui", title: "bug: custom input group border overlapping in dark mode", label: "bug", difficulty: "Easy" }
+    { repo: "facebook/react", title: "fix(docs): update hooks render cycle tutorial link", label: "documentation", difficulty: "Easy", html_url: "/issues" },
+    { repo: "vercel/next.js", title: "feat: add support for dynamic local route pre-renders", label: "feature", difficulty: "Medium", html_url: "/issues" },
+    { repo: "shadcn/ui", title: "bug: custom input group border overlapping in dark mode", label: "bug", difficulty: "Easy", html_url: "/issues" }
   ]
+
+  const [trendingRepos, setTrendingRepos] = React.useState<any[]>([])
+  const [liveIssues, setLiveIssues] = React.useState<any[]>([])
+  const [isTrendingLoading, setIsTrendingLoading] = React.useState(true)
+  const [isIssuesLoading, setIsIssuesLoading] = React.useState(true)
+
+  React.useEffect(() => {
+    const fetchTrending = async () => {
+      try {
+        const data = await getTrendingRepositories({ timeRange: "weekly", perPage: 4 })
+        setTrendingRepos(data.items)
+      } catch (e) {
+        console.error("Failed to load bento trending repos:", e)
+        setTrendingRepos(trendingData.slice(0, 4) as any[])
+      } finally {
+        setIsTrendingLoading(false)
+      }
+    }
+
+    const fetchIssues = async () => {
+      try {
+        const data = await searchIssues({ q: 'is:issue state:open label:"good first issue"', perPage: 3 })
+        setLiveIssues(data.items)
+      } catch (e) {
+        console.error("Failed to load bento issues:", e)
+        setLiveIssues(mockIssues)
+      } finally {
+        setIsIssuesLoading(false)
+      }
+    }
+
+    fetchTrending()
+    fetchIssues()
+  }, [])
 
   return (
     <section className="w-full min-h-[100vh] border-b-4 border-foreground py-16 px-4 sm:px-6 lg:px-8 flex flex-col justify-center bg-background">
@@ -58,35 +95,49 @@ export function BentoGrid() {
               VIEW ALL
             </Link>
           </div>
-          <div className="p-4 flex-grow grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {trendingData.slice(0, 4).map((repo) => (
-              <div 
-                key={`${repo.owner}-${repo.name}`} 
-                className="p-3 border-2 border-foreground bg-black shadow-[2px_2px_0px_0px_var(--border)] flex flex-col justify-between font-mono"
-              >
-                <div>
-                  <div className="flex items-start justify-between gap-2">
-                    <Link 
-                      href={`/repos/${repo.owner}/${repo.name}`}
-                      className="text-xs font-black text-foreground hover:text-primary hover:underline truncate"
-                    >
-                      {repo.owner}/{repo.name}
-                    </Link>
-                    <span className="text-[9px] bg-zinc-900 border border-border px-1 text-accent font-bold shrink-0">
-                      {repo.language}
-                    </span>
+          {isTrendingLoading ? (
+            <div className="flex-grow flex flex-col items-center justify-center p-8 text-zinc-500 font-mono text-xs gap-2">
+              <Loader2 className="h-6 w-6 animate-spin text-primary" />
+              <span>LOAD_API_TRENDS // ACTIVE</span>
+            </div>
+          ) : (
+            <div className="p-4 flex-grow grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {trendingRepos.map((repo) => {
+                const ownerLogin = repo.owner?.login || repo.owner
+                const starsCount = repo.stargazers_count !== undefined ? repo.stargazers_count : repo.stars
+                const forksCount = repo.forks_count !== undefined ? repo.forks_count : repo.forks
+                return (
+                  <div 
+                    key={repo.id || `${ownerLogin}-${repo.name}`} 
+                    className="p-3 border-2 border-foreground bg-black shadow-[2px_2px_0px_0px_var(--border)] flex flex-col justify-between font-mono"
+                  >
+                    <div>
+                      <div className="flex items-start justify-between gap-2">
+                        <Link 
+                          href={`/repos/${ownerLogin}/${repo.name}`}
+                          className="text-xs font-black text-foreground hover:text-primary hover:underline truncate"
+                        >
+                          {ownerLogin}/{repo.name}
+                        </Link>
+                        {repo.language && (
+                          <span className="text-[9px] bg-zinc-900 border border-border px-1 text-accent font-bold shrink-0">
+                            {repo.language}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[11px] text-muted-foreground mt-1.5 line-clamp-2 leading-relaxed">
+                        {repo.description || "No public description provided."}
+                      </p>
+                    </div>
+                    <div className="mt-3 pt-2 border-t border-border/40 flex items-center gap-3 text-[10px] text-zinc-500 font-bold">
+                      <span>★ {starsCount.toLocaleString()}</span>
+                      <span>⑂ {forksCount.toLocaleString()}</span>
+                    </div>
                   </div>
-                  <p className="text-[11px] text-muted-foreground mt-1.5 line-clamp-2 leading-relaxed">
-                    {repo.description}
-                  </p>
-                </div>
-                <div className="mt-3 pt-2 border-t border-border/40 flex items-center gap-3 text-[10px] text-zinc-500 font-bold">
-                  <span>★ {repo.stars.toLocaleString()}</span>
-                  <span>⑂ {repo.forks.toLocaleString()}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+                )
+              })}
+            </div>
+          )}
         </div>
 
         {/* Bento Card 2: Good First Issues (Double-width, Standard-height) */}
@@ -100,36 +151,45 @@ export function BentoGrid() {
               FIND ISSUES
             </Link>
           </div>
-          <div className="p-4 flex-grow grid grid-cols-1 sm:grid-cols-3 gap-4 bg-dot-pattern">
-            {mockIssues.map((issue, idx) => (
-              <div 
-                key={idx} 
-                className="p-3 border-2 border-foreground bg-black shadow-[2px_2px_0px_0px_var(--border)] flex flex-col justify-between font-mono"
-              >
-                <div>
-                  <span className="text-[9px] text-zinc-500 block font-bold truncate">{issue.repo}</span>
-                  <Link 
-                    href="/issues"
-                    className="text-xs font-black text-foreground hover:underline line-clamp-2 mt-1 leading-snug"
+          {isIssuesLoading ? (
+            <div className="flex-grow flex flex-col items-center justify-center p-8 text-zinc-500 font-mono text-xs gap-2">
+              <Loader2 className="h-6 w-6 animate-spin text-accent" />
+              <span>LOAD_API_ISSUES // ACTIVE</span>
+            </div>
+          ) : (
+            <div className="p-4 flex-grow grid grid-cols-1 sm:grid-cols-3 gap-4 bg-dot-pattern">
+              {liveIssues.map((issue, idx) => {
+                const repoName = issue.repo_name || issue.repo || "unknown/repo"
+                const labelName = issue.labels && issue.labels.length > 0 ? issue.labels[0].name : (issue.label || "good-first-issue")
+                return (
+                  <div 
+                    key={issue.id || idx} 
+                    className="p-3 border-2 border-foreground bg-black shadow-[2px_2px_0px_0px_var(--border)] flex flex-col justify-between font-mono"
                   >
-                    {issue.title}
-                  </Link>
-                </div>
-                <div className="mt-3 flex items-center gap-1.5 flex-wrap">
-                  <span className="text-[8px] border border-border px-1 py-0.5 bg-zinc-900 text-zinc-400 font-bold uppercase truncate max-w-[80px]">
-                    {issue.label}
-                  </span>
-                  <span className={`text-[8px] border px-1.5 py-0.5 font-bold uppercase ${
-                    issue.difficulty === "Easy" 
-                      ? "border-green-800 bg-green-950/30 text-green-400" 
-                      : "border-yellow-800 bg-yellow-950/30 text-yellow-400"
-                  }`}>
-                    {issue.difficulty}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
+                    <div>
+                      <span className="text-[9px] text-zinc-500 block font-bold truncate">{repoName}</span>
+                      <a 
+                        href={issue.html_url || "/issues"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-black text-foreground hover:underline line-clamp-2 mt-1 leading-snug"
+                      >
+                        {issue.title}
+                      </a>
+                    </div>
+                    <div className="mt-3 flex items-center gap-1.5 flex-wrap">
+                      <span className="text-[8px] border border-border px-1 py-0.5 bg-zinc-900 text-zinc-400 font-bold uppercase truncate max-w-[80px]">
+                        {labelName}
+                      </span>
+                      <span className="text-[8px] border px-1.5 py-0.5 font-bold uppercase border-green-800 bg-green-950/30 text-green-400">
+                        {issue.difficulty || "Easy"}
+                      </span>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )}
         </div>
 
         {/* Bento Card 3: Curated APIs (Standard-width, Standard-height) */}

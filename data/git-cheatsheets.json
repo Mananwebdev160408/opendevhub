@@ -1,27 +1,90 @@
 [
   {
-    "category": "Git Basics",
+    "category": "Git Basics & Setup",
     "commands": [
       {
         "cmd": "git init",
         "description": "Initialize a local Git repository in the current directory.",
         "syntax": "git init [directory-name]",
         "example": "git init my-awesome-app",
-        "mistake": "Running git init in a folder that is already inside a Git repository, which creates nested .git files."
+        "mistake": "Running git init inside a folder that is already inside an existing Git repository, creating nested repository states."
       },
       {
         "cmd": "git clone",
         "description": "Clone a remote repository to your local system.",
-        "syntax": "git clone <url>",
+        "syntax": "git clone <url> [directory-name]",
         "example": "git clone https://github.com/vercel/next.js.git",
         "mistake": "Forgetting to cd into the newly cloned directory after cloning, and running commands in the parent folder."
+      },
+      {
+        "cmd": "git config",
+        "description": "Set repository or global configuration values like username and email.",
+        "syntax": "git config --global user.name \"Name\"\ngit config --global user.email \"email@domain.com\"",
+        "example": "git config --global user.name \"Jane Doe\"\ngit config --global user.email \"jane@example.com\"",
+        "mistake": "Setting configurations locally in a directory not initialized as a git repository, or typing typos in emails leading to untracked GitHub stats."
+      },
+      {
+        "cmd": "git status",
+        "description": "Show the status of files in the working directory and staging area (tracked/untracked/modified).",
+        "syntax": "git status",
+        "example": "git status",
+        "mistake": "Relying on status blindly before committing without double checking the actual file diffs."
+      },
+      {
+        "cmd": "git add",
+        "description": "Add file changes in your working directory to the staging area.",
+        "syntax": "git add <file-or-directory>\n# Stage all changes:\ngit add .",
+        "example": "git add src/components/Header.tsx\ngit add .",
+        "mistake": "Staging secret credential files, environment files (.env), or node_modules accidentally using 'git add .'."
       },
       {
         "cmd": "git commit",
         "description": "Record staged snapshots in version history.",
         "syntax": "git commit -m \"<message>\"",
         "example": "git commit -m \"feat: implement client-side regex tester\"",
-        "mistake": "Writing generic commit messages like 'fix' or 'update' which make history hard to search."
+        "mistake": "Writing generic commit messages like 'fix' or 'update' which make history hard to search, or committing without staging first."
+      },
+      {
+        "cmd": "git log",
+        "description": "Show commit logs/history of the active branch.",
+        "syntax": "git log --oneline --graph --decorate",
+        "example": "git log --oneline -n 10",
+        "mistake": "Forgetting that git log shows history page-by-page and getting stuck inside the command pager (press 'q' to exit)."
+      },
+      {
+        "cmd": "git diff",
+        "description": "Show changes between commits, commit and working tree, or staged and unstaged states.",
+        "syntax": "git diff [commit-hash]\n# Show staged differences:\ngit diff --staged",
+        "example": "git diff HEAD~1\ngit diff --staged",
+        "mistake": "Running git diff without staging parameters and wondering why staged changes are not showing up."
+      },
+      {
+        "cmd": "git show",
+        "description": "Show various types of objects (commits, tags, files) with their content/diff metadata.",
+        "syntax": "git show <commit-hash>:[filepath]",
+        "example": "git show a1b2c3d:src/App.tsx",
+        "mistake": "Running git show without a commit hash when you want to view a past commit, which default shows only the latest commit."
+      },
+      {
+        "cmd": "git rm",
+        "description": "Remove files from the working tree and index (stage).",
+        "syntax": "git rm <filepath>\n# Untrack file but keep it locally:\ngit rm --cached <filepath>",
+        "example": "git rm --cached .env",
+        "mistake": "Running 'git rm <file>' without '--cached' when you want to keep the local copy; this will permanently delete the local file."
+      },
+      {
+        "cmd": "git mv",
+        "description": "Move or rename a file, a directory, or a symlink.",
+        "syntax": "git mv <source> <destination>",
+        "example": "git mv old-name.js new-name.js",
+        "mistake": "Renaming files directly using your OS explorer; git treats it as deleted and untracked. Use git mv to preserve file history."
+      },
+      {
+        "cmd": "git help",
+        "description": "Display help information/manual pages for Git commands.",
+        "syntax": "git help <command>",
+        "example": "git help rebase",
+        "mistake": "Searching online manuals when git help runs the complete offline documentation instantly in your local browser."
       }
     ]
   },
@@ -29,24 +92,155 @@
     "category": "Branching & Merging",
     "commands": [
       {
-        "cmd": "git checkout -b",
-        "description": "Create a new branch and switch to it immediately.",
-        "syntax": "git checkout -b <branch-name>",
-        "example": "git checkout -b feat/devtools",
-        "mistake": "Creating a branch from a dirty worktree (uncommitted modifications), which pulls local changes into the new branch."
+        "cmd": "git checkout",
+        "description": "Switch branches or restore working tree files.",
+        "syntax": "git checkout <branch-name>\n# Switch to past commit:\ngit checkout <commit-hash>",
+        "example": "git checkout feature/navbar",
+        "mistake": "Switching branches with uncommitted modifications, which can cause conflict blockages."
+      },
+      {
+        "cmd": "git switch",
+        "description": "Switch branches safely (a cleaner alternative to git checkout for branch navigation).",
+        "syntax": "git switch <branch-name>\n# Create and switch:\ngit switch -c <branch-name>",
+        "example": "git switch -c feat/analytics",
+        "mistake": "Forgetting that git switch only works for branches, not for viewing specific commits or file resets (use restore for files)."
+      },
+      {
+        "cmd": "git restore",
+        "description": "Restore working tree files from index or specific commits.",
+        "syntax": "git restore <filepath>\n# Unstage file changes:\ngit restore --staged <filepath>",
+        "example": "git restore --staged package-lock.json",
+        "mistake": "Discarding modifications to working files; restored modifications cannot be recovered."
+      },
+      {
+        "cmd": "git branch",
+        "description": "List, create, or delete branches.",
+        "syntax": "git branch # list local\ngit branch -a # list local + remote\ngit branch -d <branch-name> # delete merged branch\ngit branch -D <branch-name> # force delete branch",
+        "example": "git branch -D old-experiment",
+        "mistake": "Trying to delete the branch you are currently on. Switch to another branch first."
       },
       {
         "cmd": "git merge",
         "description": "Merge target branch history into the active head branch.",
-        "syntax": "git merge <branch>",
+        "syntax": "git merge <branch-name>",
         "example": "git merge main",
         "mistake": "Merging without running git pull first, leading to conflicts on outdated commits."
+      },
+      {
+        "cmd": "git rebase",
+        "description": "Reapply commits on top of another base tip. Keeps a clean linear history.",
+        "syntax": "git rebase <base-branch>",
+        "example": "git rebase main",
+        "mistake": "Rebasing commits that have already been pushed to public/shared branches, rewriting history for other developers."
+      },
+      {
+        "cmd": "git cherry-pick",
+        "description": "Apply the changes introduced by some existing commits onto the current branch.",
+        "syntax": "git cherry-pick <commit-hash>",
+        "example": "git cherry-pick a1c3f9e",
+        "mistake": "Cherry-picking commits without realizing they depend on changes introduced in prior commits, causing build failures."
+      },
+      {
+        "cmd": "git merge-base",
+        "description": "Find as good common ancestors as possible for a merge.",
+        "syntax": "git merge-base <branch-1> <branch-2>",
+        "example": "git merge-base feature main",
+        "mistake": "Using manual diff comparisons when merge-base identifies exactly where the branch diverged."
+      },
+      {
+        "cmd": "git shortlog",
+        "description": "Summarize git log output, grouping commits by author.",
+        "syntax": "git shortlog -s -n",
+        "example": "git shortlog -s -n",
+        "mistake": "Running shortlog without tags in huge repositories, resulting in spamming logs for thousands of commits."
       }
     ]
   },
   {
-    "category": "Advanced / Recovery",
+    "category": "Remotes & Collaboration",
     "commands": [
+      {
+        "cmd": "git remote",
+        "description": "Manage set of tracked repositories (remotes).",
+        "syntax": "git remote -v\ngit remote add <name> <url>\ngit remote remove <name>",
+        "example": "git remote add upstream https://github.com/org/repo.git",
+        "mistake": "Adding duplicate remote names or typos in URLs, making it impossible to pull/push."
+      },
+      {
+        "cmd": "git fetch",
+        "description": "Download objects and refs from another repository. Does not modify local files.",
+        "syntax": "git fetch <remote>",
+        "example": "git fetch origin",
+        "mistake": "Thinking git fetch updates your active working code. You must merge or rebase after fetching to sync."
+      },
+      {
+        "cmd": "git pull",
+        "description": "Fetch from and integrate with another repository or local branch.",
+        "syntax": "git pull <remote> <branch>",
+        "example": "git pull origin main",
+        "mistake": "Running git pull when you have dirty uncommitted local modifications, causing automatic merging to fail."
+      },
+      {
+        "cmd": "git push",
+        "description": "Update remote refs along with associated objects.",
+        "syntax": "git push <remote> <branch>\n# Set upstream tracking branch:\ngit push -u origin <branch>",
+        "example": "git push -u origin feature-x",
+        "mistake": "Using push --force blindly on master/main branches, destroying other team members' code snapshots."
+      },
+      {
+        "cmd": "git remote prune",
+        "description": "Delete stale tracking branches under <name> that no longer exist on the remote.",
+        "syntax": "git remote prune <remote-name>",
+        "example": "git remote prune origin",
+        "mistake": "Expecting local physical branches to be deleted. It only cleans obsolete remote-tracking markers (e.g. origin/feature-x)."
+      },
+      {
+        "cmd": "git remote show",
+        "description": "Give information about a specific remote repository.",
+        "syntax": "git remote show <remote-name>",
+        "example": "git remote show origin",
+        "mistake": "Running this offline; it requires active remote network communication to check branch sync states."
+      },
+      {
+        "cmd": "git clone --mirror",
+        "description": "Clone repository containing all branch references, tags, and settings as a full mirror.",
+        "syntax": "git clone --mirror <url>",
+        "example": "git clone --mirror https://github.com/user/project.git",
+        "mistake": "Cloning a mirror expecting a normal working tree; it contains only raw .git databases (bare repository)."
+      },
+      {
+        "cmd": "git submodule",
+        "description": "Initialize, update, or inspect nested submodules inside a Git repository.",
+        "syntax": "git submodule add <url> <path>\ngit submodule update --init --recursive",
+        "example": "git submodule update --init --recursive",
+        "mistake": "Cloning a project containing submodules without running 'submodule update --init', leaving submodules empty."
+      },
+      {
+        "cmd": "git request-pull",
+        "description": "Generate a summary of pending changes to ask upstream maintainers to pull.",
+        "syntax": "git request-pull <start-commit> <url> [end-commit]",
+        "example": "git request-pull v1.0 https://github.com/my/repo main",
+        "mistake": "Specifying wrong range boundaries, causing unnecessary or unrelated changes to be requested."
+      }
+    ]
+  },
+  {
+    "category": "Undoing & Fixing Errors",
+    "commands": [
+      {
+        "cmd": "git reset --soft",
+        "description": "Undo the last commit(s), moving HEAD back, but keeping all changes staged in the index.",
+        "syntax": "git reset --soft HEAD~<number-of-commits>",
+        "example": "git reset --soft HEAD~1",
+        "mistake": "Assuming changes are deleted. This command preserves all modified code in your staged index."
+      },
+      {
+        "cmd": "git reset --mixed",
+        "description": "Undo commits and unstage changes, leaving files modified in working directory. This is the default reset mode.",
+        "syntax": "git reset --mixed HEAD~1",
+        "example": "git reset HEAD~1",
+        "mistake": "Running this when you wanted to keep modifications staged. You will have to re-add changes to the stage."
+      },
       {
         "cmd": "git reset --hard",
         "description": "Discard all uncommitted changes and revert to a specific commit. Warning: destructive operation!",
@@ -55,11 +249,318 @@
         "mistake": "Executing reset --hard when you have valuable uncommitted modifications; they will be permanently lost."
       },
       {
+        "cmd": "git revert",
+        "description": "Create a new commit that undoes the effects of previous commits without rewriting history.",
+        "syntax": "git revert <commit-hash>",
+        "example": "git revert 8b3c9e1",
+        "mistake": "Reverting a commit that was already reverted, causing confusing logical code loops in history."
+      },
+      {
         "cmd": "git reflog",
-        "description": "Show a record of all commits, branch switches, and resets. Best tool to recover 'lost' commits.",
+        "description": "Show a record of all commits, branch switches, resets, and merges. Best tool to recover 'lost' commits.",
         "syntax": "git reflog",
         "example": "git reflog",
         "mistake": "Assuming deleted branches or hard resets are unrecoverable without checking reflog first."
+      },
+      {
+        "cmd": "git clean",
+        "description": "Remove untracked files and directories from the working tree.",
+        "syntax": "git clean -fd\n# Dry run check first:\ngit clean -nfd",
+        "example": "git clean -fd",
+        "mistake": "Running clean without double-checking the files list via dry-run (-n), which permanently deletes local configuration files."
+      },
+      {
+        "cmd": "git commit --amend",
+        "description": "Replace the tip commit of the current branch with a new commit, allowing changes or rewrites to message.",
+        "syntax": "git commit --amend -m \"<new-message>\"",
+        "example": "git commit --amend -m \"docs: fix header typo\"",
+        "mistake": "Amending a commit that has already been pushed to a shared remote, which will require force-pushing."
+      },
+      {
+        "cmd": "git checkout --",
+        "description": "Discard local changes in the working directory (older equivalent to git restore).",
+        "syntax": "git checkout -- <filepath>",
+        "example": "git checkout -- src/styles.css",
+        "mistake": "Conflating this branch-switching command syntax, which is why git restore is preferred in modern Git."
+      }
+    ]
+  },
+  {
+    "category": "Stashing",
+    "commands": [
+      {
+        "cmd": "git stash",
+        "description": "Temporarily save (stash) changes in your dirty working directory so you can work on something else.",
+        "syntax": "git stash save \"<message>\"\n# Save with untracked files:\ngit stash -u",
+        "example": "git stash save \"layout edits WIP\" -u",
+        "mistake": "Stashing without keeping track of what was modified, then accumulating 30 stashes and forgetting which is which."
+      },
+      {
+        "cmd": "git stash list",
+        "description": "List stashed state changes.",
+        "syntax": "git stash list",
+        "example": "git stash list",
+        "mistake": "Stashing changes and then forgetting about them, resulting in merge issues weeks later."
+      },
+      {
+        "cmd": "git stash pop",
+        "description": "Remove the single most recently stashed state from the stash list and apply it to active branch.",
+        "syntax": "git stash pop [stash-index]",
+        "example": "git stash pop stash@{0}",
+        "mistake": "Popping a stash on a branch different from where you created it, causing messy merge conflicts."
+      },
+      {
+        "cmd": "git stash apply",
+        "description": "Apply stashed changes to active branch, but do not delete the stash from the stashing list.",
+        "syntax": "git stash apply [stash-index]",
+        "example": "git stash apply stash@{1}",
+        "mistake": "Applying stash multiple times by mistake, creating duplicated merge conflict sections."
+      },
+      {
+        "cmd": "git stash drop",
+        "description": "Remove a single stashed state from the stash list.",
+        "syntax": "git stash drop <stash-index>",
+        "example": "git stash drop stash@{2}",
+        "mistake": "Dropping the wrong stash index because the indices shift after popping or dropping other items."
+      },
+      {
+        "cmd": "git stash clear",
+        "description": "Remove all stashed states. Warning: irreversible action!",
+        "syntax": "git stash clear",
+        "example": "git stash clear",
+        "mistake": "Clearing the entire stash pool when you wanted to delete a single stash index, resulting in lost stashed code."
+      },
+      {
+        "cmd": "git stash show",
+        "description": "Show the changes recorded in the stash as a diff.",
+        "syntax": "git stash show -p [stash-index]",
+        "example": "git stash show -p stash@{0}",
+        "mistake": "Running stash show without '-p' when you want to view the actual file diffs (defaults to file stats summary)."
+      }
+    ]
+  },
+  {
+    "category": "Tagging & Releases",
+    "commands": [
+      {
+        "cmd": "git tag",
+        "description": "List tags in alphabetical order, or look up specific tags.",
+        "syntax": "git tag\ngit tag -l \"v1.2.*\"",
+        "example": "git tag -l \"v2.0.*\"",
+        "mistake": "Forgetting that git tag only lists local tags unless updated via git fetch."
+      },
+      {
+        "cmd": "git tag -a",
+        "description": "Create an annotated tag containing tagger metadata, date, and messages, GPG signed if specified.",
+        "syntax": "git tag -a <tag-name> -m \"<tag-message>\"",
+        "example": "git tag -a v1.0.0 -m \"Release v1.0.0 stable release version\"",
+        "mistake": "Creating lightweight tags (without -a) for public releases, which omit tagger identification details."
+      },
+      {
+        "cmd": "git tag -d",
+        "description": "Delete a local tag.",
+        "syntax": "git tag -d <tag-name>",
+        "example": "git tag -d v1.0.0-rc1",
+        "mistake": "Deleting a local tag thinking it automatically deletes the tag on GitHub. Remote tags must be purged separately."
+      },
+      {
+        "cmd": "git push origin --tags",
+        "description": "Push all local tags that are not yet on the remote server.",
+        "syntax": "git push <remote> --tags",
+        "example": "git push origin --tags",
+        "mistake": "Running 'git push' without '--tags' when publishing releases; normal push commands do not transfer tags."
+      },
+      {
+        "cmd": "git push origin :refs/tags/",
+        "description": "Delete a tag on the remote repository.",
+        "syntax": "git push <remote-name> --delete <tag-name>\n# Older syntax:\ngit push <remote-name> :refs/tags/<tag-name>",
+        "example": "git push origin --delete v1.0.0-beta",
+        "mistake": "Leaving a broken tag on remote repositories which causes conflict failures for other developers during fetch."
+      }
+    ]
+  },
+  {
+    "category": "Advanced Utilities & Plumbing",
+    "commands": [
+      {
+        "cmd": "git rebase -i",
+        "description": "Start an interactive rebase session to edit, squash, reword, or drop commits in history.",
+        "syntax": "git rebase -i HEAD~<number-of-commits>",
+        "example": "git rebase -i HEAD~5",
+        "mistake": "Closing the text editor without realizing it initiates the rebase, or deleting commits accidentally from the pick list."
+      },
+      {
+        "cmd": "git worktree",
+        "description": "Manage multiple working trees attached to the same repository. Work on multiple branches in different folders simultaneously.",
+        "syntax": "git worktree add <path> <branch>\ngit worktree list\ngit worktree remove <path>",
+        "example": "git worktree add ../debug-build hotfix/auth",
+        "mistake": "Modifying files inside a worktree thinking it is a separate repository, and forgetting to prune removed worktrees."
+      },
+      {
+        "cmd": "git bisect",
+        "description": "Use binary search to find the commit that introduced a bug.",
+        "syntax": "git bisect start\ngit bisect bad # Current version has the bug\ngit bisect good <commit-hash> # Last known working version\n# Type 'git bisect good' or 'git bisect bad' iteratively, then:\ngit bisect reset",
+        "example": "git bisect start\ngit bisect bad\ngit bisect good v1.0.0",
+        "mistake": "Forgetting to run 'git bisect reset' after finding the bug, leaving the repository in a detached HEAD bisect state."
+      },
+      {
+        "cmd": "git blame",
+        "description": "Show what revision and author last modified each line of a file.",
+        "syntax": "git blame <filepath>",
+        "example": "git blame src/components/Header.tsx",
+        "mistake": "Blaming files that have been auto-formatted, which shows the formatter author instead of the logic author (use --ignore-revs-file if needed)."
+      },
+      {
+        "cmd": "git archive",
+        "description": "Create a zip or tar archive of the files in a repository from specific branches or commits.",
+        "syntax": "git archive --format=<zip|tar> --output=<filename> <branch-name>",
+        "example": "git archive --format=zip --output=v1-source.zip main",
+        "mistake": "Archiving repositories and expecting the .git history directory to be included; it only packs working directory code."
+      },
+      {
+        "cmd": "git gc",
+        "description": "Run garbage collection to optimize database size, clean up unreachable commits, and compress history.",
+        "syntax": "git gc --prune=now",
+        "example": "git gc --prune=now",
+        "mistake": "Pruning reflog commits that you might still want to restore. Use with caution!"
+      },
+      {
+        "cmd": "git fsck",
+        "description": "Verify the connectivity and validity of objects in the database, checking for corrupted commits.",
+        "syntax": "git fsck --full",
+        "example": "git fsck --full",
+        "mistake": "Running fsck and deleting loose objects without back-ups if corruption occurred."
+      },
+      {
+        "cmd": "git format-patch",
+        "description": "Prepare commits for email submission, generating a series of .patch files.",
+        "syntax": "git format-patch <start-commit-hash>..HEAD",
+        "example": "git format-patch v1.0.0..main",
+        "mistake": "Creating format-patches in a folder where you have local uncommitted changes, making organization messy."
+      },
+      {
+        "cmd": "git am",
+        "description": "Apply a series of patches from a mailbox/local patch files.",
+        "syntax": "git am < <patch-file>",
+        "example": "git am 0001-fix-layout-bug.patch",
+        "mistake": "Applying patches generated from an incompatible branch state, leading to patch conflict failures."
+      },
+      {
+        "cmd": "git bundle",
+        "description": "Package objects and references in an offline file. Useful for sharing code without remote servers.",
+        "syntax": "git bundle create <filename> <branch-name>\n# Clone from a bundle:\ngit clone <filename> -b <branch>",
+        "example": "git bundle create backup.bundle main",
+        "mistake": "Forgetting to specify references (branches/tags) when packaging, resulting in an empty bundle file."
+      },
+      {
+        "cmd": "git describe",
+        "description": "Find the most recent tag reachable from a commit, suffixing it with commit counts and hashes.",
+        "syntax": "git describe --tags --always",
+        "example": "git describe --tags --always",
+        "mistake": "Assuming it works in a repository without any tags, which will fall back to returning only the commit hash."
+      }
+    ]
+  },
+  {
+    "category": "Git Disasters & Solutions",
+    "commands": [
+      {
+        "cmd": "Fix: Committed to main directly",
+        "description": "You accidentally committed code directly to the 'main' branch instead of a dedicated feature branch.",
+        "syntax": "# 1. Create a new branch pointing to current changes:\ngit branch feat/your-feature-name\n# 2. Reset local main back one commit (or more):\ngit reset --hard HEAD~1\n# 3. Switch to your feature branch:\ngit checkout feat/your-feature-name",
+        "example": "git branch feat/search-bar\ngit reset --hard HEAD~1\ngit checkout feat/search-bar",
+        "mistake": "Performing this action if you already pushed main to GitHub. You will have to coordinate with your team to force-push."
+      },
+      {
+        "cmd": "Fix: Undo last commit",
+        "description": "You made a commit but immediately realized you made a typo or forgot to include a file, and want to redo it.",
+        "syntax": "# Undo commit, keep files modified and staged:\ngit reset --soft HEAD~1\n# Undo commit, keep files modified but unstaged:\ngit reset HEAD~1",
+        "example": "git reset --soft HEAD~1",
+        "mistake": "Using 'git reset --hard HEAD~1' instead, which will completely delete the changes you just made."
+      },
+      {
+        "cmd": "Fix: Recover hard reset",
+        "description": "You accidentally ran 'git reset --hard' and lost all your uncommitted or committed work.",
+        "syntax": "# 1. Run reflog to find the commit hash before the reset:\ngit reflog\n# 2. Revert HEAD to that commit hash:\ngit reset --hard <commit-hash>",
+        "example": "git reflog\n# Output showing: HEAD@{1}: reset: moving to HEAD~1\n# HEAD@{2}: commit: feat: added sidebar\ngit reset --hard a2f3c9e",
+        "mistake": "Running 'git clean -fd' or closing the workspace before fetching the hash from the log, or thinking uncommitted changes can be recovered this way (reflog only recovers committed changes)."
+      },
+      {
+        "cmd": "Fix: Purge sensitive data",
+        "description": "You accidentally committed a file containing API keys, passwords, or secrets, and need to scrub it from all branch histories.",
+        "syntax": "# Remove the file from all commits and rewrite history:\ngit filter-branch --force --index-filter \\\n  \"git rm --cached --ignore-unmatch <filename>\" \\\n  --prune-empty --tag-name-filter cat -- --all\n# Note: Force pushing is required afterwards:\ngit push origin --force --all",
+        "example": "git filter-branch --force --index-filter \"git rm --cached --ignore-unmatch .env\" --prune-empty --tag-name-filter cat -- --all",
+        "mistake": "Assuming simple 'git rm file' deletes it from history. The keys will still be accessible in past commits unless history is rewritten."
+      },
+      {
+        "cmd": "Fix: Case-sensitive file rename",
+        "description": "You changed a filename's casing (e.g., header.tsx to Header.tsx), but Git doesn't detect the modification due to default config.",
+        "syntax": "# Force rename via Git:\ngit mv <old-name> <new-name>\n# Alternatively, disable core ignorecase:\ngit config core.ignorecase false",
+        "example": "git mv src/components/header.tsx src/components/Header.tsx",
+        "mistake": "Renaming the file directly in your OS Explorer or VS Code sidebar. Git will show duplicate untracked/deleted files."
+      },
+      {
+        "cmd": "Fix: Rename branch",
+        "description": "You need to rename your active local branch and update the remote tracking branch accordingly.",
+        "syntax": "# 1. Rename active branch locally:\ngit branch -m <new-name>\n# 2. Push the new branch and set remote upstream:\ngit push origin -u <new-name>\n# 3. Delete the old branch on the remote server:\ngit push origin --delete <old-name>",
+        "example": "git branch -m feat/search-ui\ngit push origin -u feat/search-ui\ngit push origin --delete feat/srch-ui",
+        "mistake": "Renaming a branch other developers are actively basing their pull requests on, breaking their target remotes."
+      },
+      {
+        "cmd": "Fix: Discard local changes",
+        "description": "You want to completely erase all local modifications (tracked and untracked) to start over from fresh pull state.",
+        "syntax": "# 1. Reset all tracked files to current commit:\ngit reset --hard HEAD\n# 2. Remove all untracked files and directories:\ngit clean -fd",
+        "example": "git reset --hard HEAD && git clean -fd",
+        "mistake": "Running 'git clean -fdx' if you want to keep files in your gitignore, like local .env files or configuration parameters."
+      },
+      {
+        "cmd": "Fix: Wrong commit author",
+        "description": "You committed code but realized it has the wrong git author email or name.",
+        "syntax": "# Update only the last commit:\ngit commit --amend --author=\"Name <email@example.com>\"",
+        "example": "git commit --amend --author=\"John Doe <john@doe.com>\"",
+        "mistake": "Amending a commit that you have already pushed to a shared remote, which requires force-pushing."
+      },
+      {
+        "cmd": "Fix: Resolve merge conflicts",
+        "description": "Your branch conflicts with another branch and Git halts the merge, inserting conflict markers.",
+        "syntax": "# 1. Run status to list conflicting files:\ngit status\n# 2. Open files, resolve markers (<<<<<<<, =======, >>>>>>>), then stage:\ngit add <resolved-file>\n# 3. Complete the merge transaction:\ngit commit -m \"merge: resolved conflicts with origin/main\"",
+        "example": "git status\n# resolve conflicts in files...\ngit add src/components/Header.tsx\ngit commit -m \"merge: resolved conflicts\"",
+        "mistake": "Running git commit before resolving all files, or committing code with raw conflict symbols (<<<<<<<) still left in files."
+      },
+      {
+        "cmd": "Fix: Undo a merge commit",
+        "description": "You merged a branch but realized it broke the project, and you want to completely rollback the merge commit.",
+        "syntax": "# Revert a merge commit, specifying the mainline parent index (usually 1):\ngit revert -m 1 <merge-commit-hash>",
+        "example": "git revert -m 1 3c8e4a2",
+        "mistake": "Using normal git revert without the -m option, which causes git to throw an error since merge commits have multiple parents."
+      },
+      {
+        "cmd": "Fix: Push rejected (non-fast-forward)",
+        "description": "Your push is rejected because the remote contains commits you don't have locally.",
+        "syntax": "# 1. Fetch remote updates and rebase your local commits on top:\ngit pull --rebase origin <branch-name>\n# 2. Resolve conflicts if any, and continue rebase:\ngit rebase --continue\n# 3. Safely push modifications:\ngit push origin <branch-name>",
+        "example": "git pull --rebase origin main && git push origin main",
+        "mistake": "Using 'git push --force' without checking remote differences, which will overwrite other developers' work permanently."
+      },
+      {
+        "cmd": "Fix: Recover deleted branch",
+        "description": "You deleted a branch locally using git branch -D and now want to restore it.",
+        "syntax": "# 1. Find the tip commit hash of the deleted branch in reflog:\ngit reflog\n# 2. Re-create the branch from that commit hash:\ngit branch <branch-name> <commit-hash>",
+        "example": "git reflog\n# HEAD@{3}: checkout: moving from feature-auth to main\n# HEAD@{4}: commit: feat: added bcrypt auth\ngit branch feature-auth a1c2b3d",
+        "mistake": "Thinking deleted branches are gone forever, or running garbage collection (git gc) which purges dangling commit objects."
+      },
+      {
+        "cmd": "Fix: Index lock error (index.lock)",
+        "description": "Git commands fail with 'Another git process seems to be running in this repository' error because of a stale lock file.",
+        "syntax": "# Remove the stale index lock file manually:\nrm -f .git/index.lock",
+        "example": "rm -f .git/index.lock",
+        "mistake": "Deleting files under the refs directory or deleting index itself, which corrupts version staging tables."
+      },
+      {
+        "cmd": "Fix: File too large (over 100MB)",
+        "description": "GitHub rejects your push because you committed a file exceeding the 100MB limit.",
+        "syntax": "# 1. Remove large file from active index:\ngit rm --cached <path-to-large-file>\n# 2. Rewrite history to remove files from past commits:\ngit filter-branch --force --index-filter \\\n  \"git rm --cached --ignore-unmatch <path-to-large-file>\" \\\n  --prune-empty --tag-name-filter cat -- --all\n# 3. Push history clean:\ngit push origin main",
+        "example": "git rm --cached data/large_dataset.zip && git filter-branch --force --index-filter \"git rm --cached --ignore-unmatch data/large_dataset.zip\" --prune-empty --tag-name-filter cat -- --all",
+        "mistake": "Deleting the file locally and committing the delete; the file will still exist in historical commit objects, blocking pushes."
       }
     ]
   }

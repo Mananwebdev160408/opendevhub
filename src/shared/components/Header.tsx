@@ -28,22 +28,47 @@ export function Header() {
   const [openSearch, setOpenSearch] = React.useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
 
-  const navLinks = [
-    { label: "EXPLORER", href: "/repos" },
-    { label: "ISSUES", href: "/issues" },
-    { label: "TRENDING", href: "/trending" },
-    { label: "TOOLBOX", href: "/tools" },
-    { label: "GIT CHEATS", href: "/git-cheatsheets" },
-    { label: "HTTP CODES", href: "/http-status" },
-    { label: "APIs", href: "/apis" },
-    { label: "RESOURCES", href: "/resources" },
-    { label: "EVENTS", href: "/events" },
-    { label: "LICENSES", href: "/licenses" },
+  const groupedLinks = [
+    {
+      label: "CODE HUBS",
+      links: [
+        { label: "EXPLORER", href: "/repos" },
+        { label: "ISSUES", href: "/issues" },
+        { label: "TRENDING", href: "/trending" },
+      ]
+    },
+    {
+      label: "DEV TOOLS",
+      links: [
+        { label: "TOOLBOX", href: "/tools" },
+        { label: "GIT CHEATS", href: "/git-cheatsheets" },
+        { label: "HTTP CODES", href: "/http-status" },
+      ]
+    },
+    {
+      label: "RESOURCES",
+      links: [
+        { label: "APIs DIRECTORY", href: "/apis" },
+        { label: "MARKDOWN READER", href: "/resources" },
+        { label: "EVENTS TIMELINE", href: "/events" },
+      ]
+    },
+    {
+      label: "MORE",
+      links: [
+        { label: "NEWS STREAM", href: "/news" },
+        { label: "LICENSES", href: "/licenses" },
+      ]
+    }
   ]
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/"
     return pathname.startsWith(href)
+  }
+
+  const isGroupActive = (group: typeof groupedLinks[0]) => {
+    return group.links.some(link => isActive(link.href))
   }
 
   return (
@@ -72,20 +97,46 @@ export function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden xl:flex items-center gap-1.5 font-mono text-xs font-bold">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`px-3 py-1.5 border-2 border-transparent transition-all select-none ${
-                isActive(link.href)
-                  ? "bg-accent text-accent-foreground border-foreground shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]"
-                  : "hover:border-foreground hover:bg-zinc-900"
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
+        <nav className="hidden xl:flex items-center gap-1 font-mono text-xs font-bold">
+          {groupedLinks.map((group) => {
+            const groupActive = isGroupActive(group)
+            return (
+              <div key={group.label} className="relative group select-none py-4">
+                <button
+                  className={`px-3 py-1.5 border-2 transition-all flex items-center gap-1.5 cursor-pointer uppercase ${
+                    groupActive
+                      ? "bg-accent text-accent-foreground border-foreground shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]"
+                      : "border-transparent hover:border-foreground hover:bg-zinc-900"
+                  }`}
+                >
+                  <span>{group.label}</span>
+                  <span className="text-[9px] text-zinc-500 group-hover:text-foreground font-normal">▼</span>
+                </button>
+
+                {/* Dropdown Menu */}
+                <div className="absolute top-[85%] left-0 mt-1 hidden group-hover:block w-48 bg-black border-2 border-foreground shadow-[4px_4px_0px_0px_var(--accent)] font-mono text-[11px] z-50">
+                  <div className="flex flex-col p-1.5 gap-1">
+                    {group.links.map((link) => {
+                      const linkActive = isActive(link.href)
+                      return (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          className={`px-3 py-2 border transition-all text-left uppercase ${
+                            linkActive
+                              ? "bg-accent text-accent-foreground border-foreground font-black"
+                              : "border-transparent text-muted-foreground hover:text-foreground hover:bg-zinc-900 hover:border-foreground/30"
+                          }`}
+                        >
+                          {link.label}
+                        </Link>
+                      )
+                    })}
+                  </div>
+                </div>
+              </div>
+            )
+          })}
         </nav>
 
         {/* Action Panel */}
@@ -126,21 +177,41 @@ export function Header() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="xl:hidden w-full bg-black border-t-2 border-foreground p-4 flex flex-col gap-2 font-mono text-sm font-bold">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setMobileMenuOpen(false)}
-              className={`p-3 border-2 transition-all ${
-                isActive(link.href)
-                  ? "bg-accent text-accent-foreground border-foreground shadow-[3px_3px_0px_0px_rgba(255,255,255,1)]"
-                  : "border-zinc-800 hover:border-foreground hover:bg-zinc-900"
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
+        <div className="xl:hidden w-full bg-black border-t-2 border-foreground p-4 flex flex-col gap-4 font-mono text-sm font-bold max-h-[75vh] overflow-y-auto">
+          {groupedLinks.map((group) => {
+            const groupActive = isGroupActive(group)
+            return (
+              <div
+                key={group.label}
+                className={`border-2 p-3 shadow-[3px_3px_0px_0px_rgba(255,255,255,0.08)] space-y-2.5 transition-all ${
+                  groupActive
+                    ? "border-accent bg-zinc-950/40"
+                    : "border-zinc-800 bg-zinc-950"
+                }`}
+              >
+                <div className="text-[10px] text-zinc-500 tracking-wider font-black border-b border-zinc-800 pb-1.5 flex justify-between items-center uppercase">
+                  <span>{group.label}</span>
+                  {groupActive && <span className="h-1.5 w-1.5 bg-accent rounded-full"></span>}
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  {group.links.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`p-2.5 border transition-all text-xs uppercase ${
+                        isActive(link.href)
+                          ? "bg-accent text-accent-foreground border-foreground shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] font-black"
+                          : "border-transparent text-muted-foreground hover:text-foreground hover:bg-zinc-900"
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )
+          })}
         </div>
       )}
 

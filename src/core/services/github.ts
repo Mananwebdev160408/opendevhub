@@ -149,3 +149,79 @@ export async function searchIssues(params: {
     total_count: data.total_count || 0
   }
 }
+
+export async function getTrendingRepositories(params: {
+  timeRange: "daily" | "weekly" | "monthly"
+  language?: string
+  sort?: "stars" | "forks"
+  page?: number
+  perPage?: number
+}): Promise<{ items: GithubRepo[]; total_count: number }> {
+  const { timeRange, language, sort = "stars", page = 1, perPage = 20 } = params
+
+  const date = new Date()
+  if (timeRange === "daily") {
+    date.setDate(date.getDate() - 2)
+  } else if (timeRange === "weekly") {
+    date.setDate(date.getDate() - 7)
+  } else {
+    date.setDate(date.getDate() - 30)
+  }
+
+  const dateStr = date.toISOString().split("T")[0]
+  let q = `created:>${dateStr}`
+
+  if (language && language !== "ALL") {
+    q += ` language:${language}`
+  }
+
+  return searchRepositories({
+    q,
+    sort: sort,
+    order: "desc",
+    page,
+    perPage
+  })
+}
+
+export async function getRepositoryReadme(owner: string, name: string): Promise<string> {
+  const url = `${BASE_URL}/repos/${owner}/${name}/readme`
+  const res = await fetch(url, {
+    headers: getHeaders(),
+    next: { revalidate: 86400 }
+  })
+
+  if (!res.ok) {
+    // Raw fallback if API rate limits or doesn't resolve
+    const rawUrl = `https://raw.githubusercontent.com/${owner}/${name}/master/README.md`
+    const rawRes = await fetch(rawUrl)
+    if (rawRes.ok) return rawRes.text()
+    
+    const mainRawUrl = `https://raw.githubusercontent.com/${owner}/${name}/main/README.md`
+    const mainRawRes = await fetch(mainRawUrl)
+    if (mainRawRes.ok) return mainRawRes.text()
+
+    throw new Error(`Failed to retrieve README from GitHub API or raw branch paths.`)
+  }
+
+  const data = await res.json()
+  if (data.encoding === "base64" && data.content) {
+    const cleaned = data.content.replace(/\s/g, "")
+    try {
+      if (typeof window === "undefined") {
+        return Buffer.from(cleaned, "base64").toString("utf-8")
+      } else {
+        const binaryString = atob(cleaned)
+        const bytes = new Uint8Array(binaryString.length)
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i)
+        }
+        return new TextDecoder("utf-8").decode(bytes)
+      }
+    } catch (e) {
+      console.error("Base64 decode failed, using raw fallback:", e)
+    }
+  }
+
+  return ""
+}
