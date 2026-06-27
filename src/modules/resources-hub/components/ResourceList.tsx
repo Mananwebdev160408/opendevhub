@@ -10,7 +10,6 @@ export function ResourceList() {
   const [query, setQuery] = React.useState("")
   const [activeCategory, setActiveCategory] = React.useState("ALL")
   
-  // Custom README importer state
   const [importOwner, setImportOwner] = React.useState("")
   const [importRepo, setImportRepo] = React.useState("")
   const [readerContent, setReaderContent] = React.useState<string | null>(null)
@@ -38,7 +37,6 @@ export function ResourceList() {
 
     try {
       const readmeMarkdown = await getRepositoryReadme(importOwner.trim(), importRepo.trim())
-      // Parse markdown to HTML
       const htmlContent = await marked.parse(readmeMarkdown)
       setReaderContent(htmlContent)
     } catch (err: any) {
@@ -49,13 +47,11 @@ export function ResourceList() {
     }
   }
 
-  // Clear reader and go back
   const handleExitReader = () => {
     setReaderContent(null)
     setImportError(null)
   }
 
-  // Helper preset imports
   const handlePresetImport = async (owner: string, repo: string) => {
     setImportOwner(owner)
     setImportRepo(repo)
@@ -78,7 +74,6 @@ export function ResourceList() {
   if (readerContent) {
     return (
       <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-mono space-y-6">
-        {/* Reader Header Toolbar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 select-none">
           <button
             onClick={handleExitReader}
@@ -93,10 +88,9 @@ export function ResourceList() {
           </div>
         </div>
 
-        {/* Reader Canvas */}
         <div className="border-4 border-foreground bg-card p-6 sm:p-10 shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] relative overflow-hidden bg-dot-pattern">
           <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
-            INTEGRATED_READER // MD_DECODE_SUCCESS
+            INTEGRATED READER
           </div>
           
           <div 
@@ -118,10 +112,9 @@ export function ResourceList() {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-mono space-y-8">
-      {/* Title */}
       <div className="border-4 border-foreground bg-black p-6 shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] relative overflow-hidden bg-dot-pattern">
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
-          REGISTRY // RESOURCES HUB
+          RESOURCES HUB
         </div>
         <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
           <Library className="h-6 w-6 text-accent" />
@@ -132,10 +125,9 @@ export function ResourceList() {
         </p>
       </div>
 
-      {/* GitHub Documentation Importer Box */}
       <div className="border-4 border-foreground bg-card p-6 shadow-[4px_4px_0px_0px_var(--accent)] relative overflow-hidden">
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
-          INTEGRATION // DOCS_IMPORTER
+          DOCS IMPORTER
         </div>
         <h3 className="text-sm font-black text-foreground uppercase flex items-center gap-1.5 mb-4">
           <Sparkles className="h-4 w-4 text-accent animate-pulse" />
@@ -185,7 +177,6 @@ export function ResourceList() {
           </div>
         )}
 
-        {/* Preset quick buttons */}
         <div className="mt-4 pt-3 border-t border-border/40 flex flex-wrap items-center gap-3">
           <span className="text-[9px] text-zinc-500 font-bold uppercase">POPULAR DOCS:</span>
           <button
@@ -209,7 +200,6 @@ export function ResourceList() {
         </div>
       </div>
 
-      {/* Directory Filter Board */}
       <div className="border-2 border-foreground bg-zinc-950 p-4 shadow-[4px_4px_0px_0px_var(--primary)] space-y-4">
         <div className="relative border-2 border-foreground bg-black shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] focus-within:shadow-[2px_2px_0px_0px_var(--accent)] transition-all">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
@@ -239,7 +229,6 @@ export function ResourceList() {
         </div>
       </div>
 
-      {/* Grid of Curated Directory Resources */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {filteredResources.map((res) => (
           <div

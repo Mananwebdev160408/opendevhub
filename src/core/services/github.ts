@@ -1,5 +1,3 @@
-// Core service for interacting with the GitHub REST API.
-// Implements direct client-side fetching with support for process.env.GITHUB_TOKEN when run on the server side.
 
 export interface GithubRepo {
   id: number
@@ -47,7 +45,6 @@ export interface GithubIssue {
     login: string
     avatar_url: string
   }
-  // Custom mapped field for the UI
   repo_name?: string
   repo_owner?: string
 }
@@ -59,7 +56,6 @@ function getHeaders() {
     Accept: "application/vnd.github.v3+json",
   }
   
-  // On the server-side, include the environment token if available
   if (typeof window === "undefined" && process.env.GITHUB_TOKEN) {
     headers.Authorization = `token ${process.env.GITHUB_TOKEN}`
   }
@@ -83,7 +79,7 @@ export async function searchRepositories(params: {
 
   const res = await fetch(url, {
     headers: getHeaders(),
-    next: { revalidate: 3600 } // Cache results for 1 hour on server-side
+    next: { revalidate: 3600 }
   })
 
   if (!res.ok) {
@@ -102,7 +98,7 @@ export async function getRepository(owner: string, name: string): Promise<Github
   const url = `${BASE_URL}/repos/${owner}/${name}`
   const res = await fetch(url, {
     headers: getHeaders(),
-    next: { revalidate: 86400 } // Cache repo details for 24 hours on server-side
+    next: { revalidate: 86400 }
   })
 
   if (!res.ok) {
@@ -123,7 +119,7 @@ export async function searchIssues(params: {
 
   const res = await fetch(url, {
     headers: getHeaders(),
-    next: { revalidate: 1800 } // Cache issue lists for 30 minutes on server-side
+    next: { revalidate: 1800 }
   })
 
   if (!res.ok) {
@@ -133,7 +129,6 @@ export async function searchIssues(params: {
 
   const data = await res.json()
   const items = (data.items || []).map((issue: any) => {
-    // Extract owner/repo name from repository_url
     // repository_url format: https://api.github.com/repos/owner/name
     const parts = issue.repository_url.split("/repos/")
     if (parts.length > 1) {
@@ -192,7 +187,6 @@ export async function getRepositoryReadme(owner: string, name: string): Promise<
   })
 
   if (!res.ok) {
-    // Raw fallback if API rate limits or doesn't resolve
     const rawUrl = `https://raw.githubusercontent.com/${owner}/${name}/master/README.md`
     const rawRes = await fetch(rawUrl)
     if (rawRes.ok) return rawRes.text()

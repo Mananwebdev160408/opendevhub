@@ -67,10 +67,9 @@ export function GitCheats() {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-mono space-y-8">
-      {/* Title block */}
       <div className="border-4 border-foreground bg-black p-6 shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] relative overflow-hidden bg-dot-pattern">
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
-          REFERENCE // GITHUB UNIVERSAL CHEATSHEET
+          GITHUB CHEATSHEET
         </div>
         <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
           <Terminal className="h-6 w-6 text-accent" />
@@ -81,9 +80,7 @@ export function GitCheats() {
         </p>
       </div>
 
-      {/* Control Panel: Search & Categories */}
       <div className="space-y-4">
-        {/* Search Input */}
         <div className="relative border-2 border-foreground bg-zinc-950 p-2 shadow-[3px_3px_0px_0px_var(--primary)] flex items-center gap-2">
           <Search className="h-5 w-5 text-muted-foreground shrink-0 ml-2" />
           <input
@@ -103,7 +100,6 @@ export function GitCheats() {
           )}
         </div>
 
-        {/* Category selector */}
         <div className="border-2 border-foreground bg-zinc-950 p-4 shadow-[4px_4px_0px_0px_var(--accent)] flex flex-wrap gap-2 select-none">
           {categories.map((cat) => (
             <button
@@ -121,14 +117,12 @@ export function GitCheats() {
         </div>
       </div>
 
-      {/* Search results status */}
       {searchQuery && (
         <div className="text-xs text-zinc-500 font-bold uppercase select-none">
           SEARCH RESULTS FOR: "{searchQuery}"
         </div>
       )}
 
-      {/* List of categories and commands */}
       <div className="space-y-12">
         {filteredData.map((catGroup) => (
           <div key={catGroup.category} className="space-y-6">
@@ -150,14 +144,13 @@ export function GitCheats() {
                       <span className="text-xs font-black text-foreground bg-zinc-900 px-2 py-0.5 border border-border">
                         {c.cmd}
                       </span>
-                      <span className="text-[10px] text-zinc-500 font-bold uppercase">// {catGroup.category}</span>
+                      <span className="text-[10px] text-zinc-500 font-bold uppercase">{catGroup.category}</span>
                     </div>
 
                     <p className="text-xs text-muted-foreground leading-relaxed">
                       {c.description}
                     </p>
 
-                    {/* Syntax block */}
                     <div className="space-y-2">
                       <div className="flex justify-between items-center">
                         <span className="text-[9px] text-zinc-500 font-bold block uppercase">SYNTAX:</span>
@@ -168,7 +161,6 @@ export function GitCheats() {
                       </pre>
                     </div>
 
-                    {/* Example block */}
                     <div className="space-y-2">
                       <div className="flex justify-between items-center">
                         <span className="text-[9px] text-zinc-500 font-bold block uppercase">EXAMPLE USAGE:</span>
@@ -195,7 +187,6 @@ export function GitCheats() {
           </div>
         ))}
 
-        {/* Empty state when query returns no items */}
         {filteredData.length === 0 && (
           <div className="border-4 border-dashed border-zinc-800 bg-zinc-950 p-12 text-center space-y-4">
             <AlertTriangle className="h-8 w-8 text-accent mx-auto" />

@@ -8,7 +8,6 @@ interface PageProps {
 
 export const revalidate = 86400
 
-// Generate parameters for pre-defined slugs to ensure static compilation optimization
 export async function generateStaticParams() {
   const tools = [
     "json-formatter", "json-validator", "jwt-decoder", "uuid-generator",

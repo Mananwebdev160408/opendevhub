@@ -42,8 +42,6 @@ export function FAQ() {
   return (
     <section className="w-full min-h-[100vh] border-t-4 border-foreground py-16 px-4 sm:px-6 lg:px-8 bg-black flex flex-col justify-center relative overflow-hidden">
       
-      {/* Absolute Decorative Stickers - Cartoon Polaroid Illustrations */}
-      {/* Left Stack - Caffeine Computer Polaroid */}
       <div className="absolute top-1/4 left-[3%] hidden xl:block select-none pointer-events-none">
         <div className="w-64 border-4 border-foreground bg-white p-3 rotate-[-6deg] shadow-[6px_6px_0px_0px_var(--primary)] flex flex-col items-center">
           <div className="w-full aspect-square border-2 border-foreground bg-accent overflow-hidden relative flex items-center justify-center">
@@ -59,7 +57,6 @@ export function FAQ() {
         </div>
       </div>
 
-      {/* Right Stack - Screaming Coffee Polaroid */}
       <div className="absolute bottom-1/4 right-[3%] hidden xl:block select-none pointer-events-none">
         <div className="w-60 border-4 border-foreground bg-white p-3 rotate-[6deg] shadow-[6px_6px_0px_0px_var(--accent)] flex flex-col items-center">
           <div className="w-full aspect-square border-2 border-foreground bg-primary overflow-hidden relative flex items-center justify-center">
@@ -76,7 +73,6 @@ export function FAQ() {
       </div>
 
       <div className="max-w-3xl mx-auto w-full relative z-10">
-        {/* Title */}
         <div className="text-center mb-12 space-y-3">
           <div className="inline-flex items-center gap-1.5 px-2.5 py-1 border-2 border-foreground bg-accent text-accent-foreground font-mono text-[10px] font-black uppercase tracking-wider">
             <HelpCircle className="h-3.5 w-3.5" />
@@ -90,7 +86,6 @@ export function FAQ() {
           </p>
         </div>
 
-        {/* FAQ List */}
         <div className="space-y-4">
           {faqs.map((faq, idx) => {
             const isOpen = openIndex === idx;
@@ -99,7 +94,6 @@ export function FAQ() {
                 key={idx}
                 className="border-4 border-foreground bg-card shadow-[4px_4px_0px_0px_var(--border)] hover:shadow-[6px_6px_0px_0px_var(--accent)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all overflow-hidden"
               >
-                {/* Trigger Button */}
                 <button
                   onClick={() => toggleFAQ(idx)}
                   className="w-full text-left p-4 font-mono text-xs sm:text-sm font-black uppercase tracking-tight text-foreground flex items-center justify-between hover:bg-zinc-900 transition-all select-none cursor-pointer"
@@ -112,7 +106,6 @@ export function FAQ() {
                   )}
                 </button>
 
-                {/* Content Panel */}
                 {isOpen && (
                   <div className="p-4 border-t-2 border-foreground bg-black font-mono text-xs text-muted-foreground leading-relaxed">
                     <div className="text-[9px] text-accent mb-2 uppercase font-black tracking-widest animate-pulse flex items-center gap-1 select-none">

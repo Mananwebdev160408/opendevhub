@@ -39,7 +39,7 @@ export function IssueExplorer() {
       if (newParams.page !== undefined) {
         current.set("page", String(newParams.page))
       } else {
-        current.set("page", "1") // reset to first page
+        current.set("page", "1")
       }
 
       router.push(`/issues?${current.toString()}`)
@@ -56,7 +56,6 @@ export function IssueExplorer() {
       setIsLoading(true)
       setError(null)
       try {
-        // Construct query: must include 'good first issue' label and be open
         let queryStr = `is:issue state:open label:"good first issue"`
         
         if (qParam) {
@@ -101,7 +100,7 @@ export function IssueExplorer() {
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-mono">
       <div className="border-4 border-foreground bg-black p-6 shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] relative overflow-hidden bg-dot-pattern mb-8">
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
-          SEARCH_CONDUIT // ISSUES FINDER
+          ISSUES FINDER
         </div>
         <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4">
           FIND GOOD FIRST ISSUES
@@ -128,7 +127,6 @@ export function IssueExplorer() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
-        {/* Language Filter Sidebar */}
         <div className="lg:col-span-1 border-4 border-foreground bg-card p-5 shadow-[4px_4px_0px_0px_var(--accent)] space-y-6">
           <div className="border-b border-border pb-3 flex items-center gap-2 text-xs font-black uppercase text-foreground select-none">
             <SlidersHorizontal className="h-4 w-4 text-primary" />
@@ -152,7 +150,6 @@ export function IssueExplorer() {
           </div>
         </div>
 
-        {/* Results grid */}
         <div className="lg:col-span-3 space-y-8">
           {isLoading ? (
             <div className="h-96 border-4 border-foreground bg-card flex flex-col items-center justify-center gap-3">

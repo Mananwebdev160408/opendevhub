@@ -42,10 +42,9 @@ export function EventTimeline() {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-mono">
-      {/* Title */}
       <div className="border-4 border-foreground bg-black p-6 shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] relative overflow-hidden bg-dot-pattern mb-8">
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
-          TIMELINE // EVENTS SCHEDULES
+          EVENTS SCHEDULE
         </div>
         <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
           <Calendar className="h-6 w-6 text-primary" />
@@ -56,7 +55,6 @@ export function EventTimeline() {
         </p>
       </div>
 
-      {/* Grid timelines */}
       {isLoading ? (
         <div className="h-96 border-4 border-foreground bg-card flex flex-col items-center justify-center gap-3">
           <Loader2 className="h-8 w-8 text-primary animate-spin" />
@@ -93,7 +91,6 @@ export function EventTimeline() {
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Left description */}
                 <div className="lg:col-span-2 space-y-4">
                   <div>
                     <span className="text-[10px] text-zinc-500 font-bold uppercase block">OVERVIEW & SCOPE:</span>
@@ -105,7 +102,6 @@ export function EventTimeline() {
                   </div>
                 </div>
 
-                {/* Right date logs */}
                 <div className="lg:col-span-1 border-2 border-foreground bg-zinc-950 p-4 space-y-3 shadow-[3px_3px_0px_0px_var(--border)]">
                   <span className="text-[10px] text-primary font-bold uppercase block border-b border-zinc-900 pb-1.5 select-none">
                     CRITICAL DATE SHEET:

@@ -19,10 +19,9 @@ export function HttpStatuses() {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-mono">
-      {/* Title */}
       <div className="border-4 border-foreground bg-black p-6 shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] relative overflow-hidden bg-dot-pattern mb-8">
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
-          REFERENCE // HTTP STATUS CODES
+          HTTP STATUS CODES
         </div>
         <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
           <HelpCircle className="h-6 w-6 text-primary" />
@@ -33,7 +32,6 @@ export function HttpStatuses() {
         </p>
       </div>
 
-      {/* Category Selection Board */}
       <div className="border-2 border-foreground bg-zinc-950 p-4 shadow-[4px_4px_0px_0px_var(--primary)] mb-8 flex flex-wrap gap-2 select-none">
         {categories.map((cat) => (
           <button
@@ -50,10 +48,8 @@ export function HttpStatuses() {
         ))}
       </div>
 
-      {/* Main Grid Workspace */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         
-        {/* Codes Grid (Left) */}
         <div className="lg:col-span-2 border-4 border-foreground bg-card p-5 shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
           <span className="text-[10px] text-zinc-500 font-bold block mb-4 uppercase select-none">HTTP STATUS CODES:</span>
           
@@ -76,7 +72,6 @@ export function HttpStatuses() {
           </div>
         </div>
 
-        {/* Selected Code Details Panel (Right) */}
         <div className="lg:col-span-1 border-4 border-foreground bg-card p-6 shadow-[4px_4px_0px_0px_var(--primary)] min-h-[300px] flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between border-b-2 border-foreground pb-3 mb-4 select-none">

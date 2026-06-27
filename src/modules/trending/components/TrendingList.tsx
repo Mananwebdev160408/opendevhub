@@ -39,10 +39,9 @@ export function TrendingList() {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-mono">
-      {/* Title Panel */}
       <div className="border-4 border-foreground bg-black p-6 shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] relative overflow-hidden bg-dot-pattern mb-8">
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
-          SYSTEM_METRIC // TRENDING REPOSITORIES
+          TRENDING REPOSITORIES
         </div>
         <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
           <TrendingUp className="h-6 w-6 text-primary" />
@@ -53,10 +52,8 @@ export function TrendingList() {
         </p>
       </div>
 
-      {/* Control Board */}
       <div className="border-2 border-foreground bg-zinc-950 p-4 shadow-[4px_4px_0px_0px_var(--primary)] mb-8 flex flex-col md:flex-row items-center justify-between gap-4 select-none">
         
-        {/* Languages filters */}
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs font-black uppercase text-zinc-500 mr-2 flex items-center gap-1">
             <Filter className="h-3.5 w-3.5" /> LANG:
@@ -76,7 +73,6 @@ export function TrendingList() {
           ))}
         </div>
 
-        {/* Time & Sort Board */}
         <div className="flex items-center gap-3 shrink-0 flex-wrap">
           <span className="text-xs font-black uppercase text-zinc-500">TIME:</span>
           <select
@@ -103,7 +99,6 @@ export function TrendingList() {
 
       </div>
 
-      {/* Repos Grid */}
       {isLoading ? (
         <div className="h-96 border-4 border-foreground bg-card flex flex-col items-center justify-center gap-3">
           <Loader2 className="h-8 w-8 text-primary animate-spin" />

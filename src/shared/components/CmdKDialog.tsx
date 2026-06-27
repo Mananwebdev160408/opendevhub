@@ -4,7 +4,6 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import { SearchIcon, Terminal, Settings, ArrowRight, FileText, Activity } from "lucide-react"
 
-// Inline SVG GithubIcon to resolve missing lucide-react export issues in workspaces
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     viewBox="0 0 24 24"

@@ -68,7 +68,6 @@ export function DeepDive() {
     <section className="w-full min-h-[100vh] border-t-4 border-foreground py-16 px-4 sm:px-6 lg:px-8 bg-zinc-950 bg-checkered-pattern flex flex-col justify-center">
       <div className="max-w-7xl mx-auto">
         
-        {/* Title */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <div className="inline-block border-2 border-foreground bg-primary text-primary-foreground font-mono text-xs font-black px-3 py-1 uppercase tracking-wider shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
             [ PLATFORM CAPABILITIES ]
@@ -82,7 +81,6 @@ export function DeepDive() {
           </p>
         </div>
 
-        {/* Capabilities Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {capabilities.map((cap, idx) => (
             <div 

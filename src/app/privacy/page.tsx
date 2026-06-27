@@ -9,7 +9,6 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-mono space-y-8">
-      {/* Title */}
       <div className="border-4 border-foreground bg-black p-6 shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] relative overflow-hidden bg-dot-pattern">
         <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-2 flex items-center gap-2">
           <Shield className="h-6 w-6 text-primary" />

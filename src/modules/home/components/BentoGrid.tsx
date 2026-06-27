@@ -18,7 +18,6 @@ import {
   Loader2
 } from "lucide-react"
 
-// Import static data files
 import newsData from "../../../../data/news.json"
 import trendingData from "../../../../data/trending-repositories.json"
 import eventsData from "../../../../data/events.json"
@@ -84,7 +83,6 @@ export function BentoGrid() {
       <div className="max-w-7xl mx-auto w-full">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         
-        {/* Bento Card 1: Trending Repositories (Double-width, Double-height) */}
         <div className="border-4 border-foreground bg-card shadow-[4px_4px_0px_0px_var(--primary)] flex flex-col hover:translate-y-[-2px] transition-all lg:col-span-2 lg:row-span-2">
           <div className="bg-primary text-primary-foreground border-b-2 border-foreground p-3 font-mono font-bold flex items-center justify-between select-none">
             <div className="flex items-center gap-2">
@@ -98,7 +96,7 @@ export function BentoGrid() {
           {isTrendingLoading ? (
             <div className="flex-grow flex flex-col items-center justify-center p-8 text-zinc-500 font-mono text-xs gap-2">
               <Loader2 className="h-6 w-6 animate-spin text-primary" />
-              <span>LOAD_API_TRENDS // ACTIVE</span>
+              <span>LOAD_API_TRENDS</span>
             </div>
           ) : (
             <div className="p-4 flex-grow grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -140,7 +138,6 @@ export function BentoGrid() {
           )}
         </div>
 
-        {/* Bento Card 2: Good First Issues (Double-width, Standard-height) */}
         <div className="border-4 border-foreground bg-card shadow-[4px_4px_0px_0px_var(--accent)] flex flex-col hover:translate-y-[-2px] transition-all lg:col-span-2 lg:row-span-1">
           <div className="bg-accent text-accent-foreground border-b-2 border-foreground p-3 font-mono font-bold flex items-center justify-between select-none">
             <div className="flex items-center gap-2">
@@ -154,7 +151,7 @@ export function BentoGrid() {
           {isIssuesLoading ? (
             <div className="flex-grow flex flex-col items-center justify-center p-8 text-zinc-500 font-mono text-xs gap-2">
               <Loader2 className="h-6 w-6 animate-spin text-accent" />
-              <span>LOAD_API_ISSUES // ACTIVE</span>
+              <span>LOAD_API_ISSUES</span>
             </div>
           ) : (
             <div className="p-4 flex-grow grid grid-cols-1 sm:grid-cols-3 gap-4 bg-dot-pattern">
@@ -192,7 +189,6 @@ export function BentoGrid() {
           )}
         </div>
 
-        {/* Bento Card 3: Curated APIs (Standard-width, Standard-height) */}
         <div className="border-4 border-foreground bg-card shadow-[4px_4px_0px_0px_#ffffff] flex flex-col hover:translate-y-[-2px] transition-all lg:col-span-1 lg:row-span-1">
           <div className="bg-zinc-900 text-foreground border-b-2 border-foreground p-3 font-mono font-bold flex items-center justify-between select-none">
             <div className="flex items-center gap-2">
@@ -226,7 +222,6 @@ export function BentoGrid() {
           </div>
         </div>
 
-        {/* Bento Card 4: Popular Dev Tools (Standard-width, Double-height) */}
         <div className="border-4 border-foreground bg-card shadow-[4px_4px_0px_0px_#ffffff] flex flex-col hover:translate-y-[-2px] transition-all lg:col-span-1 lg:row-span-2">
           <div className="bg-zinc-900 text-foreground border-b-2 border-foreground p-3 font-mono font-bold flex items-center justify-between select-none bg-stripes-pattern">
             <div className="flex items-center gap-2">
@@ -257,7 +252,6 @@ export function BentoGrid() {
           </div>
         </div>
 
-        {/* Bento Card 5: Upcoming Programs (Double-width, Standard-height) */}
         <div className="border-4 border-foreground bg-card shadow-[4px_4px_0px_0px_var(--primary)] flex flex-col hover:translate-y-[-2px] transition-all lg:col-span-2 lg:row-span-1">
           <div className="bg-primary text-primary-foreground border-b-2 border-foreground p-3 font-mono font-bold flex items-center justify-between select-none">
             <div className="flex items-center gap-2">
@@ -288,7 +282,6 @@ export function BentoGrid() {
           </div>
         </div>
 
-        {/* Bento Card 6: Developer News (Standard-width, Standard-height) */}
         <div className="border-4 border-foreground bg-card shadow-[4px_4px_0px_0px_var(--accent)] flex flex-col hover:translate-y-[-2px] transition-all lg:col-span-1 lg:row-span-1">
           <div className="bg-accent text-accent-foreground border-b-2 border-foreground p-3 font-mono font-bold flex items-center justify-between select-none">
             <div className="flex items-center gap-2">

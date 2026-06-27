@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation"
 import { Search, Menu, X, Sparkles } from "lucide-react"
 import { CmdKDialog } from "./CmdKDialog"
 
-// Inline SVG GithubIcon to resolve missing lucide-react export issues in workspaces
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     viewBox="0 0 24 24"
@@ -100,20 +99,18 @@ export function Header() {
 
   return (
     <header className="w-full sticky top-0 z-50 bg-black border-b-4 border-foreground text-foreground">
-      {/* Top running ticker banner */}
       <div className="w-full bg-primary text-primary-foreground font-mono text-[10px] py-1 px-4 overflow-hidden border-b border-foreground select-none">
         <div className="flex animate-marquee whitespace-nowrap gap-8">
-          <span>⚡ OPENDEV HUB V1.0 // PURE MAXIMALISM EDITION</span>
+          <span>⚡ OPENDEV HUB V1.0</span>
           <span>⚡ API STATUS: 100% OPERATIONAL</span>
           <span>⚡ CLIENT ENGINE: LOADED & CACHED</span>
           <span>⚡ TRENDING TECH: TAILWIND V4, NEXT.JS 16, RUST, GO</span>
-          <span>⚡ ZERO AUTH REQUIRED // 100% OPEN SOURCE</span>
+          <span>⚡ ZERO AUTH REQUIRED</span>
           <span className="hidden md:inline">⚡ PRESS CTRL+K TO TRIGGER INSTANT SEARCH COMMAND PALETTE</span>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between relative">
-        {/* Logo */}
         <Link href="/" className="flex items-center gap-1 select-none shrink-0 group">
           <span className="font-mono font-black text-sm tracking-tighter bg-foreground text-background px-2.5 py-1 border-2 border-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
             OPENDEV
@@ -123,7 +120,6 @@ export function Header() {
           </span>
         </Link>
 
-        {/* Desktop Navigation Wrapper */}
         <div
           className="hidden xl:block"
           onMouseLeave={() => setActiveGroup(null)}
@@ -153,7 +149,6 @@ export function Header() {
             })}
           </nav>
 
-          {/* Mega Menu Dropdown */}
           <div
             className={`absolute top-[60px] left-1/2 -translate-x-1/2 w-[980px] h-[390px] bg-black border-4 border-foreground shadow-[8px_8px_0px_0px_var(--accent)] z-50 transition-all duration-300 ease-out overflow-hidden ${
               activeGroup
@@ -172,9 +167,7 @@ export function Header() {
                       : "opacity-0 invisible translate-x-4 pointer-events-none"
                   }`}
                 >
-                  {/* Left Column (Category Info) */}
                   <div className="col-span-4 bg-zinc-950 p-6 border-r-2 border-foreground flex flex-col justify-between select-none text-left font-mono">
-                    {/* Category Title & Description */}
                     <div className="space-y-3">
                       <h4 className="text-xl font-black text-foreground uppercase tracking-tight">
                         {group.label}
@@ -184,7 +177,6 @@ export function Header() {
                       </p>
                     </div>
 
-                    {/* Developer Proverb / Quote */}
                     <div className="border-2 border-dashed border-zinc-800 bg-black/60 p-4 space-y-2 text-[10px] text-zinc-400 leading-relaxed italic relative">
                       <span className="text-[8px] font-black text-primary uppercase tracking-wide block border-b border-zinc-900 pb-1 not-italic">
                         DEVELOPER PROVERB
@@ -197,7 +189,6 @@ export function Header() {
                       </cite>
                     </div>
 
-                    {/* Category Stat Metric */}
                     <div className="border-2 border-foreground bg-zinc-900 p-3 space-y-1 text-[10px]">
                       <span className="text-[8px] font-black text-accent uppercase tracking-widest block">
                         ESTATE METRIC
@@ -208,7 +199,6 @@ export function Header() {
                     </div>
                   </div>
 
-                  {/* Right Column (Link List with Descriptions) */}
                   <div className="col-span-8 p-6 bg-black flex flex-col justify-center gap-3">
                     {group.links.map((link) => {
                       const linkActive = isActive(link.href)
@@ -247,9 +237,7 @@ export function Header() {
           </div>
         </div>
 
-        {/* Action Panel */}
         <div className="flex items-center gap-3">
-          {/* Global Search CMD Trigger */}
           <button
             onClick={() => setOpenSearch(true)}
             className="flex items-center gap-2 border-2 border-foreground bg-zinc-950 px-3 py-1.5 font-mono text-xs font-bold hover:bg-primary hover:text-primary-foreground shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:shadow-[2px_2px_0px_0px_var(--accent)] transition-all cursor-pointer"
@@ -261,7 +249,6 @@ export function Header() {
             </kbd>
           </button>
 
-          {/* GitHub Star Link */}
           <a
             href="https://github.com"
             target="_blank"
@@ -272,7 +259,6 @@ export function Header() {
             <GithubIcon className="h-4 w-4" />
           </a>
 
-          {/* Mobile Menu Toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="xl:hidden p-1.5 border-2 border-foreground hover:bg-zinc-900 active:translate-y-0.5 transition-all cursor-pointer"
@@ -283,7 +269,6 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="xl:hidden w-full bg-black border-t-2 border-foreground p-4 flex flex-col gap-4 font-mono text-sm font-bold max-h-[75vh] overflow-y-auto">
           {groupedLinks.map((group) => {
@@ -323,7 +308,6 @@ export function Header() {
         </div>
       )}
 
-      {/* Search dialog overlay */}
       <CmdKDialog open={openSearch} setOpen={setOpenSearch} />
     </header>
   )

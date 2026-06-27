@@ -57,10 +57,9 @@ export default function NewsPage() {
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-mono space-y-8">
-      {/* Title */}
       <div className="border-4 border-foreground bg-black p-6 shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] relative overflow-hidden bg-dot-pattern">
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
-          FEED // DEVELOPER RELEASES
+          DEVELOPER RELEASES
         </div>
         <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
           <Rss className="h-6 w-6 text-primary" />
@@ -71,7 +70,6 @@ export default function NewsPage() {
         </p>
       </div>
 
-      {/* Warning Banner if fetch failed */}
       {error && (
         <div className="border-4 border-foreground bg-accent text-accent-foreground p-4 shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] flex items-start gap-3">
           <AlertTriangle className="h-5 w-5 shrink-0 mt-0.5" />
@@ -84,10 +82,8 @@ export default function NewsPage() {
         </div>
       )}
 
-      {/* List of articles */}
       <div className="space-y-6">
         {isLoading ? (
-          // Skeleton Loader Cards matching neo-brutalist theme
           Array.from({ length: 4 }).map((_, idx) => (
             <div
               key={`skeleton-${idx}`}
@@ -115,7 +111,7 @@ export default function NewsPage() {
                     {item.category}
                   </span>
                   <span className="text-[10px] text-zinc-500 font-bold">{item.date}</span>
-                  <span className="text-[9px] text-accent font-bold uppercase">// SOURCE: {item.source}</span>
+                  <span className="text-[9px] text-accent font-bold uppercase">SOURCE: {item.source}</span>
                 </div>
                 <h3 className="text-base font-black text-foreground uppercase tracking-tight">
                   {item.title}

@@ -6,7 +6,6 @@ import { Search, SlidersHorizontal, Loader2, ArrowLeft, ArrowRight, X, Trash2, F
 import { searchRepositories, GithubRepo } from "@/core/services/github"
 import { RepoCard } from "./RepoCard"
 
-// Static filter options
 const LANGUAGES = ["JavaScript", "TypeScript", "Python", "Go", "Rust", "C++", "Java", "Ruby", "PHP", "HTML"]
 
 const STARS_PRESETS = [
@@ -80,13 +79,11 @@ export function RepoExplorer() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  // Base parameters
   const qParam = searchParams.get("q") || ""
   const langParam = searchParams.get("lang") || ""
   const sortParam = (searchParams.get("sort") || "stars") as "stars" | "forks" | "updated"
   const pageParam = parseInt(searchParams.get("page") || "1", 10)
 
-  // Filters parameters
   const starsParam = searchParams.get("stars") || ""
   const starsMinParam = searchParams.get("starsMin") || ""
   const starsMaxParam = searchParams.get("starsMax") || ""
@@ -103,7 +100,6 @@ export function RepoExplorer() {
   const helpWantedParam = searchParams.get("helpWanted") === "true"
   const archivedParam = searchParams.get("archived") === "true"
 
-  // Local inputs
   const [searchInput, setSearchInput] = React.useState(qParam)
   const [customLangInput, setCustomLangInput] = React.useState("")
   const [localStarsMin, setLocalStarsMin] = React.useState(starsMinParam)
@@ -111,13 +107,11 @@ export function RepoExplorer() {
   const [localForksMin, setLocalForksMin] = React.useState(forksMinParam)
   const [localForksMax, setLocalForksMax] = React.useState(forksMaxParam)
 
-  // Data state
   const [repos, setRepos] = React.useState<GithubRepo[]>([])
   const [totalCount, setTotalCount] = React.useState(0)
   const [isLoading, setIsLoading] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
 
-  // Accordion state
   const [expandedSections, setExpandedSections] = React.useState<Record<string, boolean>>({
     language: true,
     stars: false,
@@ -129,7 +123,6 @@ export function RepoExplorer() {
     community: false,
   })
 
-  // Sync inputs with URL changes
   React.useEffect(() => {
     setSearchInput(qParam)
   }, [qParam])
@@ -206,7 +199,7 @@ export function RepoExplorer() {
       if (newParams.page !== undefined) {
         current.set("page", String(newParams.page))
       } else {
-        current.set("page", "1") // reset to page 1 on filter changes
+        current.set("page", "1")
       }
 
       router.push(`/repos?${current.toString()}`)
@@ -221,17 +214,14 @@ export function RepoExplorer() {
       try {
         const queryParts: string[] = []
 
-        // Search text
         if (qParam.trim()) {
           queryParts.push(qParam.trim())
         }
 
-        // Language
         if (langParam) {
           queryParts.push(`language:"${langParam}"`)
         }
 
-        // Stars
         if (starsParam === "custom") {
           if (starsMinParam && starsMaxParam) {
             queryParts.push(`stars:${starsMinParam}..${starsMaxParam}`)
@@ -244,7 +234,6 @@ export function RepoExplorer() {
           queryParts.push(`stars:${starsParam}`)
         }
 
-        // Forks
         if (forksParam === "custom") {
           if (forksMinParam && forksMaxParam) {
             queryParts.push(`forks:${forksMinParam}..${forksMaxParam}`)
@@ -257,7 +246,6 @@ export function RepoExplorer() {
           queryParts.push(`forks:${forksParam}`)
         }
 
-        // Recent Activity (Pushed)
         if (pushedParam) {
           const date = new Date()
           if (pushedParam === "24h") {
@@ -273,32 +261,26 @@ export function RepoExplorer() {
           queryParts.push(`pushed:>=${dateStr}`)
         }
 
-        // License
         if (licenseParam) {
           queryParts.push(`license:${licenseParam}`)
         }
 
-        // Size
         if (sizeParam) {
           queryParts.push(`size:${sizeParam}`)
         }
 
-        // Owner type
         if (ownerTypeParam) {
           queryParts.push(`type:${ownerTypeParam}`)
         }
 
-        // Forks inclusion
         if (forksIncludeParam) {
           queryParts.push(`fork:${forksIncludeParam}`)
         }
 
-        // Templates
         if (templateParam) {
           queryParts.push(`template:${templateParam}`)
         }
 
-        // Help Issues
         if (goodFirstParam) {
           queryParts.push("good-first-issues:>0")
         }
@@ -306,14 +288,13 @@ export function RepoExplorer() {
           queryParts.push("help-wanted-issues:>0")
         }
 
-        // Archived
         if (archivedParam) {
           queryParts.push("archived:false")
         }
 
         let queryStr = queryParts.join(" ")
         if (!queryStr) {
-          queryStr = "stars:>500" // default trending repositories query
+          queryStr = "stars:>500"
         }
 
         const data = await searchRepositories({
@@ -405,7 +386,6 @@ export function RepoExplorer() {
     updateUrlParams(paramsToUpdate)
   }
 
-  // Generate badges of active filters for quick dismissals
   const getActiveFilterBadges = () => {
     const badges: { label: string; clearKey: string; clearValue: any }[] = []
 
@@ -488,14 +468,13 @@ export function RepoExplorer() {
   const activeBadges = getActiveFilterBadges()
   const isAnyFilterActive = activeBadges.length > 0 || qParam !== ""
 
-  const totalPages = Math.min(Math.ceil(totalCount / 12), 80) // GitHub search API limits results to 1000 (80 pages of 12)
+  const totalPages = Math.min(Math.ceil(totalCount / 12), 80)
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-mono">
-      {/* Search Header Banner */}
       <div className="border-4 border-foreground bg-black p-6 shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] relative overflow-hidden bg-dot-pattern mb-8">
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
-          SEARCH_CONDUIT // REPOSITORY EXPLORER
+          REPOSITORY EXPLORER
         </div>
         <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4">
           EXPLORE OPEN-SOURCE ECOSYSTEM
@@ -532,9 +511,7 @@ export function RepoExplorer() {
         </form>
       </div>
 
-      {/* Main Grid Workspace */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
-        {/* Sidebar Filters */}
         <div className="lg:col-span-1 border-4 border-foreground bg-card p-5 shadow-[4px_4px_0px_0px_var(--primary)] space-y-4">
           <div className="border-b border-border pb-3 flex items-center justify-between text-xs font-black uppercase text-foreground select-none">
             <div className="flex items-center gap-2">
@@ -553,7 +530,6 @@ export function RepoExplorer() {
           </div>
 
           <div className="space-y-3">
-            {/* 1. Language Filter */}
             <FilterSection
               title="Filter by Language"
               isOpen={expandedSections.language}
@@ -576,7 +552,6 @@ export function RepoExplorer() {
                 ))}
               </div>
 
-              {/* Custom Language Input */}
               <div className="flex gap-2 pt-2 border-t border-zinc-950">
                 <input
                   type="text"
@@ -609,7 +584,6 @@ export function RepoExplorer() {
               </div>
             </FilterSection>
 
-            {/* 2. Stars Filter */}
             <FilterSection
               title="Filter by Stars"
               isOpen={expandedSections.stars}
@@ -673,7 +647,6 @@ export function RepoExplorer() {
               )}
             </FilterSection>
 
-            {/* 3. Forks Filter */}
             <FilterSection
               title="Filter by Forks"
               isOpen={expandedSections.forks}
@@ -737,7 +710,6 @@ export function RepoExplorer() {
               )}
             </FilterSection>
 
-            {/* 4. Recent Activity */}
             <FilterSection
               title="Recent Activity"
               isOpen={expandedSections.pushed}
@@ -761,7 +733,6 @@ export function RepoExplorer() {
               </div>
             </FilterSection>
 
-            {/* 5. Licenses */}
             <FilterSection
               title="Filter by License"
               isOpen={expandedSections.license}
@@ -785,7 +756,6 @@ export function RepoExplorer() {
               </div>
             </FilterSection>
 
-            {/* 6. Repository Size */}
             <FilterSection
               title="Repository Size"
               isOpen={expandedSections.size}
@@ -809,7 +779,6 @@ export function RepoExplorer() {
               </div>
             </FilterSection>
 
-            {/* 7. Scope & Inclusions */}
             <FilterSection
               title="Ownership & Scope"
               isOpen={expandedSections.scope}
@@ -863,7 +832,6 @@ export function RepoExplorer() {
               </div>
             </FilterSection>
 
-            {/* 8. Community & Help */}
             <FilterSection
               title="Community & Help"
               isOpen={expandedSections.community}
@@ -904,9 +872,7 @@ export function RepoExplorer() {
           </div>
         </div>
 
-        {/* Results Workspace */}
         <div className="lg:col-span-3 space-y-6">
-          {/* Active Filters Tag Strip */}
           {isAnyFilterActive && (
             <div className="border-2 border-foreground bg-zinc-950 p-3.5 flex flex-wrap items-center gap-2 shadow-[3px_3px_0px_0px_rgba(255,255,255,1)]">
               <div className="text-[10px] font-black uppercase text-zinc-500 tracking-wider flex items-center gap-1 mr-2 select-none">
@@ -977,14 +943,12 @@ export function RepoExplorer() {
             </div>
           ) : (
             <>
-              {/* Repo grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {repos.map((repo) => (
                   <RepoCard key={repo.id} repo={repo} />
                 ))}
               </div>
 
-              {/* Pagination */}
               {totalPages > 1 && (
                 <div className="border-2 border-foreground bg-black p-4 flex items-center justify-between shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] select-none">
                   <button

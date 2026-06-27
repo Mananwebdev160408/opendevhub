@@ -6,7 +6,6 @@ import { formatDistanceToNow } from "date-fns"
 
 export const revalidate = 86400 // Cache edge response for 24 hours
 
-// Force runtime compile to prevent build timeout on thousands of GitHub variations
 export async function generateStaticParams() {
   return []
 }
@@ -25,7 +24,6 @@ export default async function RepositoryDetailsPage({ params }: PageProps) {
   try {
     repo = await getRepository(owner, name)
     
-    // Attempt to pull latest 5 good first issues from this repo to build high density integrations
     try {
       const issueData = await searchIssues({
         q: `repo:${owner}/${name} state:open label:\"good first issue\"`,
@@ -36,7 +34,6 @@ export default async function RepositoryDetailsPage({ params }: PageProps) {
       console.warn("Failed to fetch repo specific issues:", e)
     }
 
-    // Attempt to pull latest 5 other open issues from this repo
     try {
       const otherIssueData = await searchIssues({
         q: `repo:${owner}/${name} state:open -label:\"good first issue\"`,
@@ -60,7 +57,6 @@ export default async function RepositoryDetailsPage({ params }: PageProps) {
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-mono space-y-8">
-      {/* Back Button */}
       <Link
         href="/repos"
         className="inline-flex items-center gap-1.5 px-3 py-1.5 border-2 border-foreground bg-zinc-950 text-foreground font-bold text-xs uppercase shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:bg-zinc-900 transition-all select-none cursor-pointer"
@@ -69,10 +65,9 @@ export default async function RepositoryDetailsPage({ params }: PageProps) {
         <span>BACK TO SEARCH</span>
       </Link>
 
-      {/* Main Header Card */}
       <div className="border-4 border-foreground bg-card p-6 shadow-[6px_6px_0px_0px_var(--primary)] relative overflow-hidden bg-dot-pattern">
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
-          SYSTEM_NODE // REPOSITORY_SPEC
+          REPOSITORY DETAILS
         </div>
 
         <div className="flex flex-col md:flex-row md:items-center gap-6">
@@ -112,10 +107,8 @@ export default async function RepositoryDetailsPage({ params }: PageProps) {
         )}
       </div>
 
-      {/* Grid Specs */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         
-        {/* Spec Card 1: Stats */}
         <div className="border-4 border-foreground bg-zinc-950 p-5 shadow-[4px_4px_0px_0px_var(--accent)] space-y-4">
           <h3 className="text-xs font-black uppercase text-accent border-b border-zinc-800 pb-2">VITAL STATISTICS</h3>
           <div className="space-y-3 font-bold text-xs">
@@ -138,7 +131,6 @@ export default async function RepositoryDetailsPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Spec Card 2: Environment */}
         <div className="border-4 border-foreground bg-zinc-950 p-5 shadow-[4px_4px_0px_0px_#ffffff] space-y-4">
           <h3 className="text-xs font-black uppercase text-foreground border-b border-zinc-800 pb-2">METADATA</h3>
           <div className="space-y-3 font-bold text-xs">
@@ -157,7 +149,6 @@ export default async function RepositoryDetailsPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Spec Card 3: Integrations */}
         <div className="border-4 border-foreground bg-zinc-950 p-5 shadow-[4px_4px_0px_0px_var(--primary)] flex flex-col justify-between">
           <div>
             <h3 className="text-xs font-black uppercase text-primary border-b border-zinc-800 pb-2">LINKS & RESOURCES</h3>
@@ -179,7 +170,6 @@ export default async function RepositoryDetailsPage({ params }: PageProps) {
 
       </div>
 
-      {/* Good First Issues List inside Repository details */}
       <div className="border-4 border-foreground bg-card shadow-[4px_4px_0px_0px_#ffffff] hover:translate-y-[-2px] transition-all">
         <div className="bg-zinc-900 border-b-2 border-foreground p-4 font-mono font-bold flex items-center justify-between bg-stripes-pattern select-none">
           <div className="flex items-center gap-2">
@@ -232,7 +222,6 @@ export default async function RepositoryDetailsPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* General Open Issues List */}
       <div className="border-4 border-foreground bg-card shadow-[4px_4px_0px_0px_var(--accent)] hover:translate-y-[-2px] transition-all">
         <div className="bg-zinc-900 border-b-2 border-foreground p-4 font-mono font-bold flex items-center justify-between bg-stripes-pattern select-none">
           <div className="flex items-center gap-2">

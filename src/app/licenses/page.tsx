@@ -10,10 +10,9 @@ export const metadata: Metadata = {
 export default function LicensesPage() {
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-mono space-y-8">
-      {/* Title */}
       <div className="border-4 border-foreground bg-black p-6 shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] relative overflow-hidden bg-dot-pattern">
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
-          REFERENCE // LICENSES
+          LICENSES
         </div>
         <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
           <Scale className="h-6 w-6 text-accent" />
@@ -24,13 +23,12 @@ export default function LicensesPage() {
         </p>
       </div>
 
-      {/* Grid of Licenses */}
       <div className="space-y-8">
         {licensesData.map((lic) => (
           <div
             key={lic.slug}
             id={`lic-${lic.slug}`}
-            className="border-4 border-foreground bg-card p-6 shadow-[4px_4px_0px_0px_var(--primary)] hover:translate-y-[-2px] transition-all"
+            className="border-4 border-foreground bg-card p-6 shadow-neo-primary hover:translate-y-[-2px] transition-all"
           >
             <div className="border-b border-border pb-3 mb-4">
               <span className="text-[10px] bg-accent text-accent-foreground border border-foreground px-2 py-0.5 font-bold uppercase tracking-wider">
@@ -41,7 +39,6 @@ export default function LicensesPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
-              {/* Permissions */}
               <div className="border-2 border-foreground bg-zinc-950 p-4 space-y-3">
                 <span className="text-[10px] text-green-400 font-black uppercase block border-b border-zinc-900 pb-1.5 flex items-center gap-1">
                   <Check className="h-4 w-4" /> PERMISSIONS
@@ -56,7 +53,6 @@ export default function LicensesPage() {
                 </ul>
               </div>
 
-              {/* Conditions */}
               <div className="border-2 border-foreground bg-zinc-950 p-4 space-y-3">
                 <span className="text-[10px] text-yellow-400 font-black uppercase block border-b border-zinc-900 pb-1.5 flex items-center gap-1">
                   <ShieldAlert className="h-4 w-4" /> CONDITIONS
@@ -71,7 +67,6 @@ export default function LicensesPage() {
                 </ul>
               </div>
 
-              {/* Limitations */}
               <div className="border-2 border-foreground bg-zinc-950 p-4 space-y-3">
                 <span className="text-[10px] text-red-400 font-black uppercase block border-b border-zinc-900 pb-1.5 flex items-center gap-1">
                   <X className="h-4 w-4" /> LIMITATIONS

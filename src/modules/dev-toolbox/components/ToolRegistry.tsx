@@ -3,7 +3,6 @@
 import * as React from "react"
 import { Copy, Check, Play, RefreshCw, Eye } from "lucide-react"
 
-// --- Helper: Copy Button ---
 function CopyBtn({ value }: { value: string }) {
   const [copied, setCopied] = React.useState(false)
   const handleCopy = () => {
@@ -22,9 +21,6 @@ function CopyBtn({ value }: { value: string }) {
   )
 }
 
-// ==========================================
-// 1. JSON Formatter & 2. JSON Validator & 30. Prettier (JSON/Beautifier)
-// ==========================================
 export function JsonFormatterTool() {
   const [input, setInput] = React.useState('{"name":"opendevhub","status":"active","tools":32}')
   const [spacing, setSpacing] = React.useState("2")
@@ -103,9 +99,6 @@ export function JsonFormatterTool() {
   )
 }
 
-// ==========================================
-// 3. JWT Decoder
-// ==========================================
 export function JwtDecoderTool() {
   const [jwt, setJwt] = React.useState("")
   const [header, setHeader] = React.useState("")
@@ -194,9 +187,6 @@ export function JwtDecoderTool() {
   )
 }
 
-// ==========================================
-// 4. UUID Generator
-// ==========================================
 export function UuidGeneratorTool() {
   const [count, setCount] = React.useState(5)
   const [uuids, setUuuids] = React.useState<string[]>([])
@@ -204,7 +194,6 @@ export function UuidGeneratorTool() {
   const generateUUIDs = () => {
     const list = []
     for (let i = 0; i < count; i++) {
-      // Standard v4 UUID Generator
       list.push(
         "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
           const r = (Math.random() * 16) | 0
@@ -258,16 +247,12 @@ export function UuidGeneratorTool() {
   )
 }
 
-// ==========================================
-// 5. Hash Generator
-// ==========================================
 export function HashGeneratorTool() {
   const [text, setText] = React.useState("opendevhub")
   const [sha256, setSha256] = React.useState("")
   const [sha512, setSha512] = React.useState("")
   const [md5, setMd5] = React.useState("")
 
-  // Simple client side MD5 implementation (since SubtleCrypto does not support MD5)
   const calcMd5 = (string: string) => {
     function RotateLeft(lValue: number, iShiftBits: number) {
       return (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits));
@@ -392,10 +377,8 @@ export function HashGeneratorTool() {
       return
     }
 
-    // MD5 (JS logic)
     setMd5(calcMd5(text))
 
-    // SHA-256 and SHA-512 via Subtle Crypto
     const encodeText = new TextEncoder().encode(text)
     
     crypto.subtle.digest("SHA-256", encodeText).then((hashBuffer) => {
@@ -460,9 +443,6 @@ export function HashGeneratorTool() {
   )
 }
 
-// ==========================================
-// 6. Base64 Encoder & 7. Base64 Decoder
-// ==========================================
 export function Base64Tool() {
   const [input, setInput] = React.useState("Hello OpenDev Hub")
   const [mode, setMode] = React.useState<"encode" | "decode">("encode")
@@ -480,7 +460,6 @@ export function Base64Tool() {
       if (mode === "encode") {
         setOutput(btoa(input))
       } else {
-        // base64 decode
         setOutput(atob(input))
       }
     } catch (e: any) {
@@ -551,9 +530,6 @@ export function Base64Tool() {
   )
 }
 
-// ==========================================
-// 8. URL Encoder & 9. URL Decoder
-// ==========================================
 export function UrlTool() {
   const [input, setInput] = React.useState("https://opendevhub.com/search?q=developer tools&lang=ts")
   const [mode, setMode] = React.useState<"encode" | "decode">("encode")
@@ -637,9 +613,6 @@ export function UrlTool() {
   )
 }
 
-// ==========================================
-// 10. Regex Tester
-// ==========================================
 export function RegexTesterTool() {
   const [regex, setRegex] = React.useState("([a-zA-Z]+)-explorer")
   const [text, setText] = React.useState("issue-explorer repo-explorer file-explorer web-app")
@@ -660,7 +633,6 @@ export function RegexTesterTool() {
       if (flags.includes("g")) {
         while ((match = rx.exec(text)) !== null) {
           list.push({ text: match[0], index: match.index })
-          // Safely break on empty regex match loop
           if (match[0] === "") rx.lastIndex++
         }
       } else {
@@ -738,9 +710,6 @@ export function RegexTesterTool() {
   )
 }
 
-// ==========================================
-// 11. Timestamp Converter
-// ==========================================
 export function TimestampTool() {
   const [epoch, setEpoch] = React.useState(() => String(Math.floor(Date.now() / 1000)))
   const [iso, setIso] = React.useState("")
@@ -756,7 +725,7 @@ export function TimestampTool() {
   const handleEpochConvert = () => {
     try {
       const date = new Date(parseInt(epoch, 10) * 1000)
-      setIso(date.toUTCString() + " // " + date.toString())
+      setIso(date.toUTCString() + " - " + date.toString())
     } catch (e) {
       setIso("Invalid timestamp")
     }
@@ -770,7 +739,6 @@ export function TimestampTool() {
     <div className="space-y-4 font-mono">
       <span className="text-xs font-bold uppercase text-zinc-500 block border-b border-border pb-2">TIMESTAMP / EPOCH CONVERTER</span>
       
-      {/* Realtime clock */}
       <div className="border border-foreground bg-zinc-950 p-3 flex items-center justify-between">
         <span className="text-xs font-bold text-zinc-400">REALTIME UNIX EPOCH CLOCK:</span>
         <span className="text-xs font-black text-accent">{currentEpoch}</span>
@@ -805,9 +773,6 @@ export function TimestampTool() {
   )
 }
 
-// ==========================================
-// 12. Color Converter
-// ==========================================
 export function ColorConverterTool() {
   const [hex, setHex] = React.useState("#2dd4bf")
   const [rgb, setRgb] = React.useState("")
@@ -819,7 +784,6 @@ export function ColorConverterTool() {
     let cleanHex = hexVal.trim()
     if (!cleanHex.startsWith("#")) cleanHex = "#" + cleanHex
     
-    // Validate hex regex
     const reg = /^#([0-9a-f]{3}){1,2}$/i
     if (!reg.test(cleanHex)) {
       setError(true)
@@ -839,7 +803,6 @@ export function ColorConverterTool() {
 
     setRgb(`rgb(${r}, ${g}, ${b})`)
 
-    // Convert RGB to HSL
     r /= 255; g /= 255; b /= 255;
     const max = Math.max(r, g, b), min = Math.min(r, g, b)
     let h = 0, s = 0, l = (max + min) / 2
@@ -887,7 +850,6 @@ export function ColorConverterTool() {
           </div>
         </div>
 
-        {/* Color preview widget */}
         <div className="flex flex-col items-center justify-center p-6 border-4 border-foreground h-44 relative bg-dot-pattern">
           {!error ? (
             <>
@@ -910,9 +872,6 @@ export function ColorConverterTool() {
   )
 }
 
-// ==========================================
-// 13. Gradient Generator
-// ==========================================
 export function GradientGeneratorTool() {
   const [color1, setColor1] = React.useState("#a855f7")
   const [color2, setColor2] = React.useState("#2dd4bf")
@@ -960,7 +919,6 @@ export function GradientGeneratorTool() {
           </div>
         </div>
 
-        {/* Gradient Visual Preview */}
         <div 
           style={{ background: cssValue }}
           className="h-40 border-4 border-foreground shadow-[3px_3px_0px_0px_#ffffff] flex items-end justify-between p-3 select-none"
@@ -984,9 +942,6 @@ export function GradientGeneratorTool() {
   )
 }
 
-// ==========================================
-// 14. Lorem Ipsum & 28. Counter
-// ==========================================
 export function LoremIpsumTool() {
   const [paragraphs, setParagraphs] = React.useState(3)
   const [output, setOutput] = React.useState("")
@@ -1038,7 +993,6 @@ export function LoremIpsumTool() {
           className="w-full h-64 bg-zinc-950 border-2 border-border p-3 text-xs leading-relaxed focus:outline-none placeholder:text-zinc-700 select-all"
         />
         
-        {/* Count details */}
         <div className="flex gap-4 text-[10px] font-bold text-zinc-500 pt-1">
           <span>CHARS: {output.length}</span>
           <span>WORDS: {output.split(/\s+/).filter(Boolean).length}</span>
@@ -1049,9 +1003,6 @@ export function LoremIpsumTool() {
   )
 }
 
-// ==========================================
-// 15. Slug Generator
-// ==========================================
 export function SlugGeneratorTool() {
   const [text, setText] = React.useState("OpenDev Hub: Web Developer Tools & Resources!")
   const [slug, setSlug] = React.useState("")
@@ -1064,9 +1015,9 @@ export function SlugGeneratorTool() {
     const slugified = text
       .toLowerCase()
       .trim()
-      .replace(/[^\w\s-]/g, "") // remove non-word chars
-      .replace(/[\s_-]+/g, "-") // replace spaces/underscores with single dash
-      .replace(/^-+|-+$/g, "")  // trim dashes from ends
+      .replace(/[^\w\s-]/g, "")
+      .replace(/[\s_-]+/g, "-")
+      .replace(/^-+|-+$/g, "")
     setSlug(slugified)
   }, [text])
 
@@ -1098,9 +1049,6 @@ export function SlugGeneratorTool() {
   )
 }
 
-// ==========================================
-// 16. Case Converter
-// ==========================================
 export function CaseConverterTool() {
   const [input, setInput] = React.useState("software design principles")
   const [upper, setUpper] = React.useState("")
@@ -1119,16 +1067,12 @@ export function CaseConverterTool() {
     setUpper(input.toUpperCase())
     setLower(input.toLowerCase())
 
-    // Convert string to words
     const words = input.trim().split(/[\s_-]+/)
 
-    // snake_case
     setSnake(words.map(w => w.toLowerCase()).join("_"))
 
-    // kebab-case
     setKebab(words.map(w => w.toLowerCase()).join("-"))
 
-    // Camel & Pascal
     const camelCased = words.map((w, i) => {
       const low = w.toLowerCase()
       if (i === 0) return low
@@ -1193,9 +1137,6 @@ export function CaseConverterTool() {
   )
 }
 
-// ==========================================
-// 17. Password Generator
-// ==========================================
 export function PasswordGeneratorTool() {
   const [length, setLength] = React.useState(16)
   const [includeUpper, setIncludeUpper] = React.useState(true)
@@ -1224,7 +1165,6 @@ export function PasswordGeneratorTool() {
     }
     setPassword(result)
 
-    // Calculate mock strength
     let score = 0
     if (result.length >= 12) score++
     if (result.length >= 16) score++
@@ -1282,7 +1222,6 @@ export function PasswordGeneratorTool() {
           </div>
         </div>
 
-        {/* Password Display Box */}
         <div className="border-4 border-foreground p-5 bg-card relative shadow-[3px_3px_0px_0px_#ffffff] flex flex-col justify-between h-36">
           <div className="absolute right-4 top-4">
             {password !== "SELECT AT LEAST ONE OPTION" && <CopyBtn value={password} />}
@@ -1310,9 +1249,6 @@ export function PasswordGeneratorTool() {
   )
 }
 
-// ==========================================
-// 18. Markdown Preview
-// ==========================================
 export function MarkdownPreviewTool() {
   const [markdown, setMarkdown] = React.useState("# OpenDev Hub Markdown Previewer\n\n- Beautiful boxy designs\n- High information density\n\n```javascript\nconst hello = 'world';\n```")
 
@@ -1340,9 +1276,6 @@ export function MarkdownPreviewTool() {
   )
 }
 
-// ==========================================
-// 19. HTML Preview
-// ==========================================
 export function HtmlPreviewTool() {
   const [html, setHtml] = React.useState("<div style='background-color:#2dd4bf;color:#000;padding:20px;text-align:center;font-weight:bold;'>\n  HELLO FROM THE PREVIEW GRID\n</div>")
   const [srcDoc, setSrcDoc] = React.useState("")
@@ -1382,9 +1315,6 @@ export function HtmlPreviewTool() {
   )
 }
 
-// ==========================================
-// 20. Diff Checker
-// ==========================================
 export function DiffCheckerTool() {
   const [original, setOriginal] = React.useState("hello world\nreact framework\nnextjs 15")
   const [modified, setModified] = React.useState("hello world!\nreact library\nnextjs 16")
@@ -1450,9 +1380,6 @@ export function DiffCheckerTool() {
   )
 }
 
-// ==========================================
-// 21. Cron Parser
-// ==========================================
 export function CronParserTool() {
   const [expr, setExpr] = React.useState("*/5 * * * *")
   const [description, setDescription] = React.useState("")
@@ -1510,9 +1437,6 @@ export function CronParserTool() {
   )
 }
 
-// ==========================================
-// 25. QR Generator
-// ==========================================
 export function QrGeneratorTool() {
   const [text, setText] = React.useState("https://opendevhub.com")
   const [qrUrl, setQrUrl] = React.useState("")
@@ -1522,7 +1446,6 @@ export function QrGeneratorTool() {
       setQrUrl("")
       return
     }
-    // Pure client side generator querying standard qr encoder api
     setQrUrl(`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(text)}`)
   }, [text])
 
@@ -1556,9 +1479,6 @@ export function QrGeneratorTool() {
   )
 }
 
-// ==========================================
-// 26. Barcode Generator
-// ==========================================
 export function BarcodeGeneratorTool() {
   const [text, setText] = React.useState("CODE-128")
   const [barcodeUrl, setBarcodeUrl] = React.useState("")
@@ -1568,7 +1488,6 @@ export function BarcodeGeneratorTool() {
       setBarcodeUrl("")
       return
     }
-    // Using barcode server helper
     setBarcodeUrl(`https://bwipjs-api.metafloor.com/?bcid=code128&text=${encodeURIComponent(text)}`)
   }, [text])
 
@@ -1603,9 +1522,6 @@ export function BarcodeGeneratorTool() {
   )
 }
 
-// ==========================================
-// 27. CSS Minifier & 28. JS Minifier & 29. HTML Minifier
-// ==========================================
 export function MinifierTool() {
   const [input, setInput] = React.useState("body {\n  background-color: #000;\n  color: #fff;\n}")
   const [mode, setMode] = React.useState<"css" | "js" | "html">("css")
@@ -1620,17 +1536,16 @@ export function MinifierTool() {
     let minified = input
     if (mode === "css") {
       minified = input
-        .replace(/\/\*[\s\S]*?\*\//g, "") // remove comments
-        .replace(/\s+/g, " ")             // replace multiple spaces
-        .replace(/\s*([{\}:;])\s*/g, "$1") // clean spacings
+        .replace(/\/\*[\s\S]*?\*\//g, "")
+        .replace(/\s+/g, " ")
+        .replace(/\s*([{\}:;])\s*/g, "$1")
         .trim()
     } else if (mode === "js") {
       minified = input
-        .replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, "") // remove comments
-        .replace(/\s+/g, " ")                              // clean multiple spaces
+        .replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, "")
+        .replace(/\s+/g, " ")
         .trim()
     } else {
-      // HTML minify
       minified = input
         .replace(/<!--[\s\S]*?-->/g, "")
         .replace(/\s+/g, " ")
@@ -1684,9 +1599,6 @@ export function MinifierTool() {
   )
 }
 
-// ==========================================
-// 31. CSV Viewer
-// ==========================================
 export function CsvViewerTool() {
   const [input, setInput] = React.useState("id,name,stars,language\n1,react,221000,JavaScript\n2,next.js,122500,TypeScript\n3,rust,97800,Rust")
   const [headers, setHeaders] = React.useState<string[]>([])
@@ -1761,9 +1673,6 @@ export function CsvViewerTool() {
   )
 }
 
-// ==========================================
-// 32. YAML & XML Viewers
-// ==========================================
 export function YamlXmlTool() {
   const [input, setInput] = React.useState("<package>\n  <name>opendevhub</name>\n  <version>1.0</version>\n</package>")
   const [mode, setMode] = React.useState<"xml" | "yaml">("xml")
@@ -1785,7 +1694,6 @@ export function YamlXmlTool() {
         setIsValid(false)
       }
     } else {
-      // Simple yaml structure validator (must contain key: value structures)
       try {
         const lines = input.split("\n")
         let valid = true

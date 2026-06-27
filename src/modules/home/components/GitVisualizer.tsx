@@ -48,7 +48,6 @@ export function GitVisualizer() {
   ])
   const [msgIndex, setMsgIndex] = React.useState<number>(0)
 
-  // Container ref for scrolling logs
   const logsContainerRef = React.useRef<HTMLDivElement>(null)
 
   React.useEffect(() => {
@@ -57,14 +56,12 @@ export function GitVisualizer() {
     }
   }, [logs])
 
-  // Get latest commit of a branch
   const getLatestCommitOfBranch = (branchName: "main" | "feature"): Commit | null => {
     const branchCommits = commits.filter(c => c.branch === branchName)
     if (branchCommits.length === 0) return null
     return branchCommits.reduce((prev, current) => (prev.x > current.x ? prev : current))
   }
 
-  // Get absolute latest commit overall
   const getAbsoluteLatestCommit = (): Commit => {
     return commits.reduce((prev, current) => (prev.x > current.x ? prev : current))
   }
@@ -73,7 +70,6 @@ export function GitVisualizer() {
     return Math.random().toString(16).substring(2, 9)
   }
 
-  // 1. Commit action
   const handleCommit = () => {
     const hash = generateHash()
     const msg = COMMIT_MESSAGES[msgIndex % COMMIT_MESSAGES.length]
@@ -96,7 +92,6 @@ export function GitVisualizer() {
       }
       setLogs(prev => [...prev, `$ git commit -m "${msg}"`, `[main ${hash}] ${msg}`, ` 1 file changed, 12 insertions(+)`])
     } else {
-      // activeBranch is feature
       const parentId = latestFeature ? latestFeature.id : (latestMain ? latestMain.id : "")
       newCommit = {
         id: `c_${hash}`,
@@ -114,7 +109,6 @@ export function GitVisualizer() {
     setNextX(prev => prev + 1)
   }
 
-  // 2. Create feature branch action
   const handleCreateBranch = () => {
     if (hasFeatureBranch) {
       setLogs(prev => [...prev, "$ git checkout -b feature", "fatal: A branch named 'feature' already exists."])
@@ -130,7 +124,6 @@ export function GitVisualizer() {
     setLogs(prev => [...prev, "$ git checkout -b feature", "Switched to a new branch 'feature'"])
   }
 
-  // 3. Switch branch
   const handleCheckout = (branch: "main" | "feature") => {
     if (branch === "feature" && !hasFeatureBranch) {
       setLogs(prev => [...prev, "$ git checkout feature", "error: pathspec 'feature' did not match any file(s) known to git"])
@@ -141,7 +134,6 @@ export function GitVisualizer() {
     setLogs(prev => [...prev, `$ git checkout ${branch}`, `Switched to branch '${branch}'`])
   }
 
-  // 4. Merge feature into main
   const handleMerge = () => {
     if (!hasFeatureBranch) {
       setLogs(prev => [...prev, "$ git merge feature", "merge: feature - not something we can merge"])
@@ -187,7 +179,6 @@ export function GitVisualizer() {
     ])
   }
 
-  // 5. Rebase feature onto main
   const handleRebase = () => {
     if (!hasFeatureBranch) {
       setLogs(prev => [...prev, "$ git rebase main", "error: no active feature branch found to rebase"])
@@ -202,17 +193,14 @@ export function GitVisualizer() {
     const latestMain = getLatestCommitOfBranch("main")
     if (!latestMain) return
 
-    // Get all feature branch commits
     const featureCommits = commits.filter(c => c.branch === "feature")
     if (featureCommits.length === 0) {
       setLogs(prev => [...prev, "$ git rebase main", "Current branch feature is up to date."])
       return
     }
 
-    // Sort feature commits by their horizontal position
     const sortedFeature = [...featureCommits].sort((a, b) => a.x - b.x)
 
-    // Re-index their horizontally positioned coordinates starting after latest main commit
     const startX = latestMain.x + 1
     const updatedCommits = commits.filter(c => c.branch !== "feature")
 
@@ -243,7 +231,6 @@ export function GitVisualizer() {
     ])
   }
 
-  // 6. Reset history
   const handleReset = () => {
     setCommits([
       {
@@ -267,14 +254,12 @@ export function GitVisualizer() {
     ])
   }
 
-  // SVG dimensions
   const viewWidth = Math.max(720, nextX * 65 + 50)
 
   return (
     <section className="w-full min-h-[100vh] border-t-4 border-foreground py-16 px-4 sm:px-6 lg:px-8 bg-black flex flex-col justify-center">
       <div className="max-w-5xl mx-auto">
         
-        {/* Header Title */}
         <div className="text-center mb-10 space-y-3">
           <div className="inline-flex items-center gap-1.5 px-2.5 py-1 border-2 border-foreground bg-accent text-accent-foreground font-mono text-[10px] font-black uppercase tracking-wider">
             <GitBranch className="h-3.5 w-3.5 animate-pulse" />
@@ -288,10 +273,8 @@ export function GitVisualizer() {
           </p>
         </div>
 
-        {/* Console & SVG Box */}
         <div className="border-4 border-foreground bg-zinc-950 shadow-[6px_6px_0px_0px_var(--primary)] flex flex-col overflow-hidden">
           
-          {/* Header Bar */}
           <div className="border-b-2 border-foreground bg-zinc-900 px-4 py-2 flex items-center justify-between select-none font-mono text-[10px] text-muted-foreground font-bold uppercase">
             <div className="flex items-center gap-2">
               <div className="h-3 w-3 rounded-full border border-foreground bg-red-500" />
@@ -304,14 +287,12 @@ export function GitVisualizer() {
             </div>
           </div>
 
-          {/* SVG Canvas Area */}
           <div className="p-6 bg-zinc-950 border-b-2 border-foreground overflow-x-auto bg-grid-pattern relative min-h-[180px]">
             <svg 
               width={viewWidth} 
               height="140" 
               className="overflow-visible select-none"
             >
-              {/* Branch Guides */}
               <line x1="10" y1="40" x2={viewWidth - 10} y2="40" stroke="#1f2937" strokeWidth="3" strokeDasharray="6 6" />
               <text x="15" y="25" fill="#a855f7" className="font-mono text-[9px] font-bold uppercase tracking-wider">main branch</text>
               
@@ -322,7 +303,6 @@ export function GitVisualizer() {
                 </>
               )}
 
-              {/* Render Connections */}
               {commits.map((c) => {
                 const cx = c.x * 65 + 30
                 const cy = c.y
@@ -332,10 +312,8 @@ export function GitVisualizer() {
                   const px = parent.x * 65 + 30
                   const py = parent.y
 
-                  // Draw connecting lines with curve if branching/merging
                   let d = `M ${px} ${py} L ${cx} ${cy}`
                   if (py !== cy) {
-                    // Curved connector
                     const midX = (px + cx) / 2
                     d = `M ${px} ${py} C ${midX} ${py}, ${midX} ${cy}, ${cx} ${cy}`
                   }
@@ -353,7 +331,6 @@ export function GitVisualizer() {
                 })
               })}
 
-              {/* Fork start link guide indicator */}
               {hasFeatureBranch && featureForkX !== null && (
                 <path 
                   d={`M ${featureForkX * 65 + 30} 40 C ${(featureForkX * 65 + 30 + (featureForkX + 1) * 65 + 30)/2} 40, ${(featureForkX * 65 + 30 + (featureForkX + 1) * 65 + 30)/2} 100, ${(featureForkX + 1) * 65 + 30} 100`} 
@@ -364,7 +341,6 @@ export function GitVisualizer() {
                 />
               )}
 
-              {/* Render Commit Nodes */}
               {commits.map((c) => {
                 const cx = c.x * 65 + 30
                 const cy = c.y
@@ -382,7 +358,6 @@ export function GitVisualizer() {
                       strokeWidth="2.5"
                       className="hover:scale-125 transition-transform duration-200"
                     />
-                    {/* Hash label text inside node */}
                     <text
                       x={cx}
                       y={cy + 3.5}
@@ -393,10 +368,8 @@ export function GitVisualizer() {
                       {c.hash.substring(0, 3)}
                     </text>
 
-                    {/* Hover tooltip card */}
                     <title>{`[${c.hash}] ${c.msg}`}</title>
 
-                    {/* Branch pointer tags */}
                     {isLatestMain && (
                       <g transform={`translate(${cx - 15}, ${cy - 30})`}>
                         <rect width="30" height="12" fill="#a855f7" stroke="#ffffff" strokeWidth="1" />
@@ -416,7 +389,6 @@ export function GitVisualizer() {
             </svg>
           </div>
 
-          {/* Git Terminal Logs */}
           <div ref={logsContainerRef} className="p-4 bg-zinc-950 font-mono text-xs max-h-[140px] overflow-y-auto border-b-2 border-foreground scrollbar-thin divide-y divide-zinc-900 bg-dot-pattern">
             {logs.map((log, index) => (
               <div key={index} className={`py-1 ${log.startsWith("$") ? "text-zinc-350" : "text-green-400 pl-3"}`}>
@@ -425,7 +397,6 @@ export function GitVisualizer() {
             ))}
           </div>
 
-          {/* Git Controllers Panel */}
           <div className="bg-zinc-900 p-4 grid grid-cols-2 sm:grid-cols-6 gap-3">
             <button
               onClick={handleCommit}
@@ -480,7 +451,6 @@ export function GitVisualizer() {
             </button>
           </div>
 
-          {/* Reset Bar */}
           <div className="bg-zinc-950 p-2 border-t border-foreground/30 flex items-center justify-between px-4 font-mono text-[9px] text-zinc-500">
             <span>Commit spacing: dynamic horizontal grid layout</span>
             <button

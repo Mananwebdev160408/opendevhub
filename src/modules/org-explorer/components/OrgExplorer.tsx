@@ -4,7 +4,6 @@ import * as React from "react"
 import Link from "next/link"
 import { Building2, Search, ExternalLink, ArrowRight, Info } from "lucide-react"
 
-// Curated list of 10 organization handles
 const ORG_HANDLES = [
   "vercel",
   "supabase",
@@ -18,7 +17,6 @@ const ORG_HANDLES = [
   "automattic"
 ]
 
-// Local metadata fallback registry for 10 organizations
 const ORG_METADATA: Record<
   string,
   {
@@ -228,10 +226,9 @@ export function OrgExplorer() {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-mono">
-      {/* Title block */}
       <div className="border-4 border-foreground bg-black p-6 shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] relative overflow-hidden bg-dot-pattern mb-8">
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
-          REGISTRY // ORGANIZATIONS
+          ORGANIZATIONS
         </div>
         <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
           <Building2 className="h-6 w-6 text-accent" />
@@ -242,7 +239,6 @@ export function OrgExplorer() {
         </p>
       </div>
 
-      {/* Rate limit warning banner */}
       {rateLimited && (
         <div className="mb-8 border-2 border-yellow-500 bg-yellow-950/20 text-yellow-400 p-4 text-xs font-bold uppercase flex items-center gap-3 shadow-[4px_4px_0px_0px_#eab308]">
           <Info className="h-5 w-5 shrink-0 text-yellow-500" />
@@ -255,7 +251,6 @@ export function OrgExplorer() {
         </div>
       )}
 
-      {/* Search board */}
       <div className="border-2 border-foreground bg-zinc-950 p-4 shadow-[4px_4px_0px_0px_var(--accent)] mb-8">
         <div className="relative border-2 border-foreground bg-black shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] focus-within:shadow-[3px_3px_0px_0px_var(--accent)] transition-all">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
@@ -269,7 +264,6 @@ export function OrgExplorer() {
         </div>
       </div>
 
-      {/* Loading Skeleton */}
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {[...Array(6)].map((_, idx) => (
@@ -296,7 +290,6 @@ export function OrgExplorer() {
                   <div className="h-4 w-5/6 bg-zinc-800" />
                 </div>
 
-                {/* Popular Projects Skeleton */}
                 <div className="mt-5">
                   <div className="h-3 w-20 bg-zinc-800" />
                   <div className="flex gap-2 mt-2">
@@ -315,7 +308,6 @@ export function OrgExplorer() {
           ))}
         </div>
       ) : (
-        /* Grid of Orgs */
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {filteredOrgs.map((org) => (
             <div
@@ -352,7 +344,6 @@ export function OrgExplorer() {
                   {org.description}
                 </p>
 
-                {/* Popular Projects */}
                 <div className="mt-4">
                   <span className="text-[10px] text-zinc-500 font-bold uppercase block">KEY PROJECTS:</span>
                   <div className="flex flex-wrap gap-1.5 mt-1.5">
@@ -368,7 +359,6 @@ export function OrgExplorer() {
                   </div>
                 </div>
 
-                {/* Main Languages */}
                 <div className="mt-4">
                   <span className="text-[10px] text-zinc-500 font-bold uppercase block">LANGUAGES USED:</span>
                   <div className="flex flex-wrap gap-1 mt-1.5">

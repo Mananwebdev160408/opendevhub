@@ -20,7 +20,6 @@ export function Philosophy() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Card 1 */}
           <div className="border-4 border-foreground bg-card p-6 shadow-[6px_6px_0px_0px_var(--primary)] hover:translate-y-[-2px] transition-all flex flex-col justify-between">
             <div className="space-y-4">
               <div className="h-12 w-12 border-2 border-foreground bg-primary text-primary-foreground flex items-center justify-center font-bold">
@@ -39,7 +38,6 @@ export function Philosophy() {
             </div>
           </div>
 
-          {/* Card 2 */}
           <div className="border-4 border-foreground bg-card p-6 shadow-[6px_6px_0px_0px_var(--accent)] hover:translate-y-[-2px] transition-all flex flex-col justify-between">
             <div className="space-y-4">
               <div className="h-12 w-12 border-2 border-foreground bg-accent text-accent-foreground flex items-center justify-center font-bold">
@@ -58,7 +56,6 @@ export function Philosophy() {
             </div>
           </div>
 
-          {/* Card 3 */}
           <div className="border-4 border-foreground bg-card p-6 shadow-[6px_6px_0px_0px_#ffffff] hover:translate-y-[-2px] transition-all flex flex-col justify-between">
             <div className="space-y-4">
               <div className="h-12 w-12 border-2 border-foreground bg-zinc-800 text-foreground flex items-center justify-center font-bold">

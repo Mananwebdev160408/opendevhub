@@ -11,14 +11,11 @@ export function Hero() {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!query.trim()) return;
-    // Route to repositories search with query
     router.push(`/repos?q=${encodeURIComponent(query)}`);
   };
 
   return (
     <section className="relative w-full min-h-[calc(100vh-90px)] border-b-4 border-foreground py-16 px-4 sm:px-6 lg:px-8 bg-dot-pattern overflow-hidden flex flex-col justify-center">
-      {/* Absolute floating abstract boxes/shapes - Geometric Maximalist Piles */}
-      {/* Top Right Pile */}
       <div className="absolute top-8 right-10 hidden sm:block pointer-events-none select-none">
         <div className="relative w-28 h-28">
           <div className="absolute top-0 right-0 h-20 w-20 bg-stripes-pattern border-2 border-foreground rotate-12 opacity-35" />
@@ -27,7 +24,6 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Bottom Left Pile */}
       <div className="absolute bottom-8 left-10 hidden sm:block pointer-events-none select-none">
         <div className="relative w-32 h-28">
           <div className="absolute bottom-0 left-0 h-24 w-16 bg-checkered-pattern border-2 border-foreground -rotate-12 opacity-25" />
@@ -36,7 +32,6 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Top Left Pile */}
       <div className="absolute top-12 left-10 hidden md:block pointer-events-none select-none">
         <div className="relative w-28 h-28">
           <div className="absolute top-0 left-0 h-16 w-24 bg-checkered-pattern border-2 border-foreground -rotate-6 opacity-20" />
@@ -45,7 +40,6 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Bottom Right Pile */}
       <div className="absolute bottom-12 right-12 hidden md:block pointer-events-none select-none">
         <div className="relative w-32 h-28">
           <div className="absolute bottom-0 right-0 h-14 w-28 bg-stripes-pattern border-2 border-foreground rotate-6 opacity-35" />
@@ -74,7 +68,6 @@ export function Hero() {
           dashboard.
         </p>
 
-        {/* Big styled search bar */}
         <form onSubmit={handleSearchSubmit} className="max-w-2xl mx-auto pt-4">
           <div className="relative flex items-center shadow-[6px_6px_0px_0px_var(--primary)] border-2 border-foreground bg-black focus-within:shadow-[6px_6px_0px_0px_var(--accent)] transition-all">
             <Search className="absolute left-4 h-5 w-5 text-muted-foreground pointer-events-none" />
@@ -101,7 +94,6 @@ export function Hero() {
           </div>
         </form>
 
-        {/* Quick action metrics bar to fill the viewport estate */}
         <div className="pt-10 max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="border-2 border-foreground bg-zinc-950 p-4 shadow-[4px_4px_0px_0px_var(--primary)] text-center font-mono">
             <div className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider">UTILITIES</div>

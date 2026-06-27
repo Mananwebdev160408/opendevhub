@@ -6,7 +6,6 @@ import { Shield, Info, Heart, Mail, ExternalLink } from "lucide-react"
 export function Footer() {
   return (
     <footer className="w-full bg-black border-t-4 border-foreground text-foreground mt-auto">
-      {/* Premium Boxy Ad Slot Placeholder */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 border-b-2 border-foreground bg-grid-pattern">
         <div className="border-4 border-primary bg-zinc-950 p-6 flex flex-col md:flex-row items-center justify-between shadow-[4px_4px_0px_0px_var(--accent)] hover:translate-y-[-2px] transition-all select-none">
           <div className="flex items-center gap-4 mb-4 md:mb-0">
@@ -27,7 +26,6 @@ export function Footer() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
-        {/* Info Column */}
         <div className="space-y-4">
           <div className="flex items-center gap-1 select-none">
             <span className="font-mono font-black text-xs tracking-tighter bg-foreground text-background px-2 py-0.5 border border-foreground">
@@ -47,7 +45,6 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Sitemap 1 */}
         <div>
           <h5 className="font-mono text-xs font-black tracking-widest text-accent uppercase mb-4 border-b border-foreground/30 pb-1">DISCOVER</h5>
           <ul className="space-y-2 font-mono text-xs">
@@ -58,7 +55,6 @@ export function Footer() {
           </ul>
         </div>
 
-        {/* Sitemap 2 */}
         <div>
           <h5 className="font-mono text-xs font-black tracking-widest text-primary uppercase mb-4 border-b border-foreground/30 pb-1">UTILITIES</h5>
           <ul className="space-y-2 font-mono text-xs">
@@ -69,7 +65,6 @@ export function Footer() {
           </ul>
         </div>
 
-        {/* Directory Column */}
         <div>
           <h5 className="font-mono text-xs font-black tracking-widest text-foreground uppercase mb-4 border-b border-foreground/30 pb-1">DIRECTORIES</h5>
           <ul className="space-y-2 font-mono text-xs">
@@ -90,7 +85,6 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Copy & Legal */}
       <div className="w-full bg-zinc-950 border-t border-foreground/20 py-4 px-4 sm:px-6 lg:px-8 font-mono text-[10px] text-muted-foreground">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <span>© {new Date().getFullYear()} OPENDEV HUB. ALL RIGHTS RESERVED. LICENSED UNDER MIT.</span>

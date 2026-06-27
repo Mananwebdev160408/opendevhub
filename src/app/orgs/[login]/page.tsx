@@ -21,7 +21,6 @@ async function fetchOrgDetails(login: string) {
     headers.Authorization = `token ${process.env.GITHUB_TOKEN}`
   }
 
-  // Fetch basic org details
   const res = await fetch(`https://api.github.com/orgs/${login}`, {
     headers,
     next: { revalidate: 86400 }
@@ -31,7 +30,6 @@ async function fetchOrgDetails(login: string) {
   }
   const org = await res.json()
 
-  // Fetch top repositories from this org
   const reposRes = await fetch(`https://api.github.com/orgs/${login}/repos?sort=stars&per_page=6`, {
     headers,
     next: { revalidate: 86400 }
@@ -47,7 +45,6 @@ async function fetchOrgDetails(login: string) {
 export default async function OrgDetailsPage({ params }: PageProps) {
   const { login } = await params
 
-  // Seed data fallback
   const seedOrg = organizationsData.find(o => o.login.toLowerCase() === login.toLowerCase())
 
   let orgData
@@ -71,9 +68,8 @@ export default async function OrgDetailsPage({ params }: PageProps) {
       html_url: seedOrg.githubLink,
       avatar_url: `https://github.com/${seedOrg.login}.png`,
       public_repos: seedOrg.popularProjects.length,
-      followers: seedOrg.stars // mock star sum
+      followers: seedOrg.stars
     }
-    // Mock repositories listing
     repos = seedOrg.popularProjects.map(proj => ({
       id: proj,
       name: proj,
@@ -89,7 +85,6 @@ export default async function OrgDetailsPage({ params }: PageProps) {
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-mono space-y-8">
-      {/* Back Button */}
       <Link
         href="/orgs"
         className="inline-flex items-center gap-1.5 px-3 py-1.5 border-2 border-foreground bg-zinc-950 text-foreground font-bold text-xs uppercase shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:bg-zinc-900 transition-all select-none cursor-pointer"
@@ -98,10 +93,9 @@ export default async function OrgDetailsPage({ params }: PageProps) {
         <span>BACK TO ORGANIZATIONS</span>
       </Link>
 
-      {/* Main Profile Header */}
       <div className="border-4 border-foreground bg-card p-6 shadow-[6px_6px_0px_0px_var(--accent)] relative overflow-hidden bg-dot-pattern">
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
-          REGISTRY_SPECS // ORG_PROFILE
+          ORGANIZATION PROFILE
         </div>
 
         {isFallback && (
@@ -135,10 +129,8 @@ export default async function OrgDetailsPage({ params }: PageProps) {
         </p>
       </div>
 
-      {/* Profile Specs */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         
-        {/* Spec 1: Details */}
         <div className="border-4 border-foreground bg-zinc-950 p-5 shadow-[4px_4px_0px_0px_var(--primary)] space-y-3 font-bold text-xs">
           <h3 className="text-xs font-black uppercase text-primary border-b border-zinc-800 pb-2">VITAL SPECS</h3>
           <div className="flex justify-between">
@@ -159,7 +151,6 @@ export default async function OrgDetailsPage({ params }: PageProps) {
           )}
         </div>
 
-        {/* Spec 2: Resources */}
         <div className="border-4 border-foreground bg-zinc-950 p-5 shadow-[4px_4px_0px_0px_#ffffff] space-y-3 font-bold text-xs">
           <h3 className="text-xs font-black uppercase text-foreground border-b border-zinc-800 pb-2">NETWORK</h3>
           <div className="flex justify-between items-center">
@@ -180,7 +171,6 @@ export default async function OrgDetailsPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Spec 3: Primary Stack */}
         <div className="border-4 border-foreground bg-zinc-950 p-5 shadow-[4px_4px_0px_0px_var(--accent)] space-y-3 font-bold text-xs">
           <h3 className="text-xs font-black uppercase text-accent border-b border-zinc-800 pb-2">CORE TECHNOLOGIES</h3>
           <p className="text-[10px] text-zinc-400 font-normal leading-relaxed">
@@ -199,7 +189,6 @@ export default async function OrgDetailsPage({ params }: PageProps) {
 
       </div>
 
-      {/* Repos list */}
       <div className="border-4 border-foreground bg-card shadow-[4px_4px_0px_0px_#ffffff] hover:translate-y-[-2px] transition-all">
         <div className="bg-zinc-900 border-b-2 border-foreground p-4 font-mono font-bold flex items-center justify-between bg-stripes-pattern select-none">
           <div className="flex items-center gap-2">

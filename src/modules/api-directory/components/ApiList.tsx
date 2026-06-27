@@ -35,21 +35,19 @@ export function ApiList() {
         const data = await res.json()
         const rawEntries = data.entries || []
         
-        // Map raw API schema to our UI schema
         const mapped: PublicApi[] = rawEntries.map((api: any) => ({
           name: api.name || api.API || "Unknown API",
           category: api.category || api.Category || "Other",
           description: api.description || api.Description || "No description available.",
           rateLimit: api.cors ? `CORS: ${api.cors.toUpperCase()}` : (api.Cors ? `CORS: ${api.Cors.toUpperCase()}` : "CORS: UNKNOWN"),
           authentication: api.auth || api.Auth || "NONE",
-          freeTier: "YES", // public-apis index consists of free endpoints
+          freeTier: "YES",
           website: api.url || api.Link || "https://github.com",
           documentation: api.url || api.Link || "https://github.com"
         }))
         
         setApis(mapped)
 
-        // Get unique categories and extract the top 6 by count
         const counts: Record<string, number> = {}
         mapped.forEach(a => {
           counts[a.category] = (counts[a.category] || 0) + 1
@@ -59,7 +57,6 @@ export function ApiList() {
       } catch (err: any) {
         console.error(err)
         setError("Could not load dynamic public APIs database. Falling back to local data.")
-        // Fallback to local static json
         const mappedFallback: PublicApi[] = apisDataFallback.map(a => ({
           name: a.name,
           category: a.category,
@@ -90,10 +87,9 @@ export function ApiList() {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-mono">
-      {/* Title */}
       <div className="border-4 border-foreground bg-black p-6 shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] relative overflow-hidden bg-dot-pattern mb-8">
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
-          REGISTRY // APIs DIRECTORY
+          APIs DIRECTORY
         </div>
         <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
           <Code className="h-6 w-6 text-primary" />
@@ -104,7 +100,6 @@ export function ApiList() {
         </p>
       </div>
 
-      {/* Control Board */}
       <div className="border-2 border-foreground bg-zinc-950 p-4 shadow-[4px_4px_0px_0px_var(--primary)] mb-8 space-y-4">
         <div className="relative border-2 border-foreground bg-black shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] focus-within:shadow-[2px_2px_0px_0px_var(--accent)] transition-all">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
@@ -134,7 +129,6 @@ export function ApiList() {
         </div>
       </div>
 
-      {/* Grid of APIs */}
       {isLoading ? (
         <div className="h-96 border-4 border-foreground bg-card flex flex-col items-center justify-center gap-3">
           <Loader2 className="h-8 w-8 text-primary animate-spin" />

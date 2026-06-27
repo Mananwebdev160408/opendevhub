@@ -10,7 +10,6 @@ interface RepoCardProps {
 }
 
 export function RepoCard({ repo }: RepoCardProps) {
-  // Format the updated date cleanly
   let formattedDate = ""
   try {
     formattedDate = formatDistanceToNow(new Date(repo.updated_at), { addSuffix: true })
