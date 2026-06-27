@@ -258,7 +258,7 @@ export function GitVisualizer() {
 
   return (
     <section className="w-full min-h-[100vh] border-t-4 border-foreground py-16 px-4 sm:px-6 lg:px-8 bg-black flex flex-col justify-center">
-      <div className="max-w-5xl mx-auto">
+      <div className="w-full max-w-5xl mx-auto">
         
         <div className="text-center mb-10 space-y-3">
           <div className="inline-flex items-center gap-1.5 px-2.5 py-1 border-2 border-foreground bg-accent text-accent-foreground font-mono text-[10px] font-black uppercase tracking-wider">
@@ -273,21 +273,21 @@ export function GitVisualizer() {
           </p>
         </div>
 
-        <div className="border-4 border-foreground bg-zinc-950 shadow-[6px_6px_0px_0px_var(--primary)] flex flex-col overflow-hidden">
+        <div className="w-full border-4 border-foreground bg-zinc-950 shadow-[6px_6px_0px_0px_var(--primary)] flex flex-col overflow-hidden">
           
-          <div className="border-b-2 border-foreground bg-zinc-900 px-4 py-2 flex items-center justify-between select-none font-mono text-[10px] text-muted-foreground font-bold uppercase">
+          <div className="border-b-2 border-foreground bg-zinc-900 px-4 py-2 flex items-center justify-between select-none font-mono text-[10px] text-muted-foreground font-bold uppercase gap-2">
             <div className="flex items-center gap-2">
               <div className="h-3 w-3 rounded-full border border-foreground bg-red-500" />
               <div className="h-3 w-3 rounded-full border border-foreground bg-yellow-500" />
               <div className="h-3 w-3 rounded-full border border-foreground bg-green-500" />
             </div>
-            <span>opendevhub-git-monitor.sh</span>
-            <div className="flex items-center gap-2 text-accent font-black">
+            <span className="truncate">opendevhub-git-monitor.sh</span>
+            <div className="flex items-center gap-2 text-accent font-black shrink-0">
               <span>ACTIVE: {activeBranch.toUpperCase()}</span>
             </div>
           </div>
 
-          <div className="p-6 bg-zinc-950 border-b-2 border-foreground overflow-x-auto bg-grid-pattern relative min-h-[180px]">
+          <div className="w-full overflow-x-auto p-6 bg-zinc-950 border-b-2 border-foreground bg-grid-pattern relative min-h-[180px]">
             <svg 
               width={viewWidth} 
               height="140" 
@@ -451,7 +451,7 @@ export function GitVisualizer() {
             </button>
           </div>
 
-          <div className="bg-zinc-950 p-2 border-t border-foreground/30 flex items-center justify-between px-4 font-mono text-[9px] text-zinc-500">
+          <div className="bg-zinc-950 p-3 border-t border-foreground/30 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-0 px-4 font-mono text-[9px] text-zinc-500 text-center sm:text-left">
             <span>Commit spacing: dynamic horizontal grid layout</span>
             <button
               onClick={handleReset}
