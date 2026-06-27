@@ -19,6 +19,17 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "OpenDev Hub - The Ultimate Developer Toolbox & Open Source Directory",
   description: "Discover open-source repositories, search good first issues, explore public APIs, access dev tools, and git cheatsheets in one high-density portal.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({
