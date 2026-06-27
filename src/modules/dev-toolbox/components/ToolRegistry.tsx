@@ -1,7 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { Copy, Check, Play, RefreshCw, Eye } from "lucide-react"
+import { Copy, Check, Play, RefreshCw, Eye, Maximize2, Minimize2, X } from "lucide-react"
+import { marked } from "marked"
 
 function CopyBtn({ value }: { value: string }) {
   const [copied, setCopied] = React.useState(false)
@@ -1251,30 +1252,103 @@ export function PasswordGeneratorTool() {
 
 export function MarkdownPreviewTool() {
   const [markdown, setMarkdown] = React.useState("# OpenDev Hub Markdown Previewer\n\n- Beautiful boxy designs\n- High information density\n\n```javascript\nconst hello = 'world';\n```")
+  const [renderedHtml, setRenderedHtml] = React.useState("")
+  const [fullscreen, setFullscreen] = React.useState<"editor" | "preview" | null>(null)
+
+  React.useEffect(() => {
+    const parseMarkdown = async () => {
+      const html = await marked.parse(markdown)
+      setRenderedHtml(html)
+    }
+    parseMarkdown()
+  }, [markdown])
+
+  React.useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setFullscreen(null)
+    }
+    window.addEventListener("keydown", handleKey)
+    return () => window.removeEventListener("keydown", handleKey)
+  }, [])
 
   return (
-    <div className="space-y-4 font-mono">
-      <span className="text-xs font-bold uppercase text-zinc-500 block border-b border-border pb-2">MARKDOWN INTERACTIVE PREVIEW</span>
+    <>
+      {/* ── Fullscreen Overlay ── */}
+      {fullscreen && (
+        <div className="fixed inset-0 z-[9999] bg-black/95 flex flex-col font-mono">
+          <div className="flex items-center justify-between px-4 py-2 border-b-2 border-foreground bg-black shrink-0">
+            <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">
+              {fullscreen === "editor" ? "MARKDOWN WRITER — FULLSCREEN" : "LIVE PREVIEW — FULLSCREEN"}
+            </span>
+            <button
+              onClick={() => setFullscreen(null)}
+              className="p-1 border border-foreground bg-black hover:bg-zinc-900 active:translate-y-0.5 transition-all cursor-pointer"
+              title="Exit fullscreen (Esc)"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <span className="text-[10px] text-zinc-400 font-bold block mb-1">MARKDOWN WRITER:</span>
-          <textarea
-            value={markdown}
-            onChange={(e) => setMarkdown(e.target.value)}
-            className="w-full h-80 bg-black border-2 border-foreground p-3 text-xs leading-relaxed focus:outline-none focus:border-primary placeholder:text-zinc-700"
-          />
+          {fullscreen === "editor" ? (
+            <textarea
+              value={markdown}
+              onChange={(e) => setMarkdown(e.target.value)}
+              autoFocus
+              className="flex-1 w-full bg-black p-6 text-sm leading-relaxed focus:outline-none text-foreground resize-none"
+            />
+          ) : (
+            <div
+              className="flex-1 overflow-y-auto p-8 text-sm prose prose-invert markdown-reader-content leading-relaxed max-w-4xl mx-auto w-full"
+              dangerouslySetInnerHTML={{ __html: renderedHtml }}
+            />
+          )}
         </div>
-        <div>
-          <span className="text-[10px] text-zinc-400 font-bold block mb-1">LIVE PREVIEW:</span>
-          <div className="w-full h-80 bg-zinc-950 border-2 border-border p-4 overflow-y-auto text-xs prose prose-invert select-all leading-relaxed whitespace-pre-wrap">
-            {markdown}
+      )}
+
+      {/* ── Normal View ── */}
+      <div className="space-y-4 font-mono">
+        <span className="text-xs font-bold uppercase text-zinc-500 block border-b border-border pb-2">MARKDOWN INTERACTIVE PREVIEW</span>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-[10px] text-zinc-400 font-bold">MARKDOWN WRITER:</span>
+              <button
+                onClick={() => setFullscreen("editor")}
+                className="p-1 border border-zinc-700 bg-black hover:bg-zinc-900 hover:border-foreground active:translate-y-0.5 transition-all cursor-pointer"
+                title="Expand editor to fullscreen"
+              >
+                <Maximize2 className="h-3 w-3 text-zinc-400" />
+              </button>
+            </div>
+            <textarea
+              value={markdown}
+              onChange={(e) => setMarkdown(e.target.value)}
+              className="w-full h-80 bg-black border-2 border-foreground p-3 text-xs leading-relaxed focus:outline-none focus:border-primary placeholder:text-zinc-700"
+            />
+          </div>
+          <div>
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-[10px] text-zinc-400 font-bold">LIVE PREVIEW:</span>
+              <button
+                onClick={() => setFullscreen("preview")}
+                className="p-1 border border-zinc-700 bg-black hover:bg-zinc-900 hover:border-foreground active:translate-y-0.5 transition-all cursor-pointer"
+                title="Expand preview to fullscreen"
+              >
+                <Maximize2 className="h-3 w-3 text-zinc-400" />
+              </button>
+            </div>
+            <div
+              className="w-full h-80 bg-zinc-950 border-2 border-border p-4 overflow-y-auto text-xs prose prose-invert markdown-reader-content leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: renderedHtml }}
+            />
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
+
 
 export function HtmlPreviewTool() {
   const [html, setHtml] = React.useState("<div style='background-color:#2dd4bf;color:#000;padding:20px;text-align:center;font-weight:bold;'>\n  HELLO FROM THE PREVIEW GRID\n</div>")
@@ -1306,7 +1380,7 @@ export function HtmlPreviewTool() {
           <iframe
             srcDoc={srcDoc}
             title="sandbox-preview"
-            sandbox="allow-scripts"
+            sandbox="allow-scripts allow-same-origin"
             className="w-full h-80 bg-white border-2 border-border"
           />
         </div>
@@ -1316,39 +1390,119 @@ export function HtmlPreviewTool() {
 }
 
 export function DiffCheckerTool() {
-  const [original, setOriginal] = React.useState("hello world\nreact framework\nnextjs 15")
-  const [modified, setModified] = React.useState("hello world!\nreact library\nnextjs 16")
-  const [diffLines, setDiffLines] = React.useState<{ orig: string; mod: string; changed: boolean }[]>([])
+  const [original, setOriginal] = React.useState("hello world\nreact framework\nnextjs 15\nfoo bar")
+  const [modified, setModified] = React.useState("hello world!\nreact library\nnextjs 16\nbaz qux\nfoo bar")
 
-  const compareText = () => {
-    const oLines = original.split("\n")
-    const mLines = modified.split("\n")
-    const count = Math.max(oLines.length, mLines.length)
-    const result = []
+  // ── LCS-based diff ──────────────────────────────────────────────────────────
+  type DiffOp = { type: "equal" | "remove" | "add"; origLine: number | null; modLine: number | null; text: string }
 
-    for (let i = 0; i < count; i++) {
-      const orig = oLines[i] || ""
-      const mod = mLines[i] || ""
-      result.push({
-        orig,
-        mod,
-        changed: orig !== mod
-      })
+  const computeDiff = (a: string[], b: string[]): DiffOp[] => {
+    const m = a.length, n = b.length
+    // Build LCS table
+    const dp: number[][] = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0))
+    for (let i = 1; i <= m; i++)
+      for (let j = 1; j <= n; j++)
+        dp[i][j] = a[i - 1] === b[j - 1] ? dp[i - 1][j - 1] + 1 : Math.max(dp[i - 1][j], dp[i][j - 1])
+
+    // Backtrack
+    const ops: DiffOp[] = []
+    let i = m, j = n
+    let oi = m, mi = n  // line number counters (1-based, count down)
+    while (i > 0 || j > 0) {
+      if (i > 0 && j > 0 && a[i - 1] === b[j - 1]) {
+        ops.push({ type: "equal", origLine: i, modLine: j, text: a[i - 1] })
+        i--; j--
+      } else if (j > 0 && (i === 0 || dp[i][j - 1] >= dp[i - 1][j])) {
+        ops.push({ type: "add", origLine: null, modLine: j, text: b[j - 1] })
+        j--
+      } else {
+        ops.push({ type: "remove", origLine: i, modLine: null, text: a[i - 1] })
+        i--
+      }
     }
-    setDiffLines(result)
+    return ops.reverse()
   }
 
-  React.useEffect(() => {
-    compareText()
-  }, [original, modified])
+  // Pair up consecutive remove+add as "modified" for display
+  type DisplayRow =
+    | { kind: "equal";    origLine: number; modLine: number;  text: string }
+    | { kind: "remove";   origLine: number;                   text: string }
+    | { kind: "add";                        modLine: number;  text: string }
+    | { kind: "modified"; origLine: number; modLine: number;  origText: string; modText: string }
+
+  const buildRows = (ops: DiffOp[]): DisplayRow[] => {
+    const rows: DisplayRow[] = []
+    let k = 0
+    while (k < ops.length) {
+      const op = ops[k]
+      if (op.type === "remove" && k + 1 < ops.length && ops[k + 1].type === "add") {
+        rows.push({ kind: "modified", origLine: op.origLine!, modLine: ops[k + 1].modLine!, origText: op.text, modText: ops[k + 1].text })
+        k += 2
+      } else if (op.type === "equal") {
+        rows.push({ kind: "equal", origLine: op.origLine!, modLine: op.modLine!, text: op.text })
+        k++
+      } else if (op.type === "remove") {
+        rows.push({ kind: "remove", origLine: op.origLine!, text: op.text })
+        k++
+      } else {
+        rows.push({ kind: "add", modLine: op.modLine!, text: op.text })
+        k++
+      }
+    }
+    return rows
+  }
+
+  // Inline char-level diff for "modified" rows
+  const charDiff = (a: string, b: string): { ch: string; changed: boolean }[][] => {
+    const ac = a.split(""), bc = b.split("")
+    const m = ac.length, n = bc.length
+    const dp: number[][] = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0))
+    for (let i = 1; i <= m; i++)
+      for (let j = 1; j <= n; j++)
+        dp[i][j] = ac[i - 1] === bc[j - 1] ? dp[i - 1][j - 1] + 1 : Math.max(dp[i - 1][j], dp[i][j - 1])
+
+    const origParts: { ch: string; changed: boolean }[] = []
+    const modParts:  { ch: string; changed: boolean }[] = []
+    let i = m, j = n
+    while (i > 0 || j > 0) {
+      if (i > 0 && j > 0 && ac[i - 1] === bc[j - 1]) {
+        origParts.unshift({ ch: ac[i - 1], changed: false })
+        modParts.unshift({ ch: bc[j - 1], changed: false })
+        i--; j--
+      } else if (j > 0 && (i === 0 || dp[i][j - 1] >= dp[i - 1][j])) {
+        modParts.unshift({ ch: bc[j - 1], changed: true })
+        j--
+      } else {
+        origParts.unshift({ ch: ac[i - 1], changed: true })
+        i--
+      }
+    }
+    return [origParts, modParts]
+  }
+
+  const oLines = original.split("\n")
+  const mLines = modified.split("\n")
+  const ops  = computeDiff(oLines, mLines)
+  const rows = buildRows(ops)
+
+  const added   = rows.filter(r => r.kind === "add" || r.kind === "modified").length
+  const removed = rows.filter(r => r.kind === "remove" || r.kind === "modified").length
+  const same    = rows.filter(r => r.kind === "equal").length
 
   return (
     <div className="space-y-4 font-mono">
-      <span className="text-xs font-bold uppercase text-zinc-500 block border-b border-border pb-2">LINE-BY-LINE DIFF CHECKER</span>
+      <div className="flex items-center justify-between border-b border-border pb-2">
+        <span className="text-xs font-bold uppercase text-zinc-500">LINE-BY-LINE DIFF CHECKER</span>
+        <div className="flex items-center gap-3 text-[10px] font-bold">
+          <span className="text-green-400">+{added} added</span>
+          <span className="text-red-400">−{removed} removed</span>
+          <span className="text-zinc-500">{same} same</span>
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <span className="text-[10px] text-zinc-400 font-bold block mb-1">ORIGINAL TEXT BLOCK:</span>
+          <span className="text-[10px] text-zinc-400 font-bold block mb-1">ORIGINAL:</span>
           <textarea
             value={original}
             onChange={(e) => setOriginal(e.target.value)}
@@ -1356,7 +1510,7 @@ export function DiffCheckerTool() {
           />
         </div>
         <div>
-          <span className="text-[10px] text-zinc-400 font-bold block mb-1">MODIFIED TEXT BLOCK:</span>
+          <span className="text-[10px] text-zinc-400 font-bold block mb-1">MODIFIED:</span>
           <textarea
             value={modified}
             onChange={(e) => setModified(e.target.value)}
@@ -1365,20 +1519,83 @@ export function DiffCheckerTool() {
         </div>
       </div>
 
-      <div className="pt-2">
-        <span className="text-[10px] text-zinc-400 font-bold block mb-1">COMPARISON OUTPUT:</span>
-        <div className="border border-border bg-zinc-950 divide-y divide-border/30 max-h-56 overflow-y-auto">
-          {diffLines.map((line, idx) => (
-            <div key={idx} className={`grid grid-cols-2 text-xs p-2 ${line.changed ? "bg-red-950/20 text-red-400" : "text-zinc-400"}`}>
-              <div className="border-r border-border/30 pr-2 truncate">- {line.orig}</div>
-              <div className={`pl-2 truncate ${line.changed ? "text-green-400 bg-green-950/20" : ""}`}>+ {line.mod}</div>
-            </div>
-          ))}
+      <div>
+        <span className="text-[10px] text-zinc-400 font-bold block mb-1">DIFF OUTPUT:</span>
+        <div className="border-2 border-border bg-zinc-950 overflow-auto max-h-72 text-[11px] leading-5">
+          {rows.length === 0 && (
+            <div className="p-3 text-zinc-600 italic">No input yet…</div>
+          )}
+          {rows.map((row, idx) => {
+            if (row.kind === "equal") {
+              return (
+                <div key={idx} className="flex items-start text-zinc-600 hover:bg-zinc-900/40">
+                  <span className="w-10 shrink-0 text-right pr-2 py-0.5 border-r border-zinc-800 text-zinc-700 select-none">{row.origLine}</span>
+                  <span className="w-10 shrink-0 text-right pr-2 py-0.5 border-r border-zinc-800 text-zinc-700 select-none">{row.modLine}</span>
+                  <span className="w-5 shrink-0 text-center py-0.5 select-none text-zinc-700"> </span>
+                  <span className="py-0.5 px-2 whitespace-pre-wrap break-all">{row.text}</span>
+                </div>
+              )
+            }
+            if (row.kind === "remove") {
+              return (
+                <div key={idx} className="flex items-start bg-red-950/25 hover:bg-red-950/40">
+                  <span className="w-10 shrink-0 text-right pr-2 py-0.5 border-r border-red-900/50 text-red-500 select-none">{row.origLine}</span>
+                  <span className="w-10 shrink-0 text-right pr-2 py-0.5 border-r border-red-900/50 text-zinc-600 select-none">·</span>
+                  <span className="w-5 shrink-0 text-center py-0.5 select-none text-red-400">−</span>
+                  <span className="py-0.5 px-2 text-red-300 whitespace-pre-wrap break-all">{row.text}</span>
+                </div>
+              )
+            }
+            if (row.kind === "add") {
+              return (
+                <div key={idx} className="flex items-start bg-green-950/20 hover:bg-green-950/35">
+                  <span className="w-10 shrink-0 text-right pr-2 py-0.5 border-r border-green-900/50 text-zinc-600 select-none">·</span>
+                  <span className="w-10 shrink-0 text-right pr-2 py-0.5 border-r border-green-900/50 text-green-500 select-none">{row.modLine}</span>
+                  <span className="w-5 shrink-0 text-center py-0.5 select-none text-green-400">+</span>
+                  <span className="py-0.5 px-2 text-green-300 whitespace-pre-wrap break-all">{row.text}</span>
+                </div>
+              )
+            }
+            // modified — show char-level inline diff
+            if (row.kind === "modified") {
+              const [origParts, modParts] = charDiff(row.origText, row.modText)
+              return (
+                <React.Fragment key={idx}>
+                  <div className="flex items-start bg-red-950/25 hover:bg-red-950/40">
+                    <span className="w-10 shrink-0 text-right pr-2 py-0.5 border-r border-red-900/50 text-red-500 select-none">{row.origLine}</span>
+                    <span className="w-10 shrink-0 text-right pr-2 py-0.5 border-r border-red-900/50 text-zinc-600 select-none">·</span>
+                    <span className="w-5 shrink-0 text-center py-0.5 select-none text-red-400">−</span>
+                    <span className="py-0.5 px-2 text-red-300 whitespace-pre-wrap break-all">
+                      {origParts.map((p, i) =>
+                        p.changed
+                          ? <mark key={i} className="bg-red-700/60 text-red-100 rounded-[2px]">{p.ch}</mark>
+                          : <span key={i}>{p.ch}</span>
+                      )}
+                    </span>
+                  </div>
+                  <div className="flex items-start bg-green-950/20 hover:bg-green-950/35">
+                    <span className="w-10 shrink-0 text-right pr-2 py-0.5 border-r border-green-900/50 text-zinc-600 select-none">·</span>
+                    <span className="w-10 shrink-0 text-right pr-2 py-0.5 border-r border-green-900/50 text-green-500 select-none">{row.modLine}</span>
+                    <span className="w-5 shrink-0 text-center py-0.5 select-none text-green-400">+</span>
+                    <span className="py-0.5 px-2 text-green-300 whitespace-pre-wrap break-all">
+                      {modParts.map((p, i) =>
+                        p.changed
+                          ? <mark key={i} className="bg-green-700/60 text-green-100 rounded-[2px]">{p.ch}</mark>
+                          : <span key={i}>{p.ch}</span>
+                      )}
+                    </span>
+                  </div>
+                </React.Fragment>
+              )
+            }
+            return null
+          })}
         </div>
       </div>
     </div>
   )
 }
+
 
 export function CronParserTool() {
   const [expr, setExpr] = React.useState("*/5 * * * *")
