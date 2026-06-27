@@ -1,36 +1,268 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+﻿# OpenDevHub
 
-## Getting Started
+> **The Ultimate Developer Toolbox & Open Source Directory**
 
-First, run the development server:
+Discover open-source repositories, search good first issues, explore public APIs, access developer tools, and browse Git cheatsheets — all in one high-density, zero-fluff portal.
+
+[![Next.js](https://img.shields.io/badge/Next.js-16.2.9-black?logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript)](https://www.typescriptlang.org/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4-06B6D4?logo=tailwindcss)](https://tailwindcss.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+
+---
+
+## ✨ Highlights
+
+- 🧰 **32+ Offline Developer Utilities** — all computation happens in the browser
+- 🔍 **Direct GitHub API Exploration** — repos, issues, trending, and orgs
+- 📖 **1200+ HTTP Status Codes** indexed and searchable
+- 🗂 **API Directory** — curated public APIs catalogue
+- 📰 **Dev News & Events** — stay updated with the open-source world
+- 🔐 **Zero cookies, zero tracking, zero sign-up**
+- 🆓 **100% free and open-source** (MIT Licensed)
+
+---
+
+## 🗺️ Pages & Routes
+
+| Route | Description |
+|---|---|
+| `/` | Home — Hero, Bento grid overview, philosophy, Git visualizer, deep-dive, FAQ |
+| `/tools` | Dev Toolbox — 25+ in-browser utilities organized by category |
+| `/repos` | Repository Explorer — search GitHub repos |
+| `/trending` | Trending Repositories — daily / weekly / monthly |
+| `/issues` | Issue Explorer — find good first issues across GitHub |
+| `/orgs` | Organization Explorer — search GitHub organizations |
+| `/apis` | API Directory — curated catalogue of public APIs |
+| `/git-cheatsheets` | Git Cheatsheets — offline, searchable reference |
+| `/http-status` | HTTP Status Codes — 1200+ codes explained |
+| `/events` | Developer Events — upcoming conferences & meetups |
+| `/news` | Dev News feed |
+| `/resources` | Resources Hub — curated awesome lists & learning material |
+| `/licenses` | Open Source License Explorer |
+| `/about` | About the project |
+| `/privacy` | Privacy policy |
+
+---
+
+## 🧰 Dev Toolbox
+
+All tools run entirely **in-browser** — no server calls, no data leaves your machine.
+
+### Data Formatters
+- JSON Formatter & Validator
+- CSV Grid Viewer
+- YAML / XML Viewer
+- Prettier Formatter
+
+### Encoders & Crypto
+- JWT Decoder
+- UUID Generator
+- Hash Generator (MD5, SHA-1, SHA-256…)
+- Base64 Encoder / Decoder
+- URL Encoder / Decoder
+- Password Generator
+
+### Text & Parsers
+- RegEx Tester
+- Lorem Ipsum Generator
+- Slug Generator
+- Case Converter
+- Word / Character Counter
+- Cron Expression Parser
+- Diff Checker
+
+### Visuals & CSS
+- Color Converter (HEX / RGB / HSL)
+- Gradient Generator
+- QR Code Generator
+- Barcode Generator
+- Markdown Preview
+- HTML Sandbox Preview
+
+### Minifiers
+- CSS / JS Minifier
+
+---
+
+## 🔌 GitHub Integration
+
+OpenDevHub uses the **GitHub REST API v3** to power its exploration features:
+
+- Search repositories with filters (stars, forks, language, topic)
+- Browse trending repos by daily / weekly / monthly ranges
+- Search issues with label and language filters
+- Explore organizations
+- View repository READMEs inline
+
+> **Optional**: Set a `GITHUB_TOKEN` environment variable to increase API rate limits from 60 → 5000 requests/hour.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- **Node.js** >= 18
+- **npm** >= 9
+
+### Installation
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/Mananwebdev160408/opendevhub.git
+cd opendevhub
+
+# 2. Install dependencies
+npm install
+
+# 3. Set up environment variables (optional)
+# Create .env.local and add your GitHub token
+```
+
+### Environment Variables
+
+Create a `.env.local` file in the project root:
+
+```env
+# Optional — increases GitHub API rate limit from 60 to 5,000 req/hour
+GITHUB_TOKEN=your_github_personal_access_token
+```
+
+### Running Locally
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Building for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+### Linting
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run lint
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🏗️ Project Structure
 
-## Deploy on Vercel
+```
+opendevhub/
+├── data/                        # Static JSON data files
+│   ├── apis.json                # Public API catalogue
+│   ├── git-cheatsheets.json     # Git command reference
+│   ├── http-status.json         # HTTP status codes
+│   ├── licenses.json            # OSS license data
+│   ├── events.json              # Developer events
+│   ├── resources.json           # Curated resources
+│   └── ...
+├── src/
+│   ├── app/                     # Next.js App Router pages
+│   │   ├── page.tsx             # Home page
+│   │   ├── layout.tsx           # Root layout
+│   │   ├── tools/               # Dev Toolbox route
+│   │   ├── repos/               # Repo Explorer route
+│   │   ├── trending/            # Trending route
+│   │   ├── issues/              # Issue Explorer route
+│   │   ├── orgs/                # Org Explorer route
+│   │   ├── apis/                # API Directory route
+│   │   ├── git-cheatsheets/     # Git Cheatsheets route
+│   │   ├── http-status/         # HTTP Status route
+│   │   └── api/                 # Next.js API routes (GitHub proxy)
+│   ├── core/
+│   │   └── services/
+│   │       ├── github.ts        # GitHub REST API client
+│   │       └── github-server.ts # Server-side GitHub helpers
+│   ├── modules/                 # Feature modules
+│   │   ├── home/                # Landing page sections
+│   │   ├── dev-toolbox/         # All 25+ tool implementations
+│   │   ├── repo-explorer/       # Repository search & display
+│   │   ├── issue-explorer/      # Issue search & display
+│   │   ├── trending/            # Trending repositories
+│   │   ├── org-explorer/        # Organization search
+│   │   ├── api-directory/       # Public APIs catalogue
+│   │   ├── git-cheatsheets/     # Git reference module
+│   │   ├── http-status/         # HTTP status codes module
+│   │   ├── events/              # Events module
+│   │   └── resources-hub/       # Resources & awesome lists
+│   ├── components/
+│   │   └── ui/                  # shadcn/ui component library
+│   ├── shared/
+│   │   └── components/          # Header, Footer, shared UI
+│   ├── hooks/                   # Custom React hooks
+│   └── lib/                     # Utility functions
+├── public/                      # Static assets
+├── package.json
+├── next.config.ts
+├── tsconfig.json
+└── vercel.json
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | [Next.js 16](https://nextjs.org/) (App Router) |
+| Language | [TypeScript 5](https://www.typescriptlang.org/) |
+| UI Library | [React 19](https://react.dev/) |
+| Styling | [Tailwind CSS v4](https://tailwindcss.com/) |
+| Component Library | [shadcn/ui](https://ui.shadcn.com/) + [Base UI](https://base-ui.com/) |
+| Icons | [Lucide React](https://lucide.dev/) |
+| Charts | [Recharts](https://recharts.org/) |
+| Markdown | [marked](https://marked.js.org/) |
+| Dates | [date-fns](https://date-fns.org/) |
+| Fonts | [Geist](https://vercel.com/font) (Sans + Mono) |
+| Analytics | [Vercel Analytics](https://vercel.com/analytics) + Speed Insights |
+| Deployment | [Vercel](https://vercel.com/) |
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Here's how you can help:
+
+1. **Fork** the repository
+2. **Create** a feature branch: `git checkout -b feature/amazing-feature`
+3. **Commit** your changes: `git commit -m 'Add amazing feature'`
+4. **Push** to the branch: `git push origin feature/amazing-feature`
+5. **Open** a Pull Request
+
+### Ideas for Contribution
+- Add new developer tools to the Toolbox
+- Expand the data in `data/*.json` files (new APIs, events, resources)
+- Improve search and filtering UX
+- Add new sections to Git Cheatsheets
+- Bug fixes and performance improvements
+
+---
+
+## 📝 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](./LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgements
+
+- [GitHub REST API](https://docs.github.com/en/rest) — for powering the open-source exploration features
+- [shadcn/ui](https://ui.shadcn.com/) — for the accessible, composable component primitives
+- The open-source community — for inspiring this project
+
+---
+
+<p align="center">
+  Built with ❤️ for developers, by developers.
+  <br/>
+  <strong>No Cost · No Signup · No AI Hype · 100% Open Source</strong>
+</p>
