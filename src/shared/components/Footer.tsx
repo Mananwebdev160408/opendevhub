@@ -6,24 +6,6 @@ import { Shield, Info, Heart, Mail, ExternalLink } from "lucide-react"
 export function Footer() {
   return (
     <footer className="w-full bg-black border-t-4 border-foreground text-foreground mt-auto">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 border-b-2 border-foreground bg-grid-pattern">
-        <div className="border-4 border-primary bg-zinc-950 p-6 flex flex-col md:flex-row items-center justify-between shadow-[4px_4px_0px_0px_var(--accent)] hover:translate-y-[-2px] transition-all select-none">
-          <div className="flex items-center gap-4 mb-4 md:mb-0">
-            <div className="h-10 w-10 bg-stripes-pattern border-2 border-foreground shrink-0" />
-            <div>
-              <span className="font-mono text-[10px] tracking-wider text-accent font-black block">SPONSORED RESIDENCY SLOT</span>
-              <h4 className="font-mono text-sm font-black text-foreground tracking-tight">ADVERTISE YOUR DEV TOOL WITH US</h4>
-              <p className="font-mono text-[11px] text-muted-foreground mt-0.5">Reach over 150,000 active developers, engineers, and open-source contributors monthly.</p>
-            </div>
-          </div>
-          <a 
-            href="mailto:ads@opendevhub.com?subject=Ad%20Inquiry%20-%20OpenDev%20Hub"
-            className="px-4 py-2 border-2 border-foreground bg-primary text-primary-foreground font-mono font-bold text-xs uppercase tracking-wider shadow-[3px_3px_0px_0px_#ffffff] hover:bg-purple-600 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_0px_#ffffff] transition-all shrink-0 cursor-pointer"
-          >
-            GET RATE SHEET ↗
-          </a>
-        </div>
-      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="space-y-4">

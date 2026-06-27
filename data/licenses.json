@@ -2,6 +2,8 @@
   {
     "slug": "mit",
     "name": "MIT License",
+    "category": "Permissive",
+    "osiApproved": true,
     "description": "A short and simple permissive license with conditions only requiring preservation of copyright and license notices.",
     "permissions": [
       "Commercial use",
@@ -21,6 +23,8 @@
   {
     "slug": "apache-2.0",
     "name": "Apache License 2.0",
+    "category": "Permissive",
+    "osiApproved": true,
     "description": "A permissive license whose main conditions require preservation of copyright and license notices. Contributors provide an express grant of patent rights.",
     "permissions": [
       "Commercial use",
@@ -42,9 +46,327 @@
     "example": "Kubernetes, Docker, and TensorFlow are licensed under Apache 2.0."
   },
   {
+    "slug": "bsd-2-clause",
+    "name": "BSD 2-Clause License",
+    "category": "Permissive",
+    "osiApproved": true,
+    "description": "A very simple permissive license that allows unlimited redistribution for any purpose as long as copyright notices and the license's disclaimers are maintained.",
+    "permissions": [
+      "Commercial use",
+      "Modification",
+      "Distribution",
+      "Private use"
+    ],
+    "conditions": [
+      "License and copyright notice must be included"
+    ],
+    "limitations": [
+      "Liability",
+      "Warranty"
+    ],
+    "example": "FreeBSD, Nginx, and Sentry (parts) use BSD 2-Clause."
+  },
+  {
+    "slug": "bsd-3-clause",
+    "name": "BSD 3-Clause License",
+    "category": "Permissive",
+    "osiApproved": true,
+    "description": "A permissive license similar to the BSD 2-Clause but with a clause prohibiting the use of the name of the project or its contributors for endorsement without prior written permission.",
+    "permissions": [
+      "Commercial use",
+      "Modification",
+      "Distribution",
+      "Private use"
+    ],
+    "conditions": [
+      "License and copyright notice must be included"
+    ],
+    "limitations": [
+      "Liability",
+      "Warranty"
+    ],
+    "example": "Go, FreeBSD, and NumPy are licensed under BSD 3-Clause."
+  },
+  {
+    "slug": "isc",
+    "name": "ISC License",
+    "category": "Permissive",
+    "osiApproved": true,
+    "description": "A highly permissive license functionally equivalent to the two-clause BSD license and MIT license, but with even simpler language, removing language deemed unnecessary by the Berne Convention.",
+    "permissions": [
+      "Commercial use",
+      "Modification",
+      "Distribution",
+      "Private use"
+    ],
+    "conditions": [
+      "License and copyright notice must be included"
+    ],
+    "limitations": [
+      "Liability",
+      "Warranty"
+    ],
+    "example": "npm, OpenSSH, and Node.js (some core dependencies) use the ISC license."
+  },
+  {
+    "slug": "zlib",
+    "name": "zlib License",
+    "category": "Permissive",
+    "osiApproved": true,
+    "description": "A permissive license designed for the zlib compression library. It allows software modification and distribution, provided that the origin is not misrepresented and modifications are marked.",
+    "permissions": [
+      "Commercial use",
+      "Modification",
+      "Distribution",
+      "Private use"
+    ],
+    "conditions": [
+      "Modified versions must be marked as such",
+      "Do not misrepresent the origin of the original software"
+    ],
+    "limitations": [
+      "Liability",
+      "Warranty"
+    ],
+    "example": "zlib, LibPNG, and SFML are licensed under the zlib License."
+  },
+  {
+    "slug": "artistic-2.0",
+    "name": "Artistic License 2.0",
+    "category": "Permissive",
+    "osiApproved": true,
+    "description": "A permissive license used primarily for Perl projects. It allows distribution and modification but requires modified packages to still be accessible, clearly documented, or released under compatible terms.",
+    "permissions": [
+      "Commercial use",
+      "Modification",
+      "Distribution",
+      "Private use"
+    ],
+    "conditions": [
+      "License and copyright notice",
+      "State changes",
+      "Maintain compatibility or document changes clearly"
+    ],
+    "limitations": [
+      "Liability",
+      "Warranty"
+    ],
+    "example": "Perl 5, Raku (formerly Perl 6), and associated modules are licensed under the Artistic License."
+  },
+  {
+    "slug": "psfl",
+    "name": "Python Software Foundation License",
+    "category": "Permissive",
+    "osiApproved": true,
+    "description": "A BSD-style permissive license designed for the Python programming language. It permits modification and commercial redistribution without requiring copyleft constraints.",
+    "permissions": [
+      "Commercial use",
+      "Modification",
+      "Distribution",
+      "Private use"
+    ],
+    "conditions": [
+      "License and copyright notice must be included",
+      "State changes in Python files if modified"
+    ],
+    "limitations": [
+      "Liability",
+      "Warranty"
+    ],
+    "example": "The main Python implementation (CPython) is licensed under the PSFL."
+  },
+  {
+    "slug": "bsl-1.0",
+    "name": "Boost Software License 1.0",
+    "category": "Permissive",
+    "osiApproved": true,
+    "description": "A highly permissive license similar to MIT and BSD, but unlike them, it does not require copyleft or attribution notices if the software is distributed in binary/compiled form.",
+    "permissions": [
+      "Commercial use",
+      "Modification",
+      "Distribution",
+      "Private use"
+    ],
+    "conditions": [
+      "License and copyright notice required only for source code distribution"
+    ],
+    "limitations": [
+      "Liability",
+      "Warranty"
+    ],
+    "example": "The Boost C++ Libraries and the D programming language compiler are licensed under BSL 1.0."
+  },
+  {
+    "slug": "ncsa",
+    "name": "University of Illinois/NCSA Open Source License",
+    "category": "Permissive",
+    "osiApproved": true,
+    "description": "A permissive license combining terms from the MIT/X11 and BSD licenses, requiring license text preservation but prohibiting promotional use of developer names.",
+    "permissions": [
+      "Commercial use",
+      "Modification",
+      "Distribution",
+      "Private use"
+    ],
+    "conditions": [
+      "License and copyright notice must be included",
+      "Names of developers/institutes cannot be used for promotion"
+    ],
+    "limitations": [
+      "Liability",
+      "Warranty"
+    ],
+    "example": "LLVM compiler infrastructure, Clang, and NCSA HTTPd were licensed under NCSA."
+  },
+  {
+    "slug": "mpl-2.0",
+    "name": "Mozilla Public License 2.0",
+    "category": "Weak Copyleft",
+    "osiApproved": true,
+    "description": "A weak copyleft license that requires source code of modified files to be made available. However, files with new/different code can be under other licenses.",
+    "permissions": [
+      "Commercial use",
+      "Modification",
+      "Distribution",
+      "Patent use",
+      "Private use"
+    ],
+    "conditions": [
+      "License and copyright notice",
+      "Disclose source (for modified files)"
+    ],
+    "limitations": [
+      "Liability",
+      "Trademark use",
+      "Warranty"
+    ],
+    "example": "Firefox, Rust's cargo-edit, and Terraform are licensed under MPL 2.0."
+  },
+  {
+    "slug": "lgpl-2.1",
+    "name": "GNU Lesser General Public License v2.1",
+    "category": "Weak Copyleft",
+    "osiApproved": true,
+    "description": "A weak copyleft license allowing developers to link to a shared library without forcing their own application to be open sourced, though modifications to the library itself must remain under LGPL.",
+    "permissions": [
+      "Commercial use",
+      "Modification",
+      "Distribution",
+      "Private use"
+    ],
+    "conditions": [
+      "Disclose source of LGPL code",
+      "License and copyright notice",
+      "State changes",
+      "Allow users to relink or reverse engineer the host application"
+    ],
+    "limitations": [
+      "Liability",
+      "Warranty"
+    ],
+    "example": "FFmpeg (standard config), GTK 2, and GNU C Library (glibc) are licensed under LGPL 2.1."
+  },
+  {
+    "slug": "lgpl-3.0",
+    "name": "GNU Lesser General Public License v3.0",
+    "category": "Weak Copyleft",
+    "osiApproved": true,
+    "description": "An updated version of LGPL v2.1 incorporating GPLv3's terms. It guarantees rights to relink and reverse-engineer, while offering patent grants and protection against anti-circumvention laws.",
+    "permissions": [
+      "Commercial use",
+      "Modification",
+      "Distribution",
+      "Patent use",
+      "Private use"
+    ],
+    "conditions": [
+      "Disclose source of LGPL code",
+      "License and copyright notice",
+      "State changes",
+      "Allow users to relink or reverse engineer the host application"
+    ],
+    "limitations": [
+      "Liability",
+      "Warranty"
+    ],
+    "example": "7-Zip (some modules), Mono Class Libraries, and GNU MPFR are licensed under LGPL 3.0."
+  },
+  {
+    "slug": "epl-2.0",
+    "name": "Eclipse Public License 2.0",
+    "category": "Weak Copyleft",
+    "osiApproved": true,
+    "description": "A weak copyleft license designed to be business-friendly. Modified files must be disclosed, but it allows sub-licensing of binaries and provides clear patent terms.",
+    "permissions": [
+      "Commercial use",
+      "Modification",
+      "Distribution",
+      "Patent use",
+      "Private use"
+    ],
+    "conditions": [
+      "Disclose source of modified EPL files",
+      "License and copyright notice"
+    ],
+    "limitations": [
+      "Liability",
+      "Warranty"
+    ],
+    "example": "Eclipse IDE, Jetty web server, and Clojure are licensed under EPL 2.0."
+  },
+  {
+    "slug": "cddl-1.0",
+    "name": "Common Development and Distribution License",
+    "category": "Weak Copyleft",
+    "osiApproved": true,
+    "description": "A weak copyleft license based on the Mozilla Public License. It requires source code release of CDDL-covered files if modified, but allows combining them with other proprietary files.",
+    "permissions": [
+      "Commercial use",
+      "Modification",
+      "Distribution",
+      "Patent use",
+      "Private use"
+    ],
+    "conditions": [
+      "Disclose source of CDDL files",
+      "License and copyright notice"
+    ],
+    "limitations": [
+      "Liability",
+      "Warranty"
+    ],
+    "example": "OpenSolaris, ZFS (OpenZFS), and GlassFish are licensed under CDDL."
+  },
+  {
+    "slug": "gpl-2.0",
+    "name": "GNU General Public License v2.0",
+    "category": "Strong Copyleft",
+    "osiApproved": true,
+    "description": "A strong copyleft license that requires any derivative work, linked code, or modifications to be distributed under the exact same license terms. Source code must be provided.",
+    "permissions": [
+      "Commercial use",
+      "Modification",
+      "Distribution",
+      "Private use"
+    ],
+    "conditions": [
+      "Disclose source",
+      "License and copyright notice",
+      "State changes",
+      "Use identical license (GPLv2)"
+    ],
+    "limitations": [
+      "Liability",
+      "Warranty"
+    ],
+    "example": "The Linux Kernel, Git (v2 only), and MySQL (community) are licensed under GPLv2."
+  },
+  {
     "slug": "gpl-3.0",
     "name": "GNU GPLv3",
-    "description": "A copyleft license that requires source code of derivative works to be made available under the same license. Patent grants are also provided.",
+    "category": "Strong Copyleft",
+    "osiApproved": true,
+    "description": "A strong copyleft license requiring derivative works to be open sourced under GPLv3. It provides explicit protection against patent litigation and tivoization (hardware locking source code).",
     "permissions": [
       "Commercial use",
       "Modification",
@@ -62,6 +384,119 @@
       "Liability",
       "Warranty"
     ],
-    "example": "Git, Linux, and WordPress are licensed under GPL."
+    "example": "Bash, GnuPG, and GCC are licensed under GPLv3."
+  },
+  {
+    "slug": "agpl-3.0",
+    "name": "GNU AGPLv3",
+    "category": "Strong Copyleft",
+    "osiApproved": true,
+    "description": "A strong copyleft license designed for network-served software. If you run a modified version on a server for users to interact with over a network, you must disclose the source code.",
+    "permissions": [
+      "Commercial use",
+      "Modification",
+      "Distribution",
+      "Patent use",
+      "Private use"
+    ],
+    "conditions": [
+      "Disclose source",
+      "License and copyright notice",
+      "State changes",
+      "Use identical license (AGPLv3)",
+      "Network trigger (disclose source when run on a network)"
+    ],
+    "limitations": [
+      "Liability",
+      "Warranty"
+    ],
+    "example": "Mastodon, Grafana, and MongoDB (previously) used AGPLv3."
+  },
+  {
+    "slug": "eupl-1.2",
+    "name": "European Union Public Licence 1.2",
+    "category": "Strong Copyleft",
+    "osiApproved": true,
+    "description": "A strong copyleft license drafted in 22 European languages, conforming to EU law. It has compatibility provisions allowing code to be integrated with GPL, MPL, and other copyleft licenses.",
+    "permissions": [
+      "Commercial use",
+      "Modification",
+      "Distribution",
+      "Patent use",
+      "Private use"
+    ],
+    "conditions": [
+      "Disclose source",
+      "License and copyright notice",
+      "State changes",
+      "Use compatible copyleft license"
+    ],
+    "limitations": [
+      "Liability",
+      "Warranty"
+    ],
+    "example": "Joint Research Centre (JRC) software and various EU government tools use EUPL."
+  },
+  {
+    "slug": "cecill-2.1",
+    "name": "CeCILL License v2.1",
+    "category": "Strong Copyleft",
+    "osiApproved": true,
+    "description": "A French law-compliant strong copyleft license designed by CEA, CNRS, and Inria. It is fully compatible with GNU GPL, facilitating copyleft licensing within European/French legal frameworks.",
+    "permissions": [
+      "Commercial use",
+      "Modification",
+      "Distribution",
+      "Private use"
+    ],
+    "conditions": [
+      "Disclose source",
+      "License and copyright notice",
+      "State changes",
+      "Use identical license (CeCILL) or GPL"
+    ],
+    "limitations": [
+      "Liability",
+      "Warranty"
+    ],
+    "example": "Gnuplot (partially), French academic software projects use CeCILL."
+  },
+  {
+    "slug": "unlicense",
+    "name": "The Unlicense",
+    "category": "Public Domain-like",
+    "osiApproved": true,
+    "description": "A public domain equivalent license that releases the code into the public domain, allowing anyone to do whatever they want with it, without any conditions.",
+    "permissions": [
+      "Commercial use",
+      "Modification",
+      "Distribution",
+      "Private use"
+    ],
+    "conditions": [],
+    "limitations": [
+      "Liability",
+      "Warranty"
+    ],
+    "example": "youtube-dl and sqlite-jdbc are licensed under Unlicense."
+  },
+  {
+    "slug": "cc0-1.0",
+    "name": "CC0 1.0 Universal",
+    "category": "Public Domain-like",
+    "osiApproved": true,
+    "description": "A public dedication tool from Creative Commons that waives all copyright and related rights in a work worldwide, to the fullest extent permitted by law.",
+    "permissions": [
+      "Commercial use",
+      "Modification",
+      "Distribution",
+      "Private use"
+    ],
+    "conditions": [],
+    "limitations": [
+      "Liability",
+      "Warranty"
+    ],
+    "example": "SQLite, public domain assets, and components of various open repositories use CC0."
   }
 ]

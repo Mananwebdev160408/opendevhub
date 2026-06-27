@@ -1,9 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { Search, Library, ExternalLink, Globe, BookOpen, ArrowLeft, Loader2, Sparkles } from "lucide-react"
+import { Search, Library, ExternalLink, Globe, BookOpen, ArrowLeft, Loader2, Sparkles, Star, GitFork } from "lucide-react"
 import { marked } from "marked"
-import { getRepositoryReadme } from "@/core/services/github"
+import { getRepositoryReadme, searchRepositories, GithubRepo } from "@/core/services/github"
 import resourcesData from "../../../../data/resources.json"
 
 export function ResourceList() {
@@ -16,7 +16,41 @@ export function ResourceList() {
   const [isImporting, setIsImporting] = React.useState(false)
   const [importError, setImportError] = React.useState<string | null>(null)
 
+  const [gitHubResources, setGitHubResources] = React.useState<GithubRepo[]>([])
+  const [isSearchingGitHub, setIsSearchingGitHub] = React.useState(false)
+  const [gitHubError, setGitHubError] = React.useState<string | null>(null)
+
   const categories = ["ALL", "React", "TypeScript", "System Design", "Next.js", "Linux"]
+
+  React.useEffect(() => {
+    if (!query.trim()) {
+      setGitHubResources([])
+      return
+    }
+
+    const delayDebounceFn = setTimeout(async () => {
+      setIsSearchingGitHub(true)
+      setGitHubError(null)
+      try {
+        const searchQ = `${query} study guide OR ${query} tutorial OR ${query} cheatsheet OR ${query} roadmap`
+        const res = await searchRepositories({
+          q: searchQ,
+          sort: "stars",
+          order: "desc",
+          page: 1,
+          perPage: 6
+        })
+        setGitHubResources(res.items)
+      } catch (err: any) {
+        console.error("GitHub search error:", err)
+        setGitHubError(err.message || "Failed to load community resources.")
+      } finally {
+        setIsSearchingGitHub(false)
+      }
+    }, 500)
+
+    return () => clearTimeout(delayDebounceFn)
+  }, [query])
 
   const filteredResources = React.useMemo(() => {
     return resourcesData.filter(res => {
@@ -275,6 +309,83 @@ export function ResourceList() {
           </div>
         ))}
       </div>
+
+      {query.trim() && (
+        <div className="space-y-6 pt-8 border-t-2 border-foreground border-dashed">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-black uppercase text-accent tracking-widest flex items-center gap-2">
+              <Sparkles className="h-4 w-4 animate-pulse text-accent" />
+              <span>GITHUB COMMUNITY GUIDES & ROADMAPS</span>
+            </h3>
+            {isSearchingGitHub && (
+              <span className="text-[10px] font-bold text-zinc-500 uppercase flex items-center gap-1.5">
+                <Loader2 className="h-3.5 w-3.5 animate-spin text-accent" />
+                Searching GitHub...
+              </span>
+            )}
+          </div>
+
+          {gitHubError && (
+            <div className="border-2 border-red-500 bg-red-950/20 text-red-400 p-3 text-xs uppercase font-bold">
+              ⚠️ {gitHubError}
+            </div>
+          )}
+
+          {!isSearchingGitHub && gitHubResources.length === 0 && !gitHubError && (
+            <div className="border-2 border-zinc-800 bg-zinc-950 p-6 text-center text-zinc-500 text-xs font-bold uppercase select-none">
+              No matching community guides found on GitHub.
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {gitHubResources.map((repo) => (
+              <div
+                key={repo.id}
+                className="border-2 border-foreground bg-zinc-950 p-5 shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:shadow-[4px_4px_0px_0px_var(--accent)] hover:translate-y-[-2px] transition-all flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-4">
+                    <span className="text-[9px] bg-zinc-900 border border-border px-2 py-0.5 text-accent font-black uppercase tracking-wider truncate max-w-[120px]">
+                      {repo.language || "RESOURCE"}
+                    </span>
+                    <div className="flex items-center gap-2 text-[9px] text-zinc-500 font-bold">
+                      <span className="text-yellow-400">★ {repo.stargazers_count.toLocaleString()}</span>
+                      <span>⑂ {repo.forks_count.toLocaleString()}</span>
+                    </div>
+                  </div>
+
+                  <h3 className="text-xs font-black text-foreground uppercase tracking-tight mt-4 truncate">
+                    {repo.name}
+                  </h3>
+                  <span className="text-[10px] text-zinc-500 font-bold block">@{repo.owner.login}</span>
+                  
+                  <p className="text-xs text-muted-foreground mt-2 leading-relaxed line-clamp-3 h-14 overflow-hidden">
+                    {repo.description || "No description provided for this repository."}
+                  </p>
+                </div>
+
+                <div className="mt-6 pt-3 border-t border-border flex items-center justify-between font-bold text-xs select-none gap-2">
+                  <a
+                    href={repo.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-zinc-400 hover:text-foreground flex items-center gap-1 hover:underline truncate"
+                  >
+                    Open Repo <Globe className="h-3.5 w-3.5" />
+                  </a>
+
+                  <button
+                    onClick={() => handlePresetImport(repo.owner.login, repo.name)}
+                    className="px-2.5 py-1.5 border-2 border-foreground bg-zinc-900 text-foreground font-black text-[10px] uppercase shadow-[2px_2px_0px_0px_#ffffff] hover:bg-zinc-800 flex items-center gap-1 hover:shadow-[2px_2px_0px_0px_var(--accent)] transition-all cursor-pointer shrink-0"
+                  >
+                    READ DOCS <BookOpen className="h-3.5 w-3.5 text-accent" />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -1,10 +1,11 @@
 import { Metadata } from "next"
-import { Scale, Check, X, ShieldAlert } from "lucide-react"
+import { Scale } from "lucide-react"
 import licensesData from "../../../data/licenses.json"
+import LicenseExplorerClient from "./LicenseExplorerClient"
 
 export const metadata: Metadata = {
   title: "Open Source License Explorer - OpenDev Hub",
-  description: "Compare MIT, Apache 2.0, and GPLv3 licenses, their permissions, obligations, and limitations.",
+  description: "Compare popular open source licenses (MIT, Apache 2.0, GPLv3, BSD 3-Clause, MPL 2.0, AGPLv3, Unlicense), their permissions, obligations, and limitations.",
 }
 
 export default function LicensesPage() {
@@ -19,76 +20,11 @@ export default function LicensesPage() {
           <span>OPEN-SOURCE LICENSE EXPLORER</span>
         </h2>
         <p className="text-xs text-muted-foreground leading-relaxed max-w-xl">
-          Quickly understand what you can and cannot do with popular open source licenses, from permissive MIT to copyleft GPL.
+          Quickly understand what you can and cannot do with popular open source licenses, from permissive MIT/BSD to copyleft GPL/AGPL and weak copyleft MPL.
         </p>
       </div>
 
-      <div className="space-y-8">
-        {licensesData.map((lic) => (
-          <div
-            key={lic.slug}
-            id={`lic-${lic.slug}`}
-            className="border-4 border-foreground bg-card p-6 shadow-neo-primary hover:translate-y-[-2px] transition-all"
-          >
-            <div className="border-b border-border pb-3 mb-4">
-              <span className="text-[10px] bg-accent text-accent-foreground border border-foreground px-2 py-0.5 font-bold uppercase tracking-wider">
-                LICENSE OVERVIEW
-              </span>
-              <h3 className="text-lg font-black text-foreground uppercase mt-2">{lic.name}</h3>
-              <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{lic.description}</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
-              <div className="border-2 border-foreground bg-zinc-950 p-4 space-y-3">
-                <span className="text-[10px] text-green-400 font-black uppercase block border-b border-zinc-900 pb-1.5 flex items-center gap-1">
-                  <Check className="h-4 w-4" /> PERMISSIONS
-                </span>
-                <ul className="space-y-1.5 text-xs text-zinc-300">
-                  {lic.permissions.map((p) => (
-                    <li key={p} className="flex items-center gap-1.5 font-bold">
-                      <span className="h-1.5 w-1.5 bg-green-500 shrink-0" />
-                      <span>{p}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="border-2 border-foreground bg-zinc-950 p-4 space-y-3">
-                <span className="text-[10px] text-yellow-400 font-black uppercase block border-b border-zinc-900 pb-1.5 flex items-center gap-1">
-                  <ShieldAlert className="h-4 w-4" /> CONDITIONS
-                </span>
-                <ul className="space-y-1.5 text-xs text-zinc-300">
-                  {lic.conditions.map((c) => (
-                    <li key={c} className="flex items-center gap-1.5 font-bold">
-                      <span className="h-1.5 w-1.5 bg-yellow-500 shrink-0" />
-                      <span>{c}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="border-2 border-foreground bg-zinc-950 p-4 space-y-3">
-                <span className="text-[10px] text-red-400 font-black uppercase block border-b border-zinc-900 pb-1.5 flex items-center gap-1">
-                  <X className="h-4 w-4" /> LIMITATIONS
-                </span>
-                <ul className="space-y-1.5 text-xs text-zinc-300">
-                  {lic.limitations.map((l) => (
-                    <li key={l} className="flex items-center gap-1.5 font-bold">
-                      <span className="h-1.5 w-1.5 bg-red-500 shrink-0" />
-                      <span>{l}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            <div className="mt-6 pt-3 border-t border-border/40 text-[10px] font-bold text-zinc-500 flex items-center justify-between">
-              <span>USAGE EXAMPLE:</span>
-              <span className="text-foreground">{lic.example}</span>
-            </div>
-          </div>
-        ))}
-      </div>
+      <LicenseExplorerClient licenses={licensesData} />
     </div>
   )
 }

@@ -98,7 +98,26 @@ export function CmdKDialog({ open, setOpen }: CmdKDialogProps) {
   const licenses = [
     { name: "MIT License", slug: "mit" },
     { name: "Apache License 2.0", slug: "apache-2.0" },
-    { name: "GNU GPLv3", slug: "gpl-3.0" }
+    { name: "BSD 2-Clause License", slug: "bsd-2-clause" },
+    { name: "BSD 3-Clause License", slug: "bsd-3-clause" },
+    { name: "ISC License", slug: "isc" },
+    { name: "zlib License", slug: "zlib" },
+    { name: "Artistic License 2.0", slug: "artistic-2.0" },
+    { name: "Python Software Foundation License", slug: "psfl" },
+    { name: "Boost Software License 1.0", slug: "bsl-1.0" },
+    { name: "University of Illinois/NCSA Open Source License", slug: "ncsa" },
+    { name: "Mozilla Public License 2.0", slug: "mpl-2.0" },
+    { name: "GNU Lesser General Public License v2.1", slug: "lgpl-2.1" },
+    { name: "GNU Lesser General Public License v3.0", slug: "lgpl-3.0" },
+    { name: "Eclipse Public License 2.0", slug: "epl-2.0" },
+    { name: "Common Development and Distribution License", slug: "cddl-1.0" },
+    { name: "GNU General Public License v2.0", slug: "gpl-2.0" },
+    { name: "GNU GPLv3", slug: "gpl-3.0" },
+    { name: "GNU AGPLv3", slug: "agpl-3.0" },
+    { name: "European Union Public Licence 1.2", slug: "eupl-1.2" },
+    { name: "CeCILL License v2.1", slug: "cecill-2.1" },
+    { name: "The Unlicense", slug: "unlicense" },
+    { name: "CC0 1.0 Universal", slug: "cc0-1.0" }
   ]
 
   return (
