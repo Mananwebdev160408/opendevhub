@@ -112,10 +112,13 @@ export async function searchIssues(params: {
   q: string
   page?: number
   perPage?: number
+  sort?: string
+  order?: "asc" | "desc"
 }): Promise<{ items: GithubIssue[]; total_count: number }> {
-  const { q, page = 1, perPage = 20 } = params
+  const { q, page = 1, perPage = 20, sort, order = "desc" } = params
   const queryString = encodeURIComponent(q)
-  const url = `${BASE_URL}/search/issues?q=${queryString}&page=${page}&per_page=${perPage}`
+  const sortParam = sort ? `&sort=${sort}&order=${order}` : ""
+  const url = `${BASE_URL}/search/issues?q=${queryString}${sortParam}&page=${page}&per_page=${perPage}`
 
   const res = await fetch(url, {
     headers: getHeaders(),

@@ -80,6 +80,8 @@ export function RepoExplorer() {
   const searchParams = useSearchParams()
 
   const qParam = searchParams.get("q") || ""
+  const orgParam = searchParams.get("org") || ""
+  const repoParam = searchParams.get("repo") || ""
   const langParam = searchParams.get("lang") || ""
   const sortParam = (searchParams.get("sort") || "stars") as "stars" | "forks" | "updated"
   const pageParam = parseInt(searchParams.get("page") || "1", 10)
@@ -101,6 +103,8 @@ export function RepoExplorer() {
   const archivedParam = searchParams.get("archived") === "true"
 
   const [searchInput, setSearchInput] = React.useState(qParam)
+  const [orgInput, setOrgInput] = React.useState(orgParam)
+  const [repoInput, setRepoInput] = React.useState(repoParam)
   const [customLangInput, setCustomLangInput] = React.useState("")
   const [localStarsMin, setLocalStarsMin] = React.useState(starsMinParam)
   const [localStarsMax, setLocalStarsMax] = React.useState(starsMaxParam)
@@ -125,7 +129,9 @@ export function RepoExplorer() {
 
   React.useEffect(() => {
     setSearchInput(qParam)
-  }, [qParam])
+    setOrgInput(orgParam)
+    setRepoInput(repoParam)
+  }, [qParam, orgParam, repoParam])
 
   React.useEffect(() => {
     setLocalStarsMin(starsMinParam)
@@ -144,6 +150,8 @@ export function RepoExplorer() {
   const updateUrlParams = React.useCallback(
     (newParams: {
       q?: string
+      org?: string
+      repo?: string
       lang?: string
       sort?: string
       page?: number
@@ -178,6 +186,8 @@ export function RepoExplorer() {
       }
 
       setOrDelete("q", newParams.q)
+      setOrDelete("org", newParams.org)
+      setOrDelete("repo", newParams.repo)
       setOrDelete("lang", newParams.lang)
       setOrDelete("sort", newParams.sort)
       setOrDelete("stars", newParams.stars)
@@ -216,6 +226,16 @@ export function RepoExplorer() {
 
         if (qParam.trim()) {
           queryParts.push(qParam.trim())
+        }
+
+        // Specific Org Constraint
+        if (orgParam.trim()) {
+          queryParts.push(`user:${orgParam.trim()}`)
+        }
+
+        // Specific Repo Constraint
+        if (repoParam.trim()) {
+          queryParts.push(`repo:${repoParam.trim()}`)
         }
 
         if (langParam) {
@@ -304,7 +324,10 @@ export function RepoExplorer() {
           perPage: 12,
         })
 
-        setRepos(data.items)
+        let fetchedRepos = data.items
+
+        // Case-insensitive contained search for Specific Org client-side filter
+        setRepos(fetchedRepos)
         setTotalCount(data.total_count)
       } catch (err: any) {
         console.error(err)
@@ -317,6 +340,8 @@ export function RepoExplorer() {
     fetchRepos()
   }, [
     qParam,
+    orgParam,
+    repoParam,
     langParam,
     sortParam,
     pageParam,
@@ -339,7 +364,11 @@ export function RepoExplorer() {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    updateUrlParams({ q: searchInput })
+    updateUrlParams({
+      q: searchInput,
+      org: orgInput,
+      repo: repoInput,
+    })
   }
 
   const handleLangSelect = (lang: string) => {
@@ -353,7 +382,10 @@ export function RepoExplorer() {
 
   const handleClearAllFilters = () => {
     setCustomLangInput("")
+    setOrgInput("")
+    setRepoInput("")
     updateUrlParams({
+      q: "",
       lang: "",
       stars: "",
       starsMin: "",
@@ -370,6 +402,8 @@ export function RepoExplorer() {
       goodFirst: false,
       helpWanted: false,
       archived: false,
+      org: "",
+      repo: "",
     })
   }
 
@@ -391,6 +425,14 @@ export function RepoExplorer() {
 
     if (langParam) {
       badges.push({ label: `Lang: ${langParam}`, clearKey: "lang", clearValue: "" })
+    }
+
+    if (orgParam) {
+      badges.push({ label: `Org: ${orgParam}`, clearKey: "org", clearValue: "" })
+    }
+
+    if (repoParam) {
+      badges.push({ label: `Repo: ${repoParam}`, clearKey: "repo", clearValue: "" })
     }
 
     if (starsParam) {
@@ -466,7 +508,7 @@ export function RepoExplorer() {
   }
 
   const activeBadges = getActiveFilterBadges()
-  const isAnyFilterActive = activeBadges.length > 0 || qParam !== ""
+  const isAnyFilterActive = activeBadges.length > 0 || qParam !== "" || orgParam !== "" || repoParam !== ""
 
   const totalPages = Math.min(Math.ceil(totalCount / 12), 80)
 
@@ -480,18 +522,41 @@ export function RepoExplorer() {
           EXPLORE OPEN-SOURCE ECOSYSTEM
         </h2>
 
-        <form onSubmit={handleSearchSubmit} className="flex flex-col md:flex-row gap-4">
-          <div className="relative flex-grow border-2 border-foreground bg-black shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] focus-within:shadow-[3px_3px_0px_0px_var(--accent)] transition-all">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
-            <input
-              type="text"
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              placeholder="Query repository name, description, topic (e.g. state-management)..."
-              className="w-full h-11 pl-10 pr-4 bg-transparent text-sm text-foreground focus:outline-none placeholder:text-zinc-600"
-            />
+        <form onSubmit={handleSearchSubmit} className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="relative border-2 border-foreground bg-black shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] focus-within:shadow-[3px_3px_0px_0px_var(--accent)] transition-all">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+              <input
+                type="text"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                placeholder="Keywords (e.g. state-management)..."
+                className="w-full h-11 pl-10 pr-4 bg-transparent text-sm text-foreground focus:outline-none placeholder:text-zinc-600"
+              />
+            </div>
+
+            <div className="relative border-2 border-foreground bg-black shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] focus-within:shadow-[3px_3px_0px_0px_var(--accent)] transition-all">
+              <input
+                type="text"
+                value={orgInput}
+                onChange={(e) => setOrgInput(e.target.value)}
+                placeholder="Specific Org (e.g. microsoft)..."
+                className="w-full h-11 px-4 bg-transparent text-sm text-foreground focus:outline-none placeholder:text-zinc-600"
+              />
+            </div>
+
+            <div className="relative border-2 border-foreground bg-black shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] focus-within:shadow-[3px_3px_0px_0px_var(--accent)] transition-all">
+              <input
+                type="text"
+                value={repoInput}
+                onChange={(e) => setRepoInput(e.target.value)}
+                placeholder="Specific Repo (e.g. vscode)..."
+                className="w-full h-11 px-4 bg-transparent text-sm text-foreground focus:outline-none placeholder:text-zinc-600"
+              />
+            </div>
           </div>
-          <div className="flex gap-3">
+
+          <div className="flex justify-end gap-3">
             <select
               value={sortParam}
               onChange={handleSortChange}
