@@ -204,7 +204,7 @@ const organizations = [
     category: "DevOps & Infrastructure"
   },
   {
-    login: "meta",
+    login: "facebook",
     name: "Meta Open Source",
     description: "Meta's open-source projects, ranging from React to PyTorch, power some of the world's largest apps.",
     stars: 480000,

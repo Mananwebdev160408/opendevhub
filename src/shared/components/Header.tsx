@@ -37,6 +37,7 @@ export function Header() {
         { label: "EXPLORER", href: "/repos", description: "Search and view raw files, stats, and branches for any GitHub repository." },
         { label: "ISSUES", href: "/issues", description: "Find beginner-friendly 'good first issues' and track live open bugs across GitHub." },
         { label: "TRENDING", href: "/trending", description: "Analyze what repositories and languages are gaining the most traction today." },
+        { label: "ORGANIZATIONS", href: "/orgs", description: "Explore prominent open source software foundations, communities, and creators." },
       ]
     },
     {
@@ -63,6 +64,8 @@ export function Header() {
       links: [
         { label: "NEWS STREAM", href: "/news", description: "Live feed of programming articles, engineering updates, and dev updates from Dev.to." },
         { label: "LICENSES", href: "/licenses", description: "A visual reference of open source license permissions, limitations, and terms." },
+        { label: "ABOUT US", href: "/about", description: "Learn about OpenDev Hub vision, SOLID architecture principles, and offline-first vision." },
+        { label: "PRIVACY POLICY", href: "/privacy", description: "Read about OpenDev Hub security standards, data boundaries, and cookies policy." }
       ]
     }
   ]
@@ -152,7 +155,7 @@ export function Header() {
 
           {/* Mega Menu Dropdown */}
           <div
-            className={`absolute top-[60px] left-1/2 -translate-x-1/2 w-[980px] h-[340px] bg-black border-4 border-foreground shadow-[8px_8px_0px_0px_var(--accent)] z-50 transition-all duration-300 ease-out overflow-hidden ${
+            className={`absolute top-[60px] left-1/2 -translate-x-1/2 w-[980px] h-[390px] bg-black border-4 border-foreground shadow-[8px_8px_0px_0px_var(--accent)] z-50 transition-all duration-300 ease-out overflow-hidden ${
               activeGroup
                 ? "opacity-100 visible translate-y-0 pointer-events-auto"
                 : "opacity-0 invisible -translate-y-2 pointer-events-none"
