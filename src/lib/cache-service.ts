@@ -37,6 +37,9 @@ const EventSchema = new Schema({
   eligibility: { type: String, required: true },
   website: { type: String, required: true },
   description: { type: String, required: true },
+  category: { type: String, required: true, default: "Open Source" },
+  region: { type: String, required: true, default: "Online" },
+  source: { type: String, required: true, default: "Local Curation" },
   importantDates: [ImportantDateSchema],
   updatedAt: { type: Date, default: Date.now }
 })
