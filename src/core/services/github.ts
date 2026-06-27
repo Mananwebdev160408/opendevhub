@@ -72,10 +72,16 @@ export async function searchRepositories(params: {
 }): Promise<{ items: GithubRepo[]; total_count: number }> {
   const { q, sort, order = "desc", page = 1, perPage = 20 } = params
   
-  const queryParts = [q]
-  const queryString = encodeURIComponent(queryParts.join(" "))
-  const sortParam = sort ? `&sort=${sort}&order=${order}` : ""
-  const url = `${BASE_URL}/search/repositories?q=${queryString}${sortParam}&page=${page}&per_page=${perPage}`
+  const queryParams: Record<string, string | number> = {
+    q,
+    page,
+    per_page: perPage
+  }
+  if (sort) {
+    queryParams.sort = sort
+    queryParams.order = order
+  }
+  const url = getFetchUrl("search/repositories", queryParams)
 
   const res = await fetch(url, {
     headers: getHeaders(),
@@ -95,7 +101,7 @@ export async function searchRepositories(params: {
 }
 
 export async function getRepository(owner: string, name: string): Promise<GithubRepo> {
-  const url = `${BASE_URL}/repos/${owner}/${name}`
+  const url = getFetchUrl(`repos/${owner}/${name}`)
   const res = await fetch(url, {
     headers: getHeaders(),
     next: { revalidate: 86400 }
@@ -116,9 +122,16 @@ export async function searchIssues(params: {
   order?: "asc" | "desc"
 }): Promise<{ items: GithubIssue[]; total_count: number }> {
   const { q, page = 1, perPage = 20, sort, order = "desc" } = params
-  const queryString = encodeURIComponent(q)
-  const sortParam = sort ? `&sort=${sort}&order=${order}` : ""
-  const url = `${BASE_URL}/search/issues?q=${queryString}${sortParam}&page=${page}&per_page=${perPage}`
+  const queryParams: Record<string, string | number> = {
+    q,
+    page,
+    per_page: perPage
+  }
+  if (sort) {
+    queryParams.sort = sort
+    queryParams.order = order
+  }
+  const url = getFetchUrl("search/issues", queryParams)
 
   const res = await fetch(url, {
     headers: getHeaders(),
@@ -183,7 +196,7 @@ export async function getTrendingRepositories(params: {
 }
 
 export async function getRepositoryReadme(owner: string, name: string): Promise<string> {
-  const url = `${BASE_URL}/repos/${owner}/${name}/readme`
+  const url = getFetchUrl(`repos/${owner}/${name}/readme`)
   const res = await fetch(url, {
     headers: getHeaders(),
     next: { revalidate: 86400 }
@@ -222,3 +235,83 @@ export async function getRepositoryReadme(owner: string, name: string): Promise<
 
   return ""
 }
+function getFetchUrl(path: string, queryParams?: Record<string, string | number>) {
+  if (typeof window !== "undefined") {
+    const url = new URL("/api/github", window.location.origin)
+    url.searchParams.set("path", path)
+    if (queryParams) {
+      Object.entries(queryParams).forEach(([key, val]) => {
+        url.searchParams.set(key, String(val))
+      })
+    }
+    return url.toString()
+  }
+  
+  const url = new URL(`https://api.github.com/${path}`)
+  if (queryParams) {
+    Object.entries(queryParams).forEach(([key, val]) => {
+      url.searchParams.set(key, String(val))
+    })
+  }
+  return url.toString()
+}
+
+export async function searchOrganizations(params: {
+  q: string
+  page?: number
+  perPage?: number
+}): Promise<{ items: any[]; total_count: number }> {
+  const { q, page = 1, perPage = 10 } = params
+  
+  let queryParts = []
+  if (!q.trim()) {
+    queryParts.push("type:org")
+  } else {
+    queryParts.push(`${q} type:org`)
+  }
+  const queryString = queryParts.join(" ")
+  const sortParam = !q.trim() ? "followers" : ""
+  const orderParam = !q.trim() ? "desc" : ""
+
+  const queryParams: Record<string, string | number> = {
+    q: queryString,
+    page,
+    per_page: perPage
+  }
+  if (sortParam) queryParams.sort = sortParam
+  if (orderParam) queryParams.order = orderParam
+
+  const url = getFetchUrl("search/users", queryParams)
+
+  const res = await fetch(url, {
+    headers: getHeaders(),
+    next: { revalidate: 3600 }
+  })
+
+  if (!res.ok) {
+    const errText = await res.text()
+    throw new Error(`GitHub organization search failed: ${res.statusText} (${res.status}). Details: ${errText}`)
+  }
+
+  const data = await res.json()
+  return {
+    items: data.items || [],
+    total_count: data.total_count || 0
+  }
+}
+
+export async function getOrganizationDetails(login: string): Promise<any> {
+  const url = getFetchUrl(`orgs/${login}`)
+  const res = await fetch(url, {
+    headers: getHeaders(),
+    next: { revalidate: 86400 }
+  })
+
+  if (!res.ok) {
+    throw new Error(`GitHub getOrganizationDetails failed: ${res.statusText} (${res.status})`)
+  }
+
+  return res.json()
+}
+
+

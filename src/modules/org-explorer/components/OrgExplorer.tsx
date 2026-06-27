@@ -2,20 +2,8 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { Building2, Search, ExternalLink, ArrowRight, Info } from "lucide-react"
-
-const ORG_HANDLES = [
-  "vercel",
-  "supabase",
-  "docker",
-  "facebook",
-  "google",
-  "microsoft",
-  "tailwindlabs",
-  "hashicorp",
-  "apache",
-  "automattic"
-]
+import { Building2, Search, ExternalLink, ArrowRight, ArrowLeft, Info } from "lucide-react"
+import { searchOrganizations, getOrganizationDetails } from "@/core/services/github"
 
 const ORG_METADATA: Record<
   string,
@@ -137,92 +125,100 @@ interface OrgDetails {
 
 export function OrgExplorer() {
   const [query, setQuery] = React.useState("")
+  const [activeQuery, setActiveQuery] = React.useState("")
   const [orgs, setOrgs] = React.useState<OrgDetails[]>([])
   const [isLoading, setIsLoading] = React.useState(true)
   const [rateLimited, setRateLimited] = React.useState(false)
+  const [error, setError] = React.useState<string | null>(null)
+  const [page, setPage] = React.useState(1)
+  const [totalCount, setTotalCount] = React.useState(0)
 
-  React.useEffect(() => {
-    let active = true
-
-    async function loadOrgs() {
-      try {
-        const fetchedOrgs = await Promise.all(
-          ORG_HANDLES.map(async (login) => {
-            try {
-              const res = await fetch(`https://api.github.com/orgs/${login}`, {
-                headers: {
-                  Accept: "application/vnd.github.v3+json",
-                }
-              })
-              
-              if (res.status === 403 || res.status === 429) {
-                setRateLimited(true)
-              }
-
-              if (!res.ok) {
-                throw new Error(`Status ${res.status}`)
-              }
-
-              const data = await res.json()
-              return {
-                login,
-                name: data.name || ORG_METADATA[login].fallbackName,
-                description: data.description || ORG_METADATA[login].fallbackDesc,
-                avatar_url: data.avatar_url || `https://github.com/${login}.png`,
-                public_repos: data.public_repos,
-                followers: data.followers,
-                website: data.blog || ORG_METADATA[login].website,
-                category: ORG_METADATA[login].category,
-                popularProjects: ORG_METADATA[login].popularProjects,
-                languages: ORG_METADATA[login].languages,
-                isFallback: false
-              }
-            } catch (err) {
-              console.warn(`Failed to fetch live data for org ${login}:`, err)
-              return {
-                login,
-                name: ORG_METADATA[login].fallbackName,
-                description: ORG_METADATA[login].fallbackDesc,
-                avatar_url: `https://github.com/${login}.png`,
-                public_repos: ORG_METADATA[login].popularProjects.length,
-                followers: null,
-                website: ORG_METADATA[login].website,
-                category: ORG_METADATA[login].category,
-                popularProjects: ORG_METADATA[login].popularProjects,
-                languages: ORG_METADATA[login].languages,
-                isFallback: true
-              }
+  const fetchAndResolveOrgs = React.useCallback(async (searchTerm: string, pageNumber: number) => {
+    setIsLoading(true)
+    setError(null)
+    try {
+      const searchRes = await searchOrganizations({ q: searchTerm, page: pageNumber, perPage: 10 })
+      setTotalCount(searchRes.total_count)
+      
+      const resolved = await Promise.all(
+        searchRes.items.map(async (item: any) => {
+          const login = item.login
+          try {
+            const data = await getOrganizationDetails(login)
+            const metadata = ORG_METADATA[login.toLowerCase()]
+            
+            return {
+              login,
+              name: data.name || (metadata ? metadata.fallbackName : data.login),
+              description: data.description || (metadata ? metadata.fallbackDesc : "No organization description available."),
+              avatar_url: data.avatar_url || `https://github.com/${login}.png`,
+              public_repos: data.public_repos,
+              followers: data.followers,
+              website: data.blog || (metadata ? metadata.website : `https://github.com/${login}`),
+              category: metadata ? metadata.category : "GitHub Organization",
+              popularProjects: metadata ? metadata.popularProjects : [],
+              languages: metadata ? metadata.languages : [],
+              isFallback: false
             }
-          })
-        )
-
-        if (active) {
-          setOrgs(fetchedOrgs)
-          setIsLoading(false)
-        }
-      } catch (err) {
-        console.error("Critical error fetching organizations:", err)
-        if (active) {
-          setIsLoading(false)
-        }
-      }
-    }
-
-    loadOrgs()
-
-    return () => {
-      active = false
+          } catch (err: any) {
+            console.warn(`Failed to fetch details for org ${login}:`, err)
+            if (err.message?.includes("403") || err.message?.includes("429")) {
+              setRateLimited(true)
+            }
+            const metadata = ORG_METADATA[login.toLowerCase()]
+            return {
+              login,
+              name: metadata ? metadata.fallbackName : login,
+              description: metadata ? metadata.fallbackDesc : "Detailed specs currently unavailable.",
+              avatar_url: `https://github.com/${login}.png`,
+              public_repos: metadata ? metadata.popularProjects.length : 0,
+              followers: null,
+              website: metadata ? metadata.website : `https://github.com/${login}`,
+              category: metadata ? metadata.category : "GitHub Organization",
+              popularProjects: metadata ? metadata.popularProjects : [],
+              languages: metadata ? metadata.languages : [],
+              isFallback: true
+            }
+          }
+        })
+      )
+      
+      setOrgs(resolved)
+    } catch (err: any) {
+      console.error("Error loading organizations:", err)
+      setError(err.message || "Failed to load organizations.")
+    } finally {
+      setIsLoading(false)
     }
   }, [])
 
-  const filteredOrgs = React.useMemo(() => {
-    return orgs.filter(org => 
-      org.name.toLowerCase().includes(query.toLowerCase()) ||
-      org.login.toLowerCase().includes(query.toLowerCase()) ||
-      org.description.toLowerCase().includes(query.toLowerCase()) ||
-      org.category.toLowerCase().includes(query.toLowerCase())
-    )
-  }, [orgs, query])
+  React.useEffect(() => {
+    fetchAndResolveOrgs(activeQuery, page)
+  }, [activeQuery, page, fetchAndResolveOrgs])
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    setPage(1)
+    setActiveQuery(query)
+  }
+
+  const handlePrevPage = () => {
+    if (page > 1) {
+      setPage(prev => prev - 1)
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+  }
+
+  const handleNextPage = () => {
+    const totalPages = Math.ceil(totalCount / 10)
+    if (page < totalPages) {
+      setPage(prev => prev + 1)
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+  }
+
+  const filteredOrgs = orgs
+
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-mono">
@@ -251,18 +247,36 @@ export function OrgExplorer() {
         </div>
       )}
 
-      <div className="border-2 border-foreground bg-zinc-950 p-4 shadow-[4px_4px_0px_0px_var(--accent)] mb-8">
-        <div className="relative border-2 border-foreground bg-black shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] focus-within:shadow-[3px_3px_0px_0px_var(--accent)] transition-all">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search by organization name, description, or focus category..."
-            className="w-full h-11 pl-10 pr-4 bg-transparent text-sm text-foreground focus:outline-none placeholder:text-zinc-600"
-          />
+      {error && (
+        <div className="mb-8 border-2 border-red-500 bg-red-950/20 text-red-400 p-4 text-xs font-bold uppercase shadow-[4px_4px_0px_0px_var(--primary)]">
+          <p className="font-black text-sm">ERROR FETCHING DATA</p>
+          <p className="text-[10px] mt-1 font-normal">{error}</p>
         </div>
-      </div>
+      )}
+
+      <form onSubmit={handleSearchSubmit} className="border-2 border-foreground bg-zinc-950 p-4 shadow-[4px_4px_0px_0px_var(--accent)] mb-8">
+        <div className="flex flex-col sm:flex-row gap-3">
+          <div className="relative flex-1 border-2 border-foreground bg-black shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] focus-within:shadow-[3px_3px_0px_0px_var(--accent)] transition-all">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search organizations across entire GitHub..."
+              className="w-full h-11 pl-10 pr-4 bg-transparent text-sm text-foreground focus:outline-none placeholder:text-zinc-600"
+            />
+          </div>
+          <button
+            type="submit"
+            className="px-6 h-12 border-2 border-foreground bg-zinc-950 hover:bg-zinc-900 text-foreground font-black text-xs uppercase shadow-[3px_3px_0px_0px_#ffffff] hover:shadow-[3px_3px_0px_0px_var(--primary)] transition-all select-none cursor-pointer flex items-center justify-center shrink-0"
+          >
+            SEARCH
+          </button>
+        </div>
+        <p className="text-[10.5px] text-zinc-400 mt-2 font-bold uppercase select-none leading-relaxed">
+          ℹ️ Home view displays the top 10 organizations by popularity. Enter a query above to search across the entire GitHub network.
+        </p>
+      </form>
 
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -307,6 +321,14 @@ export function OrgExplorer() {
             </div>
           ))}
         </div>
+      ) : filteredOrgs.length === 0 ? (
+        <div className="border-2 border-foreground bg-zinc-950 p-12 text-center shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
+          <Building2 className="h-10 w-10 text-zinc-600 mx-auto mb-3" />
+          <p className="font-black text-sm uppercase text-foreground">NO ORGANIZATIONS FOUND</p>
+          <p className="text-xs text-muted-foreground mt-1 select-none font-bold">
+            Try searching with another keyword or organization name.
+          </p>
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {filteredOrgs.map((org) => (
@@ -344,45 +366,53 @@ export function OrgExplorer() {
                   {org.description}
                 </p>
 
-                <div className="mt-4">
-                  <span className="text-[10px] text-zinc-500 font-bold uppercase block">KEY PROJECTS:</span>
-                  <div className="flex flex-wrap gap-1.5 mt-1.5">
-                    {org.popularProjects.map(proj => (
-                      <Link
-                        key={proj}
-                        href={`/repos/${org.login}/${proj}`}
-                        className="text-[9px] border border-border bg-black text-zinc-300 px-2 py-0.5 font-bold uppercase hover:text-accent hover:border-accent"
-                      >
-                        {proj}
-                      </Link>
-                    ))}
+                {org.popularProjects.length > 0 && (
+                  <div className="mt-4">
+                    <span className="text-[10px] text-zinc-500 font-bold uppercase block">KEY PROJECTS:</span>
+                    <div className="flex flex-wrap gap-1.5 mt-1.5">
+                      {org.popularProjects.map(proj => (
+                        <Link
+                          key={proj}
+                          href={`/repos/${org.login}/${proj}`}
+                          className="text-[9px] border border-border bg-black text-zinc-300 px-2 py-0.5 font-bold uppercase hover:text-accent hover:border-accent"
+                        >
+                          {proj}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
 
-                <div className="mt-4">
-                  <span className="text-[10px] text-zinc-500 font-bold uppercase block">LANGUAGES USED:</span>
-                  <div className="flex flex-wrap gap-1 mt-1.5">
-                    {org.languages.map(lang => (
-                      <span
-                        key={lang}
-                        className="text-[8.5px] bg-zinc-950 border border-zinc-800 text-zinc-400 px-1.5 py-0.5 font-semibold"
-                      >
-                        {lang}
-                      </span>
-                    ))}
+                {org.languages.length > 0 && (
+                  <div className="mt-4">
+                    <span className="text-[10px] text-zinc-500 font-bold uppercase block">LANGUAGES USED:</span>
+                    <div className="flex flex-wrap gap-1 mt-1.5">
+                      {org.languages.map(lang => (
+                        <span
+                          key={lang}
+                          className="text-[8.5px] bg-zinc-950 border border-zinc-800 text-zinc-400 px-1.5 py-0.5 font-semibold"
+                        >
+                          {lang}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
               <div className="mt-6 pt-3 border-t border-border flex items-center justify-between font-bold text-xs">
-                <a
-                  href={org.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-zinc-400 hover:text-foreground flex items-center gap-1 hover:underline"
-                >
-                  Website <ExternalLink className="h-3.5 w-3.5" />
-                </a>
+                {org.website ? (
+                  <a
+                    href={org.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-zinc-400 hover:text-foreground flex items-center gap-1 hover:underline"
+                  >
+                    Website <ExternalLink className="h-3.5 w-3.5" />
+                  </a>
+                ) : (
+                  <span className="text-zinc-600 select-none">No Website</span>
+                )}
 
                 <Link
                   href={`/orgs/${org.login}`}
@@ -395,6 +425,29 @@ export function OrgExplorer() {
           ))}
         </div>
       )}
+
+      {activeQuery.trim() && totalCount > 10 && (
+        <div className="mt-8 flex items-center justify-between border-2 border-foreground bg-zinc-950 p-4 shadow-[4px_4px_0px_0px_var(--primary)] font-bold text-xs uppercase select-none">
+          <button
+            onClick={handlePrevPage}
+            disabled={page <= 1 || isLoading}
+            className="px-3 py-1.5 border-2 border-foreground bg-black hover:bg-zinc-900 disabled:opacity-40 disabled:hover:bg-black text-foreground font-black cursor-pointer flex items-center gap-1.5 shadow-[2px_2px_0px_0px_#ffffff] transition-all"
+          >
+            <ArrowLeft className="h-4 w-4 text-accent" /> PREV
+          </button>
+          <span className="text-muted-foreground text-[10px] sm:text-xs">
+            PAGE {page} OF {Math.ceil(totalCount / 10)} ({totalCount} RESULTS)
+          </span>
+          <button
+            onClick={handleNextPage}
+            disabled={page >= Math.ceil(totalCount / 10) || isLoading}
+            className="px-3 py-1.5 border-2 border-foreground bg-black hover:bg-zinc-900 disabled:opacity-40 disabled:hover:bg-black text-foreground font-black cursor-pointer flex items-center gap-1.5 shadow-[2px_2px_0px_0px_#ffffff] transition-all"
+          >
+            NEXT <ArrowRight className="h-4 w-4 text-accent animate-pulse" />
+          </button>
+        </div>
+      )}
     </div>
   )
 }
+

@@ -82,6 +82,10 @@ export default async function OrgDetailsPage({ params }: PageProps) {
     }))
     isFallback = true
   }
+  const languagesToDisplay = seedOrg
+    ? seedOrg.languages
+    : (Array.from(new Set(repos.map((r: any) => r.language).filter(Boolean))) as string[])
+
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-mono space-y-8">
@@ -177,7 +181,7 @@ export default async function OrgDetailsPage({ params }: PageProps) {
             Main programming languages and framework structures heavily maintained by this organization.
           </p>
           <div className="flex flex-wrap gap-1.5 mt-2">
-            {seedOrg ? seedOrg.languages.map(lang => (
+            {languagesToDisplay.length > 0 ? languagesToDisplay.map(lang => (
               <span key={lang} className="text-[9px] border border-border px-2 py-0.5 bg-black text-zinc-300">
                 {lang}
               </span>
