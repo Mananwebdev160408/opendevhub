@@ -4,6 +4,8 @@ import apisDataFallback from "../../../data/apis.json"
 import { connectToDatabase } from "@/lib/mongodb"
 import { ApiModel } from "@/lib/cache-service"
 
+export const dynamic = "force-dynamic"
+
 export const metadata: Metadata = {
   title: "Public APIs Directory - OpenDev Hub",
   description: "Browse curated developer-friendly APIs with authorization schemes, limits, and docs.",
