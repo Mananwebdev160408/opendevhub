@@ -1,6 +1,8 @@
 import { ExternalLink, Rss, AlertTriangle, Heart, MessageSquare, Clock } from "lucide-react"
 import newsData from "../../../data/news.json"
 import { Metadata } from "next"
+import { getCache, setCache, Cache as CacheModel } from "@/lib/cache-service"
+import { connectToDatabase } from "@/lib/mongodb"
 
 export const metadata: Metadata = {
   title: "Developer News Stream - OpenDev Hub",
@@ -35,10 +37,27 @@ const CATEGORIES = [
 
 async function getNews(category: string, page: number): Promise<{ news: NewsItem[]; error: string | null; hasNextPage: boolean }> {
   const perPage = 16
+  const cacheKey = `news:${category}:${page}`
+  const ttlSeconds = 3600 // 1 hour
+
+  // 1. Try reading from MongoDB Cache
   try {
-    const res = await fetch(`https://dev.to/api/articles?tag=${category}&per_page=${perPage}&page=${page}`, {
-      next: { revalidate: 3600 } // Cache for 1 hour
-    })
+    const cached = await getCache(cacheKey, ttlSeconds)
+    if (cached) {
+      console.log(`[News Cache Hit] Serving cached news for category: ${category}, page: ${page}`)
+      return {
+        news: cached.news,
+        error: null,
+        hasNextPage: cached.hasNextPage
+      }
+    }
+  } catch (err) {
+    console.error("MongoDB News Cache check failed, proceeding live...", err)
+  }
+
+  // 2. Fetch live data from dev.to
+  try {
+    const res = await fetch(`https://dev.to/api/articles?tag=${category}&per_page=${perPage}&page=${page}`)
     if (!res.ok) {
       throw new Error(`Failed to fetch news from dev.to API for tag: ${category}`)
     }
@@ -58,16 +77,46 @@ async function getNews(category: string, page: number): Promise<{ news: NewsItem
         reactions: item.public_reactions_count || undefined,
         comments: item.comments_count || undefined,
       }))
-      return { 
-        news: mapped, 
-        error: null, 
-        hasNextPage: mapped.length === perPage 
+
+      const resultPayload = {
+        news: mapped,
+        hasNextPage: mapped.length === perPage
+      }
+
+      // Save to cache asynchronously
+      setCache(cacheKey, resultPayload).catch(err => 
+        console.error(`Failed to cache news for ${cacheKey}:`, err)
+      )
+
+      return {
+        news: mapped,
+        error: null,
+        hasNextPage: resultPayload.hasNextPage
       }
     } else {
       throw new Error("Empty response from dev.to API")
     }
   } catch (err: any) {
-    console.error("Error loading developer news feed:", err)
+    console.error("Error loading developer news feed live:", err)
+    
+    // 3. Fallback to expired cache from MongoDB
+    try {
+      await connectToDatabase()
+      const expiredRecord = await CacheModel.findOne({ key: cacheKey }).lean()
+      if (expiredRecord && expiredRecord.value) {
+        console.log(`[Expired News Cache Fallback] Serving expired cached news for ${cacheKey}`)
+        return {
+          news: expiredRecord.value.news,
+          error: "Could not retrieve live news stream. Displaying cached entries.",
+          hasNextPage: expiredRecord.value.hasNextPage
+        }
+      }
+    } catch (dbErr) {
+      console.error("Failed to query expired news cache from MongoDB:", dbErr)
+    }
+
+    // 4. Fallback to local news.json
+    console.warn("Serving local static news.json fallback.")
     const filteredFallback = newsData.filter(item => {
       if (category === "programming") return true
       return item.category.toLowerCase().includes(category.toLowerCase()) || 

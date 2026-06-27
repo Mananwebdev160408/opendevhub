@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
-import { getRepository, searchIssues } from "@/core/services/github"
+import { getRepository, searchIssues } from "@/core/services/github-server"
 import { ArrowLeft, Star, GitFork, AlertCircle, Info, ExternalLink, ShieldAlert, Cpu, Calendar } from "lucide-react"
 import { formatDistanceToNow } from "date-fns"
 

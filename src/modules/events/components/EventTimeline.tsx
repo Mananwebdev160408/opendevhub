@@ -1,5 +1,7 @@
 import { Calendar, Globe } from "lucide-react"
 import eventsDataFallback from "../../../../data/events.json"
+import { connectToDatabase } from "@/lib/mongodb"
+import { EventModel } from "@/lib/cache-service"
 
 interface EventItem {
   name: string
@@ -12,20 +14,33 @@ interface EventItem {
 
 async function getEvents(): Promise<{ events: EventItem[]; error: string | null }> {
   try {
-    const res = await fetch("https://raw.githubusercontent.com/Mananwebdev160408/opendevhub/main/data/events.json", {
-      next: { revalidate: 86400 } // Cache for 24 hours
-    })
-    if (!res.ok) {
-      throw new Error("Failed to fetch events from live repository.")
+    await connectToDatabase()
+    const dbEvents = await EventModel.find({}).lean()
+    
+    if (dbEvents && dbEvents.length > 0) {
+      console.log(`[Events DB Hit] Loaded ${dbEvents.length} events from MongoDB.`)
+      return {
+        events: dbEvents.map((event: any) => ({
+          name: event.name,
+          timeline: event.timeline,
+          description: event.description,
+          eligibility: event.eligibility,
+          website: event.website,
+          importantDates: event.importantDates.map((d: any) => ({ event: d.event, date: d.date }))
+        })),
+        error: null
+      }
     }
-    const data = await res.json()
-    return { events: data, error: null }
+    
+    console.log("[Events DB Empty] Falling back to local static events dataset.")
   } catch (err: any) {
-    console.error(err)
-    return {
-      events: eventsDataFallback,
-      error: "Could not retrieve live event schedule. Displaying cached timeline."
-    }
+    console.error("MongoDB Events fetch failed, falling back to local static file...", err)
+  }
+
+  // Fallback to static JSON file
+  return {
+    events: eventsDataFallback,
+    error: "Could not retrieve live event schedule. Displaying cached timeline."
   }
 }
 
