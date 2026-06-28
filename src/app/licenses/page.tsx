@@ -6,6 +6,9 @@ import LicenseExplorerClient from "./LicenseExplorerClient"
 export const metadata: Metadata = {
   title: "Open Source License Explorer - OpenDev Hub",
   description: "Compare popular open source licenses (MIT, Apache 2.0, GPLv3, BSD 3-Clause, MPL 2.0, AGPLv3, Unlicense), their permissions, obligations, and limitations.",
+  alternates: {
+    canonical: "/licenses",
+  },
 }
 
 export default function LicensesPage() {
@@ -15,10 +18,10 @@ export default function LicensesPage() {
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
           LICENSES
         </div>
-        <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
+        <h1 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
           <Scale className="h-6 w-6 text-accent" />
           <span>OPEN-SOURCE LICENSE EXPLORER</span>
-        </h2>
+        </h1>
         <p className="text-xs text-muted-foreground leading-relaxed max-w-xl">
           Quickly understand what you can and cannot do with popular open source licenses, from permissive MIT/BSD to copyleft GPL/AGPL and weak copyleft MPL.
         </p>

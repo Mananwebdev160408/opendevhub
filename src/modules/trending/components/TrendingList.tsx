@@ -43,10 +43,10 @@ export function TrendingList() {
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
           TRENDING REPOSITORIES
         </div>
-        <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
+        <h1 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
           <TrendingUp className="h-6 w-6 text-primary" />
           <span>TRENDING REPOSITORIES ARCHIVE</span>
-        </h2>
+        </h1>
         <p className="text-xs text-muted-foreground leading-relaxed max-w-xl">
           Discover the projects the developer community is pushing commits to, starring, and duplicating right now, updated dynamically.
         </p>

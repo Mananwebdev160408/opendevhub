@@ -5,6 +5,9 @@ import { Suspense } from "react"
 export const metadata: Metadata = {
   title: "Developer Toolbox - OpenDev Hub",
   description: "Access 32+ local, sandboxed developer utility widgets for formatting JSON, encoding URLs, testing RegEx, generating UUIDs, and translating timestamps.",
+  alternates: {
+    canonical: "/tools",
+  },
 }
 
 export default function ToolsPage() {

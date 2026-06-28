@@ -4,6 +4,9 @@ import { Metadata } from "next"
 export const metadata: Metadata = {
   title: "HTTP Status Codes Finder - OpenDev Hub",
   description: "Browse success, redirect, client error, and server error HTTP status codes, their syntax specifications, and details.",
+  alternates: {
+    canonical: "/http-status",
+  },
 }
 
 export default function HttpStatusPage() {

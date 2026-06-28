@@ -3,6 +3,7 @@ import Link from "next/link"
 import { getRepository, searchIssues } from "@/core/services/github-server"
 import { ArrowLeft, Star, GitFork, AlertCircle, Info, ExternalLink, ShieldAlert, Cpu, Calendar } from "lucide-react"
 import { formatDistanceToNow } from "date-fns"
+import { Metadata } from "next"
 
 export const revalidate = 86400 // Cache edge response for 24 hours
 
@@ -12,6 +13,18 @@ export async function generateStaticParams() {
 
 interface PageProps {
   params: Promise<{ owner: string; name: string }>
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { owner, name } = await params
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://opendev-hub.vercel.app"
+  return {
+    title: `${owner}/${name} Repository Insights - OpenDev Hub`,
+    description: `Analyze stars, forks, issues, and contribution metrics for ${owner}/${name} on OpenDev Hub, the open-source developer hub.`,
+    alternates: {
+      canonical: `${baseUrl}/repos/${owner}/${name}`
+    }
+  }
 }
 
 export default async function RepositoryDetailsPage({ params }: PageProps) {

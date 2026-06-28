@@ -23,10 +23,10 @@ export function HttpStatuses() {
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
           HTTP STATUS CODES
         </div>
-        <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
+        <h1 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
           <HelpCircle className="h-6 w-6 text-primary" />
           <span>HTTP STATUS CODES FINDER</span>
-        </h2>
+        </h1>
         <p className="text-xs text-muted-foreground leading-relaxed max-w-xl">
           Quick reference index of standard Hypertext Transfer Protocol (HTTP) response status codes, their categories, and exact definitions.
         </p>
@@ -87,7 +87,7 @@ export function HttpStatuses() {
               </span>
             </div>
 
-            <h1 className="text-4xl font-black text-foreground">{activeStatus.code}</h1>
+            <h2 className="text-4xl font-black text-foreground">{activeStatus.code}</h2>
             <h3 className="text-sm font-black text-accent uppercase mt-2">{activeStatus.name}</h3>
             
             <p className="text-xs text-muted-foreground leading-relaxed mt-4 border-l-4 border-primary pl-3 bg-zinc-950/40 py-2">

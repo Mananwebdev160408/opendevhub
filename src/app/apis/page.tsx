@@ -9,6 +9,9 @@ export const dynamic = "force-dynamic"
 export const metadata: Metadata = {
   title: "Public APIs Directory - OpenDev Hub",
   description: "Browse curated developer-friendly APIs with authorization schemes, limits, and docs.",
+  alternates: {
+    canonical: "/apis",
+  },
 }
 
 interface PublicApi {

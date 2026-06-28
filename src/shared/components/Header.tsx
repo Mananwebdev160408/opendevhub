@@ -64,7 +64,9 @@ export function Header() {
         { label: "NEWS STREAM", href: "/news", description: "Live feed of programming articles, engineering updates, and dev updates from Dev.to." },
         { label: "LICENSES", href: "/licenses", description: "A visual reference of open source license permissions, limitations, and terms." },
         { label: "ABOUT US", href: "/about", description: "Learn about OpenDev Hub vision, SOLID architecture principles, and offline-first vision." },
-        { label: "PRIVACY POLICY", href: "/privacy", description: "Read about OpenDev Hub security standards, data boundaries, and cookies policy." }
+        { label: "CONTACT US", href: "/contact", description: "Get in touch with the OpenDev Hub maintainer or submit suggestions." },
+        { label: "PRIVACY POLICY", href: "/privacy", description: "Read about OpenDev Hub security standards, data boundaries, and cookies policy." },
+        { label: "TERMS OF SERVICE", href: "/terms", description: "Read about OpenDev Hub software permissions, licensing, and limits." }
       ]
     }
   ]
@@ -199,7 +201,7 @@ export function Header() {
                     </div>
                   </div>
 
-                  <div className="col-span-8 p-6 bg-black flex flex-col justify-center gap-3">
+                  <div className="col-span-8 p-6 bg-black grid grid-cols-2 gap-3 content-center">
                     {group.links.map((link) => {
                       const linkActive = isActive(link.href)
                       return (

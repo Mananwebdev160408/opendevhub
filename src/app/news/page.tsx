@@ -7,6 +7,9 @@ import { connectToDatabase } from "@/lib/mongodb"
 export const metadata: Metadata = {
   title: "Developer News Stream - OpenDev Hub",
   description: "Direct logs, engine updates, and framework notifications parsed from curated feeds, updated hourly.",
+  alternates: {
+    canonical: "/news",
+  },
 }
 
 interface NewsItem {
@@ -147,10 +150,10 @@ export default async function NewsPage(props: {
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
           DEVELOPER RELEASES
         </div>
-        <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
+        <h1 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
           <Rss className="h-6 w-6 text-primary" />
           <span>DEVELOPER NEWS STREAM</span>
-        </h2>
+        </h1>
         <p className="text-xs text-muted-foreground leading-relaxed max-w-xl">
           Direct logs, engine updates, and framework notifications parsed from curated RSS feeds and announcements, updated hourly.
         </p>

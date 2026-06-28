@@ -4,16 +4,19 @@ import { Shield, Lock } from "lucide-react"
 export const metadata: Metadata = {
   title: "Privacy Policy - OpenDev Hub",
   description: "Read about OpenDev Hub offline-first data principles and security standards.",
+  alternates: {
+    canonical: "/privacy",
+  },
 }
 
 export default function PrivacyPage() {
   return (
     <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-mono space-y-8">
       <div className="border-4 border-foreground bg-black p-6 shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] relative overflow-hidden bg-dot-pattern">
-        <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-2 flex items-center gap-2">
+        <h1 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-2 flex items-center gap-2">
           <Shield className="h-6 w-6 text-primary" />
           <span>PRIVACY POLICY</span>
-        </h2>
+        </h1>
         <span className="text-[10px] bg-accent text-accent-foreground border border-foreground px-2 py-0.5 font-bold uppercase tracking-wider">
           PRIVACY RULES // SECURITY LOG
         </span>

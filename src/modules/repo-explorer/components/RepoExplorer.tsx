@@ -535,9 +535,9 @@ export function RepoExplorer() {
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
           REPOSITORY EXPLORER
         </div>
-        <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4">
+        <h1 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4">
           EXPLORE OPEN-SOURCE ECOSYSTEM
-        </h2>
+        </h1>
 
         <form onSubmit={handleSearchSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

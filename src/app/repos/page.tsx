@@ -5,6 +5,9 @@ import { Suspense } from "react"
 export const metadata: Metadata = {
   title: "Repository Explorer - OpenDev Hub",
   description: "Explore and search open-source repositories by language, topic, and stats directly linking to GitHub.",
+  alternates: {
+    canonical: "/repos",
+  },
 }
 
 export default function ReposPage() {

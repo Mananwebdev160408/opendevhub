@@ -6,6 +6,9 @@ export const dynamic = "force-dynamic"
 export const metadata: Metadata = {
   title: "Open Source Events Schedules - OpenDev Hub",
   description: "View deadlines, registration logs, and schedules for Google Summer of Code, Hacktoberfest, and Outreachy.",
+  alternates: {
+    canonical: "/events",
+  },
 }
 
 export default function EventsPage() {

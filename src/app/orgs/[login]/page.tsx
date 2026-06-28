@@ -2,6 +2,7 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft, Building2, ExternalLink, Globe, Star, GitFork, Info } from "lucide-react"
 import organizationsData from "../../../../data/organizations.json"
+import { Metadata } from "next"
 
 export const revalidate = 86400
 
@@ -11,6 +12,19 @@ export async function generateStaticParams() {
 
 interface PageProps {
   params: Promise<{ login: string }>
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { login } = await params
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://opendev-hub.vercel.app"
+  const displayName = login.charAt(0).toUpperCase() + login.slice(1)
+  return {
+    title: `${displayName} Open Source Organization Profile - OpenDev Hub`,
+    description: `Explore ${displayName} open source repositories, projects, stars, and contribution avenues index page on OpenDev Hub.`,
+    alternates: {
+      canonical: `${baseUrl}/orgs/${login}`
+    }
+  }
 }
 
 async function fetchOrgDetails(login: string) {

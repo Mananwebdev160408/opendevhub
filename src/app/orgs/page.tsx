@@ -4,6 +4,9 @@ import { Metadata } from "next"
 export const metadata: Metadata = {
   title: "Open Source Organizations - OpenDev Hub",
   description: "Browse curated collections of prominent software foundations, framework maintainers, and tools creators.",
+  alternates: {
+    canonical: "/orgs",
+  },
 }
 
 export default function OrgsPage() {

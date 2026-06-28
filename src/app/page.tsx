@@ -1,4 +1,11 @@
 import { Hero, BentoGrid, Philosophy, GitVisualizer, DeepDive, FAQ } from "@/modules/home"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/",
+  },
+}
 
 export default function Home() {
   return (

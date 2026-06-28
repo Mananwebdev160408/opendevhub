@@ -71,10 +71,10 @@ export function GitCheats() {
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
           GITHUB CHEATSHEET
         </div>
-        <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
+        <h1 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
           <Terminal className="h-6 w-6 text-accent" />
           <span>GITHUB UNIVERSAL CHEATSHEET & TROUBLESHOOTING</span>
-        </h2>
+        </h1>
         <p className="text-xs text-muted-foreground leading-relaxed max-w-xl">
           A definitive, searchable index of core Git operations and solutions to common workflow issues. Filter by category, search errors, and copy clean snippets instantly.
         </p>

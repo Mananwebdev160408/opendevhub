@@ -5,6 +5,9 @@ import { Suspense } from "react"
 export const metadata: Metadata = {
   title: "Good First Issues Finder - OpenDev Hub",
   description: "Find open-source issues tagged as 'good first issue' across hundreds of repositories on GitHub.",
+  alternates: {
+    canonical: "/issues",
+  },
 }
 
 export default function IssuesPage() {

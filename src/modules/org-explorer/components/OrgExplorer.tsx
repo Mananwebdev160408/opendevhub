@@ -226,10 +226,10 @@ export function OrgExplorer() {
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
           ORGANIZATIONS
         </div>
-        <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
+        <h1 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
           <Building2 className="h-6 w-6 text-accent" />
           <span>OPEN-SOURCE ORGANIZATIONS</span>
-        </h2>
+        </h1>
         <p className="text-xs text-muted-foreground leading-relaxed max-w-xl">
           Browse prominent tech organizations, framework creators, and open-source foundations driving modern software infrastructure.
         </p>

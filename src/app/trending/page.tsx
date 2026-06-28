@@ -4,6 +4,9 @@ import { Metadata } from "next"
 export const metadata: Metadata = {
   title: "Trending Repositories - OpenDev Hub",
   description: "See the fastest-growing open source projects in developer ecosystems right now.",
+  alternates: {
+    canonical: "/trending",
+  },
 }
 
 export default function TrendingPage() {

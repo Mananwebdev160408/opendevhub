@@ -47,10 +47,10 @@ export function ApiList({ initialApis }: ApiListProps) {
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
           APIs DIRECTORY
         </div>
-        <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
+        <h1 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
           <Code className="h-6 w-6 text-primary" />
           <span>PUBLIC APIs DIRECTORY</span>
-        </h2>
+        </h1>
         <p className="text-xs text-muted-foreground leading-relaxed max-w-xl">
           A curated registry of developer-friendly public APIs with direct links to docs, auth models, and CORS compatibility.
         </p>

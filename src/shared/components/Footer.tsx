@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Shield, Info, Heart, Mail, ExternalLink } from "lucide-react"
+import { Shield, Info, Heart, Mail, ExternalLink, FileText } from "lucide-react"
 
 export function Footer() {
   return (
@@ -70,12 +70,21 @@ export function Footer() {
       <div className="w-full bg-zinc-950 border-t border-foreground/20 py-4 px-4 sm:px-6 lg:px-8 font-mono text-[10px] text-muted-foreground">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <span>© {new Date().getFullYear()} OPENDEV HUB. ALL RIGHTS RESERVED. LICENSED UNDER MIT.</span>
-          <div className="flex gap-4">
+          <div className="flex gap-4 flex-wrap justify-center sm:justify-end">
             <Link href="/about" className="hover:text-foreground hover:underline flex items-center gap-1">
-              <Info className="h-3 w-3" /> ABOUT THE SITE
+              <Info className="h-3 w-3" /> ABOUT
+            </Link>
+            <Link href="/contact" className="hover:text-foreground hover:underline flex items-center gap-1">
+              <Mail className="h-3 w-3" /> CONTACT
             </Link>
             <Link href="/privacy" className="hover:text-foreground hover:underline flex items-center gap-1">
-              <Shield className="h-3 w-3" /> PRIVACY POLICY
+              <Shield className="h-3 w-3" /> PRIVACY
+            </Link>
+            <Link href="/terms" className="hover:text-foreground hover:underline flex items-center gap-1">
+              <FileText className="h-3 w-3" /> TERMS
+            </Link>
+            <Link href="/sitemap.xml" className="hover:text-foreground hover:underline flex items-center gap-1" target="_blank">
+              <ExternalLink className="h-3 w-3" /> SITEMAP
             </Link>
           </div>
         </div>

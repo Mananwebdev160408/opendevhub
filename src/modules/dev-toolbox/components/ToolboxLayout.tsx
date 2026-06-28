@@ -96,10 +96,10 @@ export function ToolboxLayout({ initialTool }: ToolboxLayoutProps) {
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
           DEVELOPER TOOLBOX
         </div>
-        <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
+        <h1 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
           <Settings className="h-6 w-6 text-primary animate-spin" />
           <span>DEVELOPER TOOLBOX WORKSPACE</span>
-        </h2>
+        </h1>
         <p className="text-xs text-muted-foreground leading-relaxed max-w-xl">
           A high-density sandbox workspace containing 32 core developer utility widgets. All code computations happen 100% locally in your browser.
         </p>
@@ -169,6 +169,66 @@ export function ToolboxLayout({ initialTool }: ToolboxLayoutProps) {
 
           <div className="w-full">
             {activeTool.component}
+          </div>
+
+          {/* Related Tools Section */}
+          <div className="mt-8 pt-6 border-t-2 border-dashed border-foreground/30">
+            <h4 className="font-mono text-[10px] font-black uppercase text-accent mb-3 select-none">
+              RELATED UTILITIES
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {(() => {
+                const relatedMapping: Record<string, string[]> = {
+                  "json-formatter": ["json-validator", "prettier-formatter", "yaml-viewer"],
+                  "json-validator": ["json-formatter", "yaml-viewer", "xml-viewer"],
+                  "prettier-formatter": ["json-formatter", "diff-checker", "case-converter"],
+                  "csv-viewer": ["yaml-viewer", "json-formatter", "xml-viewer"],
+                  "yaml-viewer": ["xml-viewer", "json-formatter", "csv-viewer"],
+                  "xml-viewer": ["yaml-viewer", "json-formatter", "csv-viewer"],
+                  "jwt-decoder": ["hash-generator", "base64-encode", "password-generator"],
+                  "uuid-generator": ["hash-generator", "password-generator", "slug-generator"],
+                  "hash-generator": ["uuid-generator", "jwt-decoder", "base64-encode"],
+                  "base64-encode": ["base64-decode", "url-encode", "jwt-decoder"],
+                  "base64-decode": ["base64-encode", "url-decode", "jwt-decoder"],
+                  "url-encode": ["url-decode", "base64-encode", "slug-generator"],
+                  "url-decode": ["url-encode", "base64-decode", "slug-generator"],
+                  "password-generator": ["uuid-generator", "hash-generator", "jwt-decoder"],
+                  "regex-tester": ["lorem-ipsum", "character-counter", "case-converter"],
+                  "lorem-ipsum": ["character-counter", "word-counter", "line-counter"],
+                  "slug-generator": ["url-encode", "case-converter", "lorem-ipsum"],
+                  "case-converter": ["slug-generator", "character-counter", "prettier-formatter"],
+                  "character-counter": ["word-counter", "line-counter", "lorem-ipsum"],
+                  "word-counter": ["character-counter", "line-counter", "lorem-ipsum"],
+                  "line-counter": ["character-counter", "word-counter", "lorem-ipsum"],
+                  "cron-parser": ["timestamp-converter", "uuid-generator", "hash-generator"],
+                  "diff-checker": ["prettier-formatter", "json-formatter", "case-converter"],
+                  "color-converter": ["gradient-generator", "html-preview", "qr-generator"],
+                  "gradient-generator": ["color-converter", "html-preview", "css-minifier"],
+                  "qr-generator": ["barcode-generator", "color-converter", "url-encode"],
+                  "barcode-generator": ["qr-generator", "color-converter", "url-encode"],
+                  "markdown-preview": ["html-preview", "lorem-ipsum", "diff-checker"],
+                  "html-preview": ["markdown-preview", "css-minifier", "js-minifier"],
+                  "css-minifier": ["js-minifier", "html-minifier", "gradient-generator"],
+                  "js-minifier": ["css-minifier", "html-minifier", "prettier-formatter"],
+                  "html-minifier": ["css-minifier", "js-minifier", "html-preview"]
+                }
+                const relatedSlugs = relatedMapping[activeTool.slug] || ["json-formatter", "jwt-decoder", "uuid-generator"]
+                const related = relatedSlugs
+                  .map(s => tools.find(t => t.slug === s))
+                  .filter((t): t is Exclude<typeof t, undefined> => !!t)
+
+                return related.map((t) => (
+                  <button
+                    key={t.slug}
+                    onClick={() => handleToolSelect(t.slug)}
+                    className="px-3 py-2 border-2 border-foreground bg-zinc-950 hover:bg-zinc-900 text-left hover:text-accent transition-all font-mono text-[10px] font-bold uppercase cursor-pointer flex items-center justify-between group"
+                  >
+                    <span>{t.name}</span>
+                    <span className="text-zinc-500 group-hover:text-accent group-hover:translate-x-0.5 transition-transform">→</span>
+                  </button>
+                ))
+              })()}
+            </div>
           </div>
         </div>
 

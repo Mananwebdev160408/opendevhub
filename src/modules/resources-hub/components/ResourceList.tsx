@@ -150,10 +150,10 @@ export function ResourceList() {
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
           RESOURCES HUB
         </div>
-        <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
+        <h1 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
           <Library className="h-6 w-6 text-accent" />
           <span>CURATED LEARNING RESOURCES</span>
-        </h2>
+        </h1>
         <p className="text-xs text-muted-foreground leading-relaxed max-w-xl">
           Curated learning paths, coding specs, and documentation to build solid fundamentals. Or import any public GitHub README repository directly!
         </p>

@@ -60,10 +60,10 @@ export async function EventTimeline() {
         <div className="absolute top-2 right-4 text-[9px] text-zinc-500 font-bold uppercase select-none">
           EVENTS SCHEDULE
         </div>
-        <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
+        <h1 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4 flex items-center gap-2">
           <Calendar className="h-6 w-6 text-primary" />
           <span>OPEN SOURCE PROGRAMS TIMELINE</span>
-        </h2>
+        </h1>
         <p className="text-xs text-muted-foreground leading-relaxed max-w-xl">
           Track registration, proposal cycles, and hacking periods for major global open source developer events and student opportunities.
         </p>
