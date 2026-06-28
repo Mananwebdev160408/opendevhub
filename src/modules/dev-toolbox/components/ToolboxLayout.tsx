@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { useSearchParams, useRouter } from "next/navigation"
+import Link from "next/link"
 import { Settings, Search, Box, SlidersHorizontal, Terminal, Activity } from "lucide-react"
 
 import {
@@ -136,9 +137,9 @@ export function ToolboxLayout({ initialTool }: ToolboxLayoutProps) {
                   {filteredTools
                     .filter(t => t.category === cat)
                     .map(t => (
-                      <button
+                      <Link
                         key={t.slug}
-                        onClick={() => handleToolSelect(t.slug)}
+                        href={`/tools/${t.slug}`}
                         className={`text-left px-2.5 py-1.5 border text-[11px] font-black uppercase transition-all select-none cursor-pointer ${
                           activeToolSlug === t.slug
                             ? "bg-accent text-accent-foreground border-foreground shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]"
@@ -146,7 +147,7 @@ export function ToolboxLayout({ initialTool }: ToolboxLayoutProps) {
                         }`}
                       >
                         {t.name}
-                      </button>
+                      </Link>
                     ))}
                 </div>
               </div>
@@ -218,14 +219,14 @@ export function ToolboxLayout({ initialTool }: ToolboxLayoutProps) {
                   .filter((t): t is Exclude<typeof t, undefined> => !!t)
 
                 return related.map((t) => (
-                  <button
+                  <Link
                     key={t.slug}
-                    onClick={() => handleToolSelect(t.slug)}
+                    href={`/tools/${t.slug}`}
                     className="px-3 py-2 border-2 border-foreground bg-zinc-950 hover:bg-zinc-900 text-left hover:text-accent transition-all font-mono text-[10px] font-bold uppercase cursor-pointer flex items-center justify-between group"
                   >
                     <span>{t.name}</span>
                     <span className="text-zinc-500 group-hover:text-accent group-hover:translate-x-0.5 transition-transform">→</span>
-                  </button>
+                  </Link>
                 ))
               })()}
             </div>

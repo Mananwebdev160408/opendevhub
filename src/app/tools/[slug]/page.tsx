@@ -175,8 +175,32 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ToolSlugPage({ params }: PageProps) {
   const { slug } = await params
+  const meta = toolMetadata[slug] || {
+    title: "Developer Toolbox - OpenDev Hub",
+    description: "Access local, sandboxed developer utility widgets for formatting, encoding, and parsing."
+  }
+  const cleanTitle = meta.title.split(" - ")[0]
+
+  const toolSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": cleanTitle,
+    "description": meta.description,
+    "operatingSystem": "All",
+    "applicationCategory": "DeveloperApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+
   return (
     <div className="w-full bg-background min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(toolSchema) }}
+      />
       <Suspense fallback={
         <div className="w-full max-w-7xl mx-auto px-4 py-16 text-center font-mono text-xs text-zinc-500 uppercase font-bold">
           Initializing Tool Environment...
