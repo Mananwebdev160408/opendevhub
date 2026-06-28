@@ -1,4 +1,5 @@
 import { Hero, BentoGrid, Philosophy, GitVisualizer, DeepDive, FAQ } from "@/modules/home"
+import { AdBanner } from "@/shared/components/AdBanner"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -38,6 +39,10 @@ export default function Home() {
       <GitVisualizer />
 
       <DeepDive />
+
+      <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+        <AdBanner slot={process.env.NEXT_PUBLIC_ADSENSE_HOMEPAGE_SLOT} />
+      </div>
 
       <FAQ />
     </div>

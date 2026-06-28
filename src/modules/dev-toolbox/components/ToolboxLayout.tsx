@@ -4,6 +4,7 @@ import * as React from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import Link from "next/link"
 import { Settings, Search, Box, SlidersHorizontal, Terminal, Activity } from "lucide-react"
+import { AdBanner } from "@/shared/components/AdBanner"
 
 import {
   JsonFormatterTool,
@@ -152,6 +153,9 @@ export function ToolboxLayout({ initialTool }: ToolboxLayoutProps) {
                 </div>
               </div>
             ))}
+          </div>
+          <div className="pt-2 border-t-2 border-dashed border-border/40">
+            <AdBanner layout="sidebar" slot={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT} />
           </div>
         </div>
 
