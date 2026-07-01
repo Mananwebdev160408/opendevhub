@@ -1,0 +1,223 @@
+[
+  {
+    "category": "Basic Syntax & Layout",
+    "commands": [
+      {
+        "name": "Key-Value Pairs (Mappings)",
+        "description": "The fundamental building block of YAML, mapping an identifier (key) to a value. Must be separated by a colon and a space.",
+        "syntax": "key: value",
+        "example": "project_name: OpenDev Hub\nversion: 1.2.0\nstatus: active",
+        "mistake": "Omitting the space after the colon (e.g. 'key:value'). Parsers will treat this as a single string instead of a key-value mapping."
+      },
+      {
+        "name": "Comments",
+        "description": "Inline documentation or notes. The YAML parser ignores anything starting with a hash symbol.",
+        "syntax": "# Comment text goes here",
+        "example": "port: 8080 # Run service on port 8080\n# Database credentials below:",
+        "mistake": "Attempting multi-line block comments using /* ... */ or <!-- ... -->. YAML only supports single-line comments starting with '#'."
+      },
+      {
+        "name": "Document Separator (Start)",
+        "description": "Marks the beginning of a new YAML document within a single file or stream, allowing multi-document configurations.",
+        "syntax": "---",
+        "example": "---\napiVersion: v1\nkind: Pod\nmetadata:\n  name: web-pod\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: web-service",
+        "mistake": "Placing configurations above the first '---' block, which can cause inconsistent behavior across different parsers."
+      },
+      {
+        "name": "Document Separator (End)",
+        "description": "Explicitly marks the end of a YAML document. It is optional but useful for streaming protocols to signal completion.",
+        "syntax": "...",
+        "example": "---\nmessage: Hello World\n...\n# End of document, further text starts a new session",
+        "mistake": "Confusing '...' with '---'. Use '---' to split documents and '...' to mark the complete termination of the document stream."
+      },
+      {
+        "name": "Indentation & Hierarchy",
+        "description": "YAML uses whitespace indentation to define structure and parent-child relationships instead of brackets or braces.",
+        "syntax": "parent:\n  child:\n    grandchild: value",
+        "example": "database:\n  connection:\n    host: localhost\n    port: 5432",
+        "mistake": "Using tab characters for indentation. YAML strictly forbids tabs. Ensure your editor converts tab keys to spaces."
+      }
+    ]
+  },
+  {
+    "category": "Scalar Types (Data Types)",
+    "commands": [
+      {
+        "name": "Integers",
+        "description": "Represents whole numbers. Supports decimal, hexadecimal (base 16), octal (base 8), and binary (base 2).",
+        "syntax": "decimal: 42\nhexadecimal: 0x2A\noctal: 0o52\nbinary: 0b101010",
+        "example": "max_connections: 100\ncolor_mask: 0xFF00AA\nfile_permission: 0o755\nbit_flags: 0b00101100",
+        "mistake": "Writing octal values as '0755' instead of '0o755'. In YAML 1.2, leading zeros without 'o' are parsed as decimals (755), not octals."
+      },
+      {
+        "name": "Floating Point Numbers",
+        "description": "Represents real numbers with fractional parts, exponential notation, or special values like infinity and NaN.",
+        "syntax": "float: 3.1415\nexponential: 6.022e23\ninfinity: .inf\nnot_a_number: .nan",
+        "example": "pi_value: 3.14159265\ndelay_multiplier: 1.5e-3\nmax_timeout: .inf\nerror_rate: .nan",
+        "mistake": "Omitting decimals in exponential values or assuming standard JSON parsers will handle '.inf' and '.nan' values without preprocessing."
+      },
+      {
+        "name": "Booleans",
+        "description": "Represents logical truth values (true or false).",
+        "syntax": "key: true\nkey: false",
+        "example": "enable_cache: true\nforce_ssl: false",
+        "mistake": "In YAML 1.1, values like 'yes/no', 'on/off' are treated as booleans. If you write 'country: NO' (for Norway), it will be parsed as 'false'. Use quotes: 'country: \"NO\"'."
+      },
+      {
+        "name": "Nulls",
+        "description": "Represents missing, undefined, or empty values.",
+        "syntax": "key: null\nkey: ~\nkey: ",
+        "example": "middle_name: null\nrecovery_email: ~\noptional_notes: ",
+        "mistake": "Assuming an empty quoted string 'key: \"\"' is parsed as null. It is parsed as a string of length zero. Use unquoted 'null' or '~' for nulls."
+      },
+      {
+        "name": "Timestamps & Dates",
+        "description": "Represents calendar dates and times using ISO 8601 formatting.",
+        "syntax": "date: YYYY-MM-DD\ntimestamp: YYYY-MM-DDThh:mm:ss.sZ",
+        "example": "release_date: 2026-07-01\ncreated_at: 2026-07-01T13:00:00Z\nlocal_time: 2026-07-01T07:30:00-05:00",
+        "mistake": "Forgetting to quote timestamps when they need to be treated as plain strings by the application (e.g. database keys or version labels)."
+      }
+    ]
+  },
+  {
+    "category": "String Styles",
+    "commands": [
+      {
+        "name": "Unquoted (Plain) Strings",
+        "description": "Strings written without single or double quotes. Convenient but subject to parsing restrictions.",
+        "syntax": "key: string content",
+        "example": "greeting: Hello and welcome to OpenDev Hub",
+        "mistake": "Including special YAML characters like ':', '#', '{', '}', '[', ']', or '&' in plain strings. If a string starts with or contains these characters, it must be quoted."
+      },
+      {
+        "name": "Single-Quoted Strings",
+        "description": "Strings enclosed in single quotes. Preserves all characters as literals and does not process escape sequences.",
+        "syntax": "key: 'string content'",
+        "example": "windows_path: 'C:\\Users\\admin\\documents'\nregex_pattern: '^\\d{3}-\\d{2}-\\d{4}$'",
+        "mistake": "Attempting to escape characters with backslashes (e.g., '\\n' inside single quotes renders as a literal backslash followed by 'n'). To escape a single quote itself, double it: 'It''s working'."
+      },
+      {
+        "name": "Double-Quoted Strings",
+        "description": "Strings enclosed in double quotes. Processes escape sequences like '\\n' (newline), '\\t' (tab), and unicode characters.",
+        "syntax": "key: \"string content\"",
+        "example": "welcome_message: \"Welcome to OpenDev Hub!\\nEnjoy your stay.\\t🚀\"",
+        "mistake": "Forgetting to escape backslashes when they should be literal (e.g., 'path: \"C:\\temp\"' will escape '\\t' as a tab). Use double backslashes: 'path: \"C:\\\\temp\"'."
+      },
+      {
+        "name": "Literal Block Scalar (|)",
+        "description": "Preserves all newlines and trailing whitespace in a multi-line string. Ideal for code blocks, logs, or certificates.",
+        "syntax": "key: |\n  indented multiline string\n  second line",
+        "example": "nginx_config: |\n  server {\n      listen 80;\n      server_name localhost;\n  }",
+        "mistake": "Using a tab for indentation within the block or indenting the block lines less than or equal to the parent key's indentation."
+      },
+      {
+        "name": "Folded Block Scalar (>)",
+        "description": "Replaces single newlines in a multi-line block with spaces, folding the text into a single paragraph. Double newlines (blank lines) are preserved.",
+        "syntax": "key: >\n  first line\n  second line",
+        "example": "meta_description: >\n  OpenDev Hub is a neobrutalist platform\n  built for modern developers.\n  It provides fast tools, cheatsheets,\n  and live event trackers.",
+        "mistake": "Expecting newlines to be preserved. If line breaks are important (such as for scripting or certs), use the Literal scalar '|' instead."
+      },
+      {
+        "name": "Chomping Indicators (+ / -)",
+        "description": "Appended to '|' or '>' block scalars to control trailing newlines. Strip (-) removes all trailing newlines, Keep (+) retains them, and default Clip keeps exactly one.",
+        "syntax": "strip: |-\n  content\nkeep: |+\n  content",
+        "example": "private_key: |-\n  -----BEGIN PRIVATE KEY-----\n  MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC3\n  -----END PRIVATE KEY-----\nlicense_footer: |+\n  Copyright (c) 2026 OpenDev Hub\n\n\n",
+        "mistake": "Omitting the chomping indicator on files that are sensitive to trailing whitespace, such as private keys, breaking SSH handshakes."
+      }
+    ]
+  },
+  {
+    "category": "Collections & Mappings",
+    "commands": [
+      {
+        "name": "Block Sequences (Lists)",
+        "description": "Ordered lists of values represented by bullet points using hyphens, aligned at the same indentation level.",
+        "syntax": "- item1\n- item2",
+        "example": "supported_frameworks:\n  - React\n  - Next.js\n  - Tailwind CSS",
+        "mistake": "Forgetting the space after the hyphen (e.g. '-item'). This will parse as a single plain string '-item' rather than a list element."
+      },
+      {
+        "name": "Flow Sequences (Inline Lists)",
+        "description": "Inline lists wrapped in square brackets, similar to JSON array syntax.",
+        "syntax": "[item1, item2, item3]",
+        "example": "allowed_methods: [GET, POST, OPTIONS]",
+        "mistake": "Omitting commas between list elements or mixing block sequences with flow sequences without proper indentation."
+      },
+      {
+        "name": "Block Mappings (Dictionaries)",
+        "description": "Key-value pairs organized on multiple lines using indentation.",
+        "syntax": "key:\n  subkey: value",
+        "example": "database_config:\n  host: 127.0.0.1\n  port: 5432\n  username: postgres",
+        "mistake": "Keys in the same mapping aligned at different indentation levels, which shifts them into nested or separate parents."
+      },
+      {
+        "name": "Flow Mappings (Inline Dictionaries)",
+        "description": "Inline key-value pairs wrapped in curly braces, matching JSON object syntax.",
+        "syntax": "{key1: value1, key2: value2}",
+        "example": "headers: { Content-Type: application/json, Authorization: Bearer token123 }",
+        "mistake": "Omitting the space after the colon inside the curly braces. Unlike JSON, YAML flow mappings require '{key: value}' with space."
+      },
+      {
+        "name": "Nested Collections",
+        "description": "Combining mappings and sequences to build complex, multi-dimensional structures.",
+        "syntax": "key:\n  - subkey1: value1\n    subkey2: value2",
+        "example": "environments:\n  - name: production\n    servers:\n      - ip: 192.168.1.10\n        role: web\n      - ip: 192.168.1.11\n        role: db\n  - name: staging\n    servers:\n      - ip: 192.168.2.10\n        role: all",
+        "mistake": "Improperly aligning hyphens with keys. Subkeys of a list item must be indented consistently with the start of the item."
+      }
+    ]
+  },
+  {
+    "category": "Advanced Concepts",
+    "commands": [
+      {
+        "name": "Anchors (&)",
+        "description": "Marks a block of YAML data with a reference name, allowing it to be reused or duplicated later in the file.",
+        "syntax": "key: &anchor_name\n  subkey: value",
+        "example": "default_settings: &defaults\n  timeout: 30\n  retries: 3\n  cache_enabled: true",
+        "mistake": "Attempting to reference an anchor that has not been defined yet. Anchors must be declared higher up in the file before they are used."
+      },
+      {
+        "name": "Aliases (*)",
+        "description": "References a defined anchor to duplicate its content inline without re-writing it.",
+        "syntax": "alias_key: *anchor_name",
+        "example": "development_env:\n  database: dev_db\n  connection_limits: *defaults",
+        "mistake": "Using the alias prefix '*' inside double quotes (e.g. '*defaults'). This will make the parser read it as a literal string '*defaults' instead of resolving the alias."
+      },
+      {
+        "name": "Merge Keys (<<)",
+        "description": "Used in combination with anchors and aliases to inject all key-values of a referenced map into the current map, allowing overrides.",
+        "syntax": "<<: *anchor_name\noverride_key: new_value",
+        "example": "production_env:\n  <<: *defaults\n  timeout: 10 # Overrides the default 30\n  debug: false",
+        "mistake": "Using merge keys (<<) in YAML 1.2 environments where the parser strictly adheres to 1.2 rules (as << was a YAML 1.1 type). Most modern parsers still support it for compatibility, but check parser docs."
+      },
+      {
+        "name": "Explicit Tags (Data Type Casts)",
+        "description": "Overrides YAML's implicit type detection by explicitly prefixing values with a type tag.",
+        "syntax": "key: !!tag_name value",
+        "example": "string_boolean: !!str true\ninteger_as_string: !!str 12345\nfloating_value: !!float 5",
+        "mistake": "Typing tags incorrectly (e.g., single exclamation mark '!str' instead of double exclamation marks '!!str'). Custom tags use '!', standard built-ins use '!!'."
+      },
+      {
+        "name": "Sets (!!set)",
+        "description": "A collection of unique items where order is not guaranteed. Indicated by the !!set tag, where keys are separated by a question mark.",
+        "syntax": "key: !!set\n  ? item1\n  ? item2",
+        "example": "user_permissions: !!set\n  ? read\n  ? write\n  ? execute",
+        "mistake": "Adding duplicate items to a set. The set will collapse duplicates during parsing, resulting in only unique entries."
+      },
+      {
+        "name": "Ordered Mappings (!!omap)",
+        "description": "A sequence of key-value pairs where key order is strictly preserved, unlike standard maps which are unordered.",
+        "syntax": "key: !!omap\n  - key1: value1\n  - key2: value2",
+        "example": "deployment_steps: !!omap\n  - checkout: git clone\n  - install: npm install\n  - build: npm run build\n  - deploy: pm2 restart app",
+        "mistake": "Formatting ordered mappings as a map rather than a sequence of single-key maps (e.g. using bullet points with hyphens). Each key-value pair in an omap must be a sequence element."
+      },
+      {
+        "name": "Binary Data (!!binary)",
+        "description": "Encodes binary files (like images, zip files, or PDFs) directly in YAML as a Base64-encoded string.",
+        "syntax": "key: !!binary |\n  base64_encoded_data",
+        "example": "pixel_gif: !!binary |\n  R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+        "mistake": "Leaving out the literal block scalar '|'. Binary data must be formatted as a block scalar to support line folding and spaces in the base64 string."
+      }
+    ]
+  }
+]

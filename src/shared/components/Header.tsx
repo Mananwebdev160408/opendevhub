@@ -45,6 +45,7 @@ export function Header() {
       links: [
         { label: "TOOLBOX", href: "/tools", description: "Interactive utilities including JWT Decoders, JSON Formatters, Regex Testers, and Base64 Converters." },
         { label: "GIT CHEATS", href: "/git-cheatsheets", description: "Universal Git cheatsheet and recovery troubleshooting guide for common command errors." },
+        { label: "YAML CHEATS", href: "/yaml-cheatsheets", description: "Comprehensive YAML cheatsheet defining all options, fields, syntax rules, and usecases." },
         { label: "HTTP CODES", href: "/http-status", description: "Visual index of HTTP status codes with detailed explanations, headers, and code snippets." },
       ]
     },

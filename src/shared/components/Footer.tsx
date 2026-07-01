@@ -42,6 +42,7 @@ export function Footer() {
           <ul className="space-y-2 font-mono text-xs">
             <li><Link href="/tools" className="text-muted-foreground hover:text-foreground hover:underline">Developer Toolbox (32 Tools)</Link></li>
             <li><Link href="/git-cheatsheets" className="text-muted-foreground hover:text-foreground hover:underline">Git Cheatsheets</Link></li>
+            <li><Link href="/yaml-cheatsheets" className="text-muted-foreground hover:text-foreground hover:underline">YAML Cheatsheets</Link></li>
             <li><Link href="/http-status" className="text-muted-foreground hover:text-foreground hover:underline">HTTP Status Codes</Link></li>
             <li><Link href="/licenses" className="text-muted-foreground hover:text-foreground hover:underline">License Explorer</Link></li>
           </ul>

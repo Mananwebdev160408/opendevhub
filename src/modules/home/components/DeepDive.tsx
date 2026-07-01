@@ -47,7 +47,7 @@ export function DeepDive() {
     {
       icon: <BookOpen className="h-5 w-5 text-primary" />,
       title: "Cheatsheets & Status Codes",
-      desc: "Read interactive visual maps for Git branching, stashing, and cherry-picking, alongside detailed reference sheets for all standard HTTP Status Codes.",
+      desc: "Read interactive visual maps for Git commands and YAML syntax rules, alongside detailed reference sheets for all standard HTTP Status Codes.",
       link: "/git-cheatsheets"
     },
     {

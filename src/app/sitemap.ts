@@ -15,6 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/orgs",
     "/tools",
     "/git-cheatsheets",
+    "/yaml-cheatsheets",
     "/http-status",
     "/licenses",
     "/apis",
