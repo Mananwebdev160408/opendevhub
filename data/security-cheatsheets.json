@@ -1,0 +1,59 @@
+[
+  {
+    "category": "OWASP Top 10 Safeguards",
+    "commands": [
+      {
+        "cmd": "SQL Injection Prevention",
+        "description": "Ensure raw input is never concatenated into SQL strings. Use parameterized queries/prepared statements.",
+        "syntax": "db.query('SELECT * FROM users WHERE id = ?', [userId])",
+        "example": "// Safe:\nconst query = 'SELECT * FROM users WHERE id = ?';\nawait connection.execute(query, [req.query.id]);",
+        "mistake": "Using template literals: `SELECT * FROM users WHERE id = ${req.query.id}`, which exposes database schemas directly to injection payloads."
+      },
+      {
+        "cmd": "XSS (Cross-Site Scripting) Defense",
+        "description": "Escape all untrusted data before rendering it in the HTML DOM, or use libraries that do it automatically.",
+        "syntax": "text.replace(/&/g, '&amp;').replace(/</g, '&lt;')",
+        "example": "const cleanInput = DOMPurify.sanitize(userInput);\ndocument.getElementById('output').innerHTML = cleanInput;",
+        "mistake": "Using dangerouslySetInnerHTML or innerHTML directly on raw inputs from search query parameters or user profiles."
+      }
+    ]
+  },
+  {
+    "category": "HTTP Security Headers",
+    "commands": [
+      {
+        "cmd": "Content Security Policy (CSP)",
+        "description": "Restricts resources (such as JavaScript, CSS, Images) that the browser is allowed to load for a given page.",
+        "syntax": "Content-Security-Policy: default-src 'self'; script-src 'self' https://trustedscripts.com",
+        "example": "res.setHeader(\n  'Content-Security-Policy',\n  \"default-src 'self'; img-src 'self' data:; script-src 'self'\"\n);",
+        "mistake": "Using 'unsafe-inline' or '*' in CSP directives, which completely defeats the anti-XSS features of CSP."
+      },
+      {
+        "cmd": "HSTS (Strict-Transport-Security)",
+        "description": "Forces browser connections to happen securely over HTTPS instead of HTTP.",
+        "syntax": "Strict-Transport-Security: max-age=63072000; includeSubDomains; preload",
+        "example": "res.setHeader(\n  'Strict-Transport-Security',\n  'max-age=63072000; includeSubDomains; preload'\n);",
+        "mistake": "Enabling HSTS with a short max-age duration or without testing subdomains, potentially locking out users from legacy HTTP APIs."
+      }
+    ]
+  },
+  {
+    "category": "Hashing & Cryptography",
+    "commands": [
+      {
+        "cmd": "Password Hashing (bcrypt)",
+        "description": "Never store plain text passwords. Use standard slow hashing functions like bcrypt or Argon2 with high cost factors.",
+        "syntax": "bcrypt.hash(password, saltRounds)",
+        "example": "const hash = await bcrypt.hash(rawPassword, 12);\nconst matches = await bcrypt.compare(inputPassword, hash);",
+        "mistake": "Using fast hashing algorithms like MD5, SHA-1, or SHA-256 for passwords, which are easily cracked via dictionary attacks or GPUs."
+      },
+      {
+        "cmd": "Symmetric Encryption (AES-GCM)",
+        "description": "Use Advanced Encryption Standard (AES) with Galois/Counter Mode (GCM) for authenticated encryption/decryption of private text.",
+        "syntax": "crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, data)",
+        "example": "const iv = crypto.getRandomValues(new Uint8Array(12));\nconst cipher = await crypto.subtle.encrypt(\n  { name: 'AES-GCM', iv },\n  aesKey,\n  textEncoder.encode(secretData)\n);",
+        "mistake": "Reusing Initialization Vectors (IVs) or using insecure encryption modes like AES-ECB, which leak patterns in encrypted data."
+      }
+    ]
+  }
+]

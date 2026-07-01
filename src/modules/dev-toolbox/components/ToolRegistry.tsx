@@ -3,6 +3,7 @@
 import * as React from "react"
 import { Copy, Check, Play, RefreshCw, Eye, Maximize2, Minimize2, X } from "lucide-react"
 import { marked } from "marked"
+import * as yaml from "js-yaml"
 
 function CopyBtn({ value }: { value: string }) {
   const [copied, setCopied] = React.useState(false)
@@ -1989,3 +1990,836 @@ export function YamlXmlTool() {
     </div>
   )
 }
+
+export function JsonToTypescriptTool() {
+  const [input, setInput] = React.useState('{\n  "id": 1,\n  "name": "OpenDevHub",\n  "active": true,\n  "tags": ["developer", "tools"]\n}')
+  const [interfaceName, setInterfaceName] = React.useState("RootInterface")
+  const [output, setOutput] = React.useState("")
+  const [error, setError] = React.useState<string | null>(null)
+
+  const convertJson = () => {
+    setError(null)
+    try {
+      if (!input.trim()) {
+        setOutput("")
+        return
+      }
+      const parsed = JSON.parse(input)
+      
+      const interfaces: string[] = []
+      const seen = new Set<string>()
+
+      function parseObject(o: any, name: string): string {
+        if (o === null) return "any"
+        if (typeof o !== "object") return typeof o
+        if (Array.isArray(o)) {
+          if (o.length === 0) return "any[]"
+          const elementTypes = Array.from(new Set(o.map(item => parseObject(item, name + "Item")))).join(" | ")
+          return `(${elementTypes})[]`
+        }
+
+        const props: string[] = []
+        for (const key of Object.keys(o)) {
+          const val = o[key]
+          const capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/[^a-zA-Z0-9]/g, "")
+          const typeStr = typeof val === "object" && val !== null
+            ? (Array.isArray(val) ? parseObject(val, capitalizedKey) : capitalizedKey)
+            : typeof val
+
+          props.push(`  ${key}: ${typeStr};`)
+          if (typeof val === "object" && val !== null && !Array.isArray(val)) {
+            parseObject(val, capitalizedKey)
+          }
+        }
+
+        const interfaceStr = `export interface ${name} {\n${props.join("\n")}\n}`
+        if (!seen.has(name)) {
+          seen.add(name)
+          interfaces.push(interfaceStr)
+        }
+        return name
+      }
+
+      parseObject(parsed, interfaceName)
+      setOutput(interfaces.reverse().join("\n\n"))
+    } catch (e: any) {
+      setError(e.message || "Failed to parse JSON. Please check syntax.")
+      setOutput("")
+    }
+  }
+
+  React.useEffect(() => {
+    convertJson()
+  }, [input, interfaceName])
+
+  return (
+    <div className="space-y-4 font-mono">
+      <span className="text-xs font-bold uppercase text-zinc-500 block border-b border-border pb-2">JSON TO TYPESCRIPT INTERFACE CONVERTER</span>
+      <div className="flex gap-4 items-center">
+        <label className="text-[10px] text-zinc-500 font-bold uppercase">ROOT INTERFACE NAME:</label>
+        <input
+          type="text"
+          value={interfaceName}
+          onChange={(e) => setInterfaceName(e.target.value.replace(/[^a-zA-Z0-9]/g, ""))}
+          className="border-2 border-foreground bg-black px-2 py-0.5 text-xs text-foreground focus:outline-none"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <span className="text-[10px] text-zinc-400 font-bold block mb-1">INPUT JSON:</span>
+          <textarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            className="w-full h-80 bg-black border-2 border-foreground p-3 text-xs leading-relaxed focus:outline-none focus:border-primary placeholder:text-zinc-700"
+          />
+        </div>
+        <div>
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-[10px] text-zinc-400 font-bold block">TYPESCRIPT DECLARATIONS:</span>
+            {output && <CopyBtn value={output} />}
+          </div>
+          {error ? (
+            <div className="w-full h-80 bg-red-950/20 border-2 border-destructive p-3 text-xs text-red-400 overflow-y-auto leading-relaxed">
+              <strong>JSON PARSE FAILURE:</strong>
+              <p className="mt-2">{error}</p>
+            </div>
+          ) : (
+            <textarea
+              readOnly
+              value={output}
+              placeholder="Interfaces will display here..."
+              className="w-full h-80 bg-zinc-950 border-2 border-border p-3 text-xs leading-relaxed focus:outline-none placeholder:text-zinc-700 select-all"
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export function YamlJsonConverterTool() {
+  const [input, setInput] = React.useState("name: OpenDevHub\nversion: 1.0.0\ntags:\n  - developer\n  - toolbox\nactive: true")
+  const [mode, setMode] = React.useState<"yaml-to-json" | "json-to-yaml">("yaml-to-json")
+  const [output, setOutput] = React.useState("")
+  const [error, setError] = React.useState<string | null>(null)
+
+  React.useEffect(() => {
+    setError(null)
+    if (!input.trim()) {
+      setOutput("")
+      return
+    }
+
+    try {
+      if (mode === "yaml-to-json") {
+        const doc = yaml.load(input)
+        setOutput(JSON.stringify(doc, null, 2))
+      } else {
+        const doc = JSON.parse(input)
+        setOutput(yaml.dump(doc, { indent: 2 }))
+      }
+    } catch (e: any) {
+      setError(e.message || "Conversion error. Verify source syntax.")
+      setOutput("")
+    }
+  }, [input, mode])
+
+  return (
+    <div className="space-y-4 font-mono">
+      <div className="flex items-center justify-between border-b border-border pb-2">
+        <span className="text-xs font-bold uppercase text-zinc-500">YAML ↔ JSON CONVERTER</span>
+        <div className="flex border-2 border-foreground bg-black select-none">
+          <button
+            onClick={() => {
+              setMode("yaml-to-json")
+              setInput("name: OpenDevHub\nversion: 1.0.0\ntags:\n  - developer\n  - toolbox\nactive: true")
+            }}
+            className={`px-3 py-0.5 text-xs font-bold uppercase cursor-pointer ${
+              mode === "yaml-to-json" ? "bg-accent text-accent-foreground" : "text-zinc-500 hover:text-foreground"
+            }`}
+          >
+            YAML → JSON
+          </button>
+          <button
+            onClick={() => {
+              setMode("json-to-yaml")
+              setInput('{\n  "name": "OpenDevHub",\n  "version": "1.0.0",\n  "tags": [\n    "developer",\n    "toolbox"\n  ],\n  "active": true\n}')
+            }}
+            className={`px-3 py-0.5 text-xs font-bold uppercase cursor-pointer ${
+              mode === "json-to-yaml" ? "bg-accent text-accent-foreground" : "text-zinc-500 hover:text-foreground"
+            }`}
+          >
+            JSON → YAML
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <span className="text-[10px] text-zinc-400 font-bold block mb-1">
+            {mode === "yaml-to-json" ? "INPUT YAML:" : "INPUT JSON:"}
+          </span>
+          <textarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            className="w-full h-80 bg-black border-2 border-foreground p-3 text-xs leading-relaxed focus:outline-none focus:border-primary placeholder:text-zinc-700"
+          />
+        </div>
+        <div>
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-[10px] text-zinc-400 font-bold block">
+              {mode === "yaml-to-json" ? "OUTPUT JSON:" : "OUTPUT YAML:"}
+            </span>
+            {output && <CopyBtn value={output} />}
+          </div>
+          {error ? (
+            <div className="w-full h-80 bg-red-950/20 border-2 border-destructive p-3 text-xs text-red-400 overflow-y-auto leading-relaxed">
+              <strong>CONVERSION FAILURE:</strong>
+              <p className="mt-2 whitespace-pre-wrap">{error}</p>
+            </div>
+          ) : (
+            <textarea
+              readOnly
+              value={output}
+              className="w-full h-80 bg-zinc-950 border-2 border-border p-3 text-xs leading-relaxed focus:outline-none placeholder:text-zinc-700 select-all"
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export function KeycodeListenerTool() {
+  const [keyData, setKeyData] = React.useState<{
+    key: string
+    code: string
+    which: number
+    location: string
+    shift: boolean
+    ctrl: boolean
+    alt: boolean
+    meta: boolean
+  } | null>({
+    key: "Start typing...",
+    code: "KeyName",
+    which: 0,
+    location: "Standard Keyboard",
+    shift: false,
+    ctrl: false,
+    alt: false,
+    meta: false
+  })
+
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      e.preventDefault()
+      let loc = "Standard Keyboard"
+      if (e.location === 1) loc = "Left Side Key"
+      if (e.location === 2) loc = "Right Side Key"
+      if (e.location === 3) loc = "Numpad Key"
+
+      setKeyData({
+        key: e.key === " " ? "Space" : e.key,
+        code: e.code,
+        which: e.which || e.keyCode,
+        location: loc,
+        shift: e.shiftKey,
+        ctrl: e.ctrlKey,
+        alt: e.altKey,
+        meta: e.metaKey
+      })
+    }
+
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [])
+
+  return (
+    <div className="space-y-4 font-mono">
+      <span className="text-xs font-bold uppercase text-zinc-500 block border-b border-border pb-2">KEYBOARD KEYCODE EVENT LISTENER</span>
+      <div className="text-center py-2 text-[10px] text-zinc-400 font-bold uppercase bg-zinc-950 border border-dashed border-zinc-800">
+        FOCUS INSIDE THIS WINDOW AND PRESS ANY KEY TO INSPECT
+      </div>
+
+      {keyData && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
+          <div className="md:col-span-1 border-4 border-foreground p-5 bg-black flex flex-col justify-center items-center shadow-[4px_4px_0px_0px_#ffffff] text-center min-h-48">
+            <span className="text-[10px] text-zinc-500 font-bold uppercase block mb-2">event.key</span>
+            <div className="text-3xl font-black text-accent truncate max-w-full uppercase">{keyData.key}</div>
+          </div>
+
+          <div className="md:col-span-1 border-4 border-foreground p-5 bg-zinc-950 flex flex-col justify-center items-center shadow-[4px_4px_0px_0px_var(--primary)] text-center min-h-48">
+            <span className="text-[10px] text-zinc-500 font-bold uppercase block mb-2">event.which (keyCode)</span>
+            <div className="text-5xl font-black text-primary">{keyData.which || "-"}</div>
+          </div>
+
+          <div className="md:col-span-1 border-4 border-foreground p-5 bg-black flex flex-col justify-center items-center shadow-[4px_4px_0px_0px_#ffffff] text-center min-h-48">
+            <span className="text-[10px] text-zinc-500 font-bold uppercase block mb-2">event.code</span>
+            <div className="text-xl font-bold text-yellow-400 truncate max-w-full">{keyData.code}</div>
+          </div>
+        </div>
+      )}
+
+      {keyData && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="border border-border bg-zinc-950 p-4">
+            <span className="text-[10px] text-zinc-500 font-bold uppercase block mb-2">MODIFIER KEY STATUSES</span>
+            <div className="grid grid-cols-2 gap-2 text-xs font-black">
+              <div className={`p-2 border text-center ${keyData.ctrl ? "bg-accent border-foreground text-accent-foreground" : "border-zinc-800 text-zinc-600"}`}>
+                CTRL Key
+              </div>
+              <div className={`p-2 border text-center ${keyData.shift ? "bg-accent border-foreground text-accent-foreground" : "border-zinc-800 text-zinc-600"}`}>
+                SHIFT Key
+              </div>
+              <div className={`p-2 border text-center ${keyData.alt ? "bg-accent border-foreground text-accent-foreground" : "border-zinc-800 text-zinc-600"}`}>
+                ALT Key
+              </div>
+              <div className={`p-2 border text-center ${keyData.meta ? "bg-accent border-foreground text-accent-foreground" : "border-zinc-800 text-zinc-600"}`}>
+                META Key (Cmd/Win)
+              </div>
+            </div>
+          </div>
+
+          <div className="border border-border bg-zinc-950 p-4 space-y-2 text-xs">
+            <span className="text-[10px] text-zinc-500 font-bold uppercase block mb-2">ADDITIONAL DATA</span>
+            <div className="flex justify-between border-b border-zinc-800/40 pb-1.5">
+              <span className="text-zinc-500">Key Location:</span>
+              <span className="font-bold text-foreground">{keyData.location}</span>
+            </div>
+            <div className="flex justify-between border-b border-zinc-800/40 pb-1.5">
+              <span className="text-zinc-500">Char Code:</span>
+              <span className="font-bold text-foreground">{keyData.which}</span>
+            </div>
+            <div className="flex justify-between pb-0.5">
+              <span className="text-zinc-500">Key Identifier:</span>
+              <span className="font-bold text-foreground">{keyData.code || "-"}</span>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export function SqlFormatterTool() {
+  const [input, setInput] = React.useState("select id, name, created_at from users where active = 1 and role = 'admin' order by created_at desc limit 10;")
+  const [output, setOutput] = React.useState("")
+
+  const formatSql = () => {
+    if (!input.trim()) {
+      setOutput("")
+      return
+    }
+
+    let clean = input.trim().replace(/\s+/g, " ")
+    
+    // Capitalize SQL Keywords
+    const sqlKeywords = [
+      "SELECT", "FROM", "WHERE", "AND", "OR", "JOIN", "LEFT JOIN", "RIGHT JOIN",
+      "INNER JOIN", "ON", "GROUP BY", "ORDER BY", "LIMIT", "INSERT INTO", "VALUES",
+      "UPDATE", "SET", "DELETE FROM", "HAVING", "CREATE TABLE", "INDEX"
+    ]
+    for (const kw of sqlKeywords) {
+      const regex = new RegExp(`\\b${kw}\\b`, "gi")
+      clean = clean.replace(regex, kw)
+    }
+
+    // Insert line breaks before major keywords
+    const lineBreakKeywords = [
+      "FROM", "WHERE", "JOIN", "LEFT JOIN", "RIGHT JOIN", "INNER JOIN",
+      "GROUP BY", "ORDER BY", "LIMIT", "SET", "VALUES"
+    ]
+    for (const kw of lineBreakKeywords) {
+      const regex = new RegExp(`\\b${kw}\\b`, "g")
+      clean = clean.replace(regex, `\n${kw}`)
+    }
+
+    // Format logical conditions in WHERE clause
+    clean = clean.replace(/\b(AND|OR)\b/g, "\n  $1")
+
+    // Clean extra line spaces
+    const lines = clean.split("\n").map(l => l.trim()).filter(Boolean)
+    // Add extra padding spaces where helpful
+    const formatted = lines.map(line => {
+      if (line.startsWith("SELECT") && line.length > 50) {
+        // Format SELECT list if very long
+        return line.replace(/,\s*/g, ",\n  ")
+      }
+      return line
+    }).join("\n")
+
+    setOutput(formatted)
+  }
+
+  React.useEffect(() => {
+    formatSql()
+  }, [input])
+
+  return (
+    <div className="space-y-4 font-mono">
+      <span className="text-xs font-bold uppercase text-zinc-500 block border-b border-border pb-2">SQL QUERY FORMATTER & BEAUTIFIER</span>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <span className="text-[10px] text-zinc-400 font-bold block mb-1">UNFORMATTED SQL QUERY:</span>
+          <textarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            className="w-full h-64 bg-black border-2 border-foreground p-3 text-xs leading-relaxed focus:outline-none focus:border-primary placeholder:text-zinc-700"
+          />
+        </div>
+        <div>
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-[10px] text-zinc-400 font-bold block">BEAUTIFIED SQL OUTPUT:</span>
+            {output && <CopyBtn value={output} />}
+          </div>
+          <textarea
+            readOnly
+            value={output}
+            placeholder="Formatted SQL output..."
+            className="w-full h-64 bg-zinc-950 border-2 border-border p-3 text-xs leading-relaxed focus:outline-none placeholder:text-zinc-700 select-all"
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export function SvgOptimizerTool() {
+  const [input, setInput] = React.useState(`<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"\n\t width="100px" height="100px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve">\n  <!-- This is a sample comment to remove -->\n  <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="#2dd4bf" />\n</svg>`)
+  const [removeComments, setRemoveComments] = React.useState(true)
+  const [removeMetadata, setRemoveMetadata] = React.useState(true)
+  const [removeDimensions, setRemoveDimensions] = React.useState(true)
+  const [output, setOutput] = React.useState("")
+
+  const optimizeSvg = () => {
+    if (!input.trim()) {
+      setOutput("")
+      return
+    }
+
+    let clean = input
+
+    if (removeComments) {
+      clean = clean.replace(/<!--[\s\S]*?-->/g, "")
+    }
+
+    if (removeMetadata) {
+      // Remove xmlns attributes or metadata block tags
+      clean = clean.replace(/<metadata>[\s\S]*?<\/metadata>/gi, "")
+      clean = clean.replace(/\s*id="[^"]*"/g, "")
+      clean = clean.replace(/\s*style="enable-background:[^"]*"/g, "")
+    }
+
+    if (removeDimensions) {
+      // Remove width and height, enforce using viewBox
+      clean = clean.replace(/\s*width="[^"]*"/g, "")
+      clean = clean.replace(/\s*height="[^"]*"/g, "")
+    }
+
+    // Clean empty lines or trailing white spaces
+    clean = clean.split("\n").map(l => l.trim()).filter(Boolean).join("\n")
+    setOutput(clean)
+  }
+
+  React.useEffect(() => {
+    optimizeSvg()
+  }, [input, removeComments, removeMetadata, removeDimensions])
+
+  return (
+    <div className="space-y-4 font-mono">
+      <span className="text-xs font-bold uppercase text-zinc-500 block border-b border-border pb-2">SVG CLEANER & OPTIMIZER</span>
+
+      <div className="flex flex-wrap gap-4 text-xs font-bold select-none pb-2 border-b border-zinc-800/40">
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" checked={removeComments} onChange={(e) => setRemoveComments(e.target.checked)} className="accent-primary" />
+          <span>STRIP COMMENTS</span>
+        </label>
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" checked={removeMetadata} onChange={(e) => setRemoveMetadata(e.target.checked)} className="accent-primary" />
+          <span>STRIP METADATA & IDS</span>
+        </label>
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" checked={removeDimensions} onChange={(e) => setRemoveDimensions(e.target.checked)} className="accent-primary" />
+          <span>STRIP WIDTH & HEIGHT</span>
+        </label>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <span className="text-[10px] text-zinc-400 font-bold block mb-1">RAW SVG INPUT:</span>
+          <textarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            className="w-full h-64 bg-black border-2 border-foreground p-3 text-xs leading-relaxed focus:outline-none focus:border-primary placeholder:text-zinc-700"
+          />
+        </div>
+        <div>
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-[10px] text-zinc-400 font-bold block">CLEANED SVG MARKUP:</span>
+            {output && <CopyBtn value={output} />}
+          </div>
+          <textarea
+            readOnly
+            value={output}
+            className="w-full h-64 bg-zinc-950 border-2 border-border p-3 text-xs leading-relaxed focus:outline-none placeholder:text-zinc-700 select-all"
+          />
+        </div>
+      </div>
+
+      <div className="border-4 border-foreground p-4 bg-white flex flex-col items-center justify-center min-h-32 shadow-[3px_3px_0px_0px_#ffffff]">
+        <span className="text-[9px] font-black text-black bg-zinc-200 border border-zinc-400 px-2 py-0.5 mb-3 self-start">SVG LIVE RENDER</span>
+        <div 
+          className="w-32 h-32 flex items-center justify-center [&>svg]:w-full [&>svg]:h-full text-black"
+          dangerouslySetInnerHTML={{ __html: output }}
+        />
+      </div>
+    </div>
+  )
+}
+
+export function HtmlEntityCoderTool() {
+  const [input, setInput] = React.useState("<div>Welcome to OpenDev Hub! & enjoy 100% offline tools.</div>")
+  const [mode, setMode] = React.useState<"encode" | "decode">("encode")
+  const [output, setOutput] = React.useState("")
+
+  React.useEffect(() => {
+    if (!input) {
+      setOutput("")
+      return
+    }
+
+    if (mode === "encode") {
+      setOutput(input.replace(/[\u00A0-\u9999<>&"]/g, (c) => `&#${c.charCodeAt(0)};`))
+    } else {
+      const doc = new DOMParser().parseFromString(input, "text/html")
+      setOutput(doc.documentElement.textContent || "")
+    }
+  }, [input, mode])
+
+  return (
+    <div className="space-y-4 font-mono">
+      <div className="flex items-center justify-between border-b border-border pb-2">
+        <span className="text-xs font-bold uppercase text-zinc-500">HTML ENTITY ENCODER / DECODER</span>
+        <div className="flex border-2 border-foreground bg-black select-none">
+          <button
+            onClick={() => setMode("encode")}
+            className={`px-3 py-0.5 text-xs font-bold uppercase cursor-pointer ${
+              mode === "encode" ? "bg-accent text-accent-foreground" : "text-zinc-500 hover:text-foreground"
+            }`}
+          >
+            Encode
+          </button>
+          <button
+            onClick={() => setMode("decode")}
+            className={`px-3 py-0.5 text-xs font-bold uppercase cursor-pointer ${
+              mode === "decode" ? "bg-accent text-accent-foreground" : "text-zinc-500 hover:text-foreground"
+            }`}
+          >
+            Decode
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <span className="text-[10px] text-zinc-400 font-bold block mb-1">
+            {mode === "encode" ? "PLAIN TEXT INPUT:" : "HTML ENTITIES INPUT:"}
+          </span>
+          <textarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            className="w-full h-64 bg-black border-2 border-foreground p-3 text-xs leading-relaxed focus:outline-none focus:border-primary placeholder:text-zinc-700"
+          />
+        </div>
+        <div>
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-[10px] text-zinc-400 font-bold block">
+              {mode === "encode" ? "HTML ENTITIES OUTPUT:" : "PLAIN TEXT OUTPUT:"}
+            </span>
+            {output && <CopyBtn value={output} />}
+          </div>
+          <textarea
+            readOnly
+            value={output}
+            className="w-full h-64 bg-zinc-950 border-2 border-border p-3 text-xs leading-relaxed focus:outline-none placeholder:text-zinc-700 select-all"
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export function CssPlaygroundTool() {
+  const [hOffset, setHOffset] = React.useState(6)
+  const [vOffset, setVOffset] = React.useState(6)
+  const [blur, setBlur] = React.useState(0)
+  const [spread, setSpread] = React.useState(0)
+  const [shadowColor, setShadowColor] = React.useState("#2dd4bf")
+  const [shadowOpacity, setShadowOpacity] = React.useState(100)
+  const [inset, setInset] = React.useState(false)
+
+  const [borderRadius, setBorderRadius] = React.useState(0)
+  const [borderWidth, setBorderWidth] = React.useState(4)
+
+  const hexToRgba = (hex: string, opacityPercent: number) => {
+    let clean = hex.trim().replace("#", "")
+    if (clean.length === 3) {
+      clean = clean[0] + clean[0] + clean[1] + clean[1] + clean[2] + clean[2]
+    }
+    const r = parseInt(clean.substring(0, 2), 16) || 0
+    const g = parseInt(clean.substring(2, 4), 16) || 0
+    const b = parseInt(clean.substring(4, 6), 16) || 0
+    return `rgba(${r}, ${g}, ${b}, ${opacityPercent / 100})`
+  }
+
+  const rgbaColor = hexToRgba(shadowColor, shadowOpacity)
+  const shadowValue = `${inset ? "inset " : ""}${hOffset}px ${vOffset}px ${blur}px ${spread}px ${rgbaColor}`
+  
+  const cssString = `box-shadow: ${shadowValue};\nborder-radius: ${borderRadius}px;\nborder: ${borderWidth}px solid #000000;`
+
+  return (
+    <div className="space-y-4 font-mono">
+      <span className="text-xs font-bold uppercase text-zinc-500 block border-b border-border pb-2">CSS SHADOW & BORDER VISUAL PLAYGROUND</span>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+        <div className="space-y-4 bg-zinc-950 border border-zinc-800 p-4 text-xs font-bold">
+          <span className="text-[10px] text-zinc-500 font-bold block mb-2 uppercase border-b border-zinc-800 pb-1">BOX SHADOW CONTROLS</span>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <span className="text-[10px] text-zinc-400 block mb-1">HORIZ. OFFSET: {hOffset}px</span>
+              <input type="range" min="-50" max="50" value={hOffset} onChange={(e) => setHOffset(parseInt(e.target.value))} className="w-full accent-primary" />
+            </div>
+            <div>
+              <span className="text-[10px] text-zinc-400 block mb-1">VERT. OFFSET: {vOffset}px</span>
+              <input type="range" min="-50" max="50" value={vOffset} onChange={(e) => setVOffset(parseInt(e.target.value))} className="w-full accent-primary" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <span className="text-[10px] text-zinc-400 block mb-1">BLUR RADIUS: {blur}px</span>
+              <input type="range" min="0" max="50" value={blur} onChange={(e) => setBlur(parseInt(e.target.value))} className="w-full accent-primary" />
+            </div>
+            <div>
+              <span className="text-[10px] text-zinc-400 block mb-1">SPREAD RADIUS: {spread}px</span>
+              <input type="range" min="-30" max="30" value={spread} onChange={(e) => setSpread(parseInt(e.target.value))} className="w-full accent-primary" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 items-center">
+            <div>
+              <span className="text-[10px] text-zinc-400 block mb-1">SHADOW COLOR:</span>
+              <input type="color" value={shadowColor} onChange={(e) => setShadowColor(e.target.value)} className="w-full h-8 border border-foreground bg-black cursor-pointer" />
+            </div>
+            <div>
+              <span className="text-[10px] text-zinc-400 block mb-1">OPACITY: {shadowOpacity}%</span>
+              <input type="range" min="0" max="100" value={shadowOpacity} onChange={(e) => setShadowOpacity(parseInt(e.target.value))} className="w-full accent-primary" />
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 pt-1.5">
+            <input type="checkbox" id="insetShadow" checked={inset} onChange={(e) => setInset(e.target.checked)} className="accent-primary cursor-pointer" />
+            <label htmlFor="insetShadow" className="text-[10px] text-zinc-400 uppercase cursor-pointer select-none">INSET SHADOW</label>
+          </div>
+
+          <span className="text-[10px] text-zinc-500 font-bold block mb-2 uppercase border-b border-zinc-800 pt-3 pb-1">BORDER & RADIUS CONTROLS</span>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <span className="text-[10px] text-zinc-400 block mb-1">BORDER RADIUS: {borderRadius}px</span>
+              <input type="range" min="0" max="100" value={borderRadius} onChange={(e) => setBorderRadius(parseInt(e.target.value))} className="w-full accent-primary" />
+            </div>
+            <div>
+              <span className="text-[10px] text-zinc-400 block mb-1">BORDER WIDTH: {borderWidth}px</span>
+              <input type="range" min="0" max="20" value={borderWidth} onChange={(e) => setBorderWidth(parseInt(e.target.value))} className="w-full accent-primary" />
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          <div className="border-4 border-foreground p-8 flex items-center justify-center min-h-[220px] bg-dot-pattern">
+            <div 
+              style={{
+                boxShadow: shadowValue,
+                borderRadius: `${borderRadius}px`,
+                border: `${borderWidth}px solid #000000`
+              }}
+              className="w-36 h-36 bg-zinc-900 border-foreground flex items-center justify-center text-center p-3 select-none transition-all duration-100 font-black text-xs text-zinc-400 uppercase"
+            >
+              Visual Box
+            </div>
+          </div>
+
+          <div className="space-y-1">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] text-zinc-400 font-bold block">CSS CODES:</span>
+              <CopyBtn value={cssString} />
+            </div>
+            <pre className="w-full bg-zinc-950 border border-border p-3 text-[11px] leading-relaxed text-foreground select-all whitespace-pre-wrap">
+              {cssString}
+            </pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export function DnsLookupTool() {
+  const [domain, setDomain] = React.useState("google.com")
+  const [recordType, setRecordType] = React.useState("A")
+  const [provider, setProvider] = React.useState<"cloudflare" | "google">("cloudflare")
+  const [loading, setLoading] = React.useState(false)
+  const [records, setRecords] = React.useState<any[]>([])
+  const [error, setError] = React.useState<string | null>(null)
+
+  const performLookup = async () => {
+    if (!domain.trim()) return
+    setLoading(true)
+    setError(null)
+    setRecords([])
+
+    const recordTypeMap: Record<string, number> = {
+      A: 1, AAAA: 28, MX: 15, TXT: 16, CNAME: 5, NS: 2
+    }
+    const typeCode = recordTypeMap[recordType] || 1
+
+    try {
+      let url = ""
+      let headers: HeadersInit = {}
+
+      if (provider === "cloudflare") {
+        url = `https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(domain)}&type=${recordType}`
+        headers = { accept: "application/dns-json" }
+      } else {
+        url = `https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=${typeCode}`
+      }
+
+      const res = await fetch(url, { headers })
+      if (!res.ok) throw new Error("Network response error during DNS query.")
+      
+      const data = await res.json()
+      if (data.Status !== 0) {
+        throw new Error(`DNS resolution failed with status code ${data.Status}.`)
+      }
+
+      if (data.Answer && Array.isArray(data.Answer)) {
+        setRecords(data.Answer)
+      } else {
+        setRecords([])
+      }
+    } catch (e: any) {
+      setError(e.message || "DNS fetch query failed.")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  React.useEffect(() => {
+    performLookup()
+  }, [domain, recordType, provider])
+
+  const getRecordTypeName = (typeVal: number) => {
+    const types: Record<number, string> = {
+      1: "A", 28: "AAAA", 15: "MX", 16: "TXT", 5: "CNAME", 2: "NS"
+    }
+    return types[typeVal] || String(typeVal)
+  }
+
+  return (
+    <div className="space-y-4 font-mono">
+      <span className="text-xs font-bold uppercase text-zinc-500 block border-b border-border pb-2">DNS-OVER-HTTPS RESOLVER LOOKUP</span>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 font-bold text-xs">
+        <div>
+          <span className="text-[10px] text-zinc-400 block mb-1">DOMAIN NAME:</span>
+          <input
+            type="text"
+            value={domain}
+            onChange={(e) => setDomain(e.target.value.trim().toLowerCase())}
+            placeholder="e.g. google.com"
+            className="w-full neo-input h-10"
+          />
+        </div>
+        <div>
+          <span className="text-[10px] text-zinc-400 block mb-1">RECORD TYPE:</span>
+          <select
+            value={recordType}
+            onChange={(e) => setRecordType(e.target.value)}
+            className="w-full border-2 border-foreground bg-black px-2 h-10 text-xs text-foreground cursor-pointer"
+          >
+            <option value="A">A (IPv4 Address)</option>
+            <option value="AAAA">AAAA (IPv6 Address)</option>
+            <option value="MX">MX (Mail Exchanger)</option>
+            <option value="TXT">TXT (Text Records)</option>
+            <option value="CNAME">CNAME (Canonical Name)</option>
+            <option value="NS">NS (Name Server)</option>
+          </select>
+        </div>
+        <div>
+          <span className="text-[10px] text-zinc-400 block mb-1">RESOLVER SERVER:</span>
+          <div className="flex border-2 border-foreground bg-black h-10 select-none items-center p-1 gap-1">
+            <button
+              onClick={() => setProvider("cloudflare")}
+              className={`flex-1 h-full text-[10px] uppercase font-bold cursor-pointer ${
+                provider === "cloudflare" ? "bg-accent text-accent-foreground" : "text-zinc-500 hover:text-foreground"
+              }`}
+            >
+              Cloudflare
+            </button>
+            <button
+              onClick={() => setProvider("google")}
+              className={`flex-1 h-full text-[10px] uppercase font-bold cursor-pointer ${
+                provider === "google" ? "bg-accent text-accent-foreground" : "text-zinc-500 hover:text-foreground"
+              }`}
+            >
+              Google
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="pt-2">
+        <span className="text-[10px] text-zinc-400 font-bold block mb-1">RESOLUTION ANSWER RECORDS:</span>
+        <div className="w-full min-h-36 bg-zinc-950 border-2 border-border overflow-auto p-2">
+          {loading ? (
+            <div className="flex items-center justify-center py-12 text-xs text-zinc-500 gap-2">
+              <RefreshCw className="h-4 w-4 animate-spin text-accent" />
+              <span>Querying DNS records over HTTPS...</span>
+            </div>
+          ) : error ? (
+            <span className="text-xs text-red-500 font-bold block p-2">{error}</span>
+          ) : records.length === 0 ? (
+            <div className="py-12 text-center text-xs text-zinc-600">No records found for query parameters.</div>
+          ) : (
+            <table className="w-full text-[11px] text-left border-collapse select-all">
+              <thead>
+                <tr className="border-b-2 border-foreground bg-zinc-900 font-black">
+                  <th className="p-2 border border-zinc-800 uppercase">Name</th>
+                  <th className="p-2 border border-zinc-800 uppercase">Type</th>
+                  <th className="p-2 border border-zinc-800 uppercase">TTL</th>
+                  <th className="p-2 border border-zinc-800 uppercase">Data</th>
+                </tr>
+              </thead>
+              <tbody>
+                {records.map((rec, idx) => (
+                  <tr key={idx} className="border-b border-zinc-800/40 hover:bg-zinc-900/40">
+                    <td className="p-2 border border-zinc-800/40 font-bold text-zinc-400">{rec.name}</td>
+                    <td className="p-2 border border-zinc-800/40 text-accent font-bold">{getRecordTypeName(rec.type)}</td>
+                    <td className="p-2 border border-zinc-800/40 text-zinc-500">{rec.TTL}s</td>
+                    <td className="p-2 border border-zinc-800/40 break-all select-all font-bold text-foreground">{rec.data}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+

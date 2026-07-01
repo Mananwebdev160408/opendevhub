@@ -48,6 +48,13 @@ export function Header() {
         { label: "YAML CHEATS", href: "/yaml-cheatsheets", description: "Comprehensive YAML cheatsheet defining all options, fields, syntax rules, and usecases." },
         { label: "DOCKER COMPOSE", href: "/docker-compose-cheatsheets", description: "Comprehensive Docker Compose cheatsheet outlining services, networks, volumes, and deployment options." },
         { label: "HTTP CODES", href: "/http-status", description: "Visual index of HTTP status codes with detailed explanations, headers, and code snippets." },
+        { label: "KUBERNETES CHEATS", href: "/k8s-cheatsheets", description: "Kubectl command index covering pod operations, deployments, and cluster debugs." },
+        { label: "LINUX/BASH REF", href: "/bash-cheatsheets", description: "Bash command reference detailing file systems, pipeline flows, and file permissions." },
+        { label: "CSS VISUAL GUIDE", href: "/css-visual-guide", description: "Interactive workspace to visually toggle and test Flexbox and CSS Grid layout parameters." },
+        { label: "SECURITY CHEATS", href: "/security-cheatsheets", description: "Secure code guide mapping OWASP defenses, security headers, and crypto APIs." },
+        { label: "REGEX VISUALIZER", href: "/regex-visualizer", description: "Visualize regular expression parsing trees and sequence paths in live schematics." },
+        { label: "CRON BUILDER", href: "/cron-builder", description: "Build CRON expressions interactively and visualize the next 10 calculated trigger dates." },
+        { label: "CSS BEZIER PLAY", href: "/css-bezier", description: "Drag-and-drop cubic bezier editor with timing physics simulation and CSS transitions." },
       ]
     },
     {
@@ -154,7 +161,7 @@ export function Header() {
           </nav>
 
           <div
-            className={`absolute top-[60px] left-1/2 -translate-x-1/2 w-[980px] h-[390px] bg-black border-4 border-foreground shadow-[8px_8px_0px_0px_var(--accent)] z-50 transition-all duration-300 ease-out overflow-hidden ${
+            className={`absolute top-[60px] left-1/2 -translate-x-1/2 w-[980px] min-h-[360px] h-auto bg-black border-4 border-foreground shadow-[8px_8px_0px_0px_var(--accent)] z-50 transition-all duration-300 ease-out overflow-hidden ${
               activeGroup
                 ? "opacity-100 visible translate-y-0 pointer-events-auto"
                 : "opacity-0 invisible -translate-y-2 pointer-events-none"
@@ -165,10 +172,10 @@ export function Header() {
               return (
                 <div
                   key={group.label}
-                  className={`grid grid-cols-12 gap-0 absolute inset-0 transition-all duration-200 ease-in-out ${
+                  className={`grid grid-cols-12 gap-0 transition-all duration-200 ease-in-out min-h-[inherit] ${
                     isSelected
-                      ? "opacity-100 visible translate-x-0"
-                      : "opacity-0 invisible translate-x-4 pointer-events-none"
+                      ? "opacity-100 visible translate-x-0 relative w-full"
+                      : "opacity-0 invisible translate-x-4 pointer-events-none absolute inset-0"
                   }`}
                 >
                   <div className="col-span-4 bg-zinc-950 p-6 border-r-2 border-foreground flex flex-col justify-between select-none text-left font-mono">

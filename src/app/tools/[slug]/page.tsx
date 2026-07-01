@@ -17,7 +17,9 @@ export async function generateStaticParams() {
     "password-generator", "markdown-preview", "html-preview", "diff-checker",
     "cron-parser", "character-counter", "word-counter", "line-counter",
     "qr-generator", "barcode-generator", "css-minifier", "js-minifier",
-    "html-minifier", "prettier-formatter", "csv-viewer", "yaml-viewer", "xml-viewer"
+    "html-minifier", "prettier-formatter", "csv-viewer", "yaml-viewer", "xml-viewer",
+    "json-to-typescript", "yaml-json-converter", "keycode-listener", "sql-formatter",
+    "svg-optimizer", "html-entity-coder", "css-playground", "dns-lookup"
   ]
   return tools.map((slug) => ({ slug }))
 }
@@ -154,6 +156,38 @@ const toolMetadata: Record<string, { title: string; description: string }> = {
   "xml-viewer": {
     title: "XML Viewer & Beautifier - OpenDev Hub",
     description: "Validate and pretty-print XML trees. Expand nodes, format indentations, and inspect structures."
+  },
+  "json-to-typescript": {
+    title: "JSON to TypeScript Interface Converter - OpenDev Hub",
+    description: "Generate strongly-typed TypeScript interfaces from raw JSON structures instantly and 100% locally."
+  },
+  "yaml-json-converter": {
+    title: "YAML to JSON & JSON to YAML Converter - OpenDev Hub",
+    description: "Convert data schemas back and forth between YAML and JSON formats with local in-browser parsing."
+  },
+  "keycode-listener": {
+    title: "Keyboard Keycode & Event Listener - OpenDev Hub",
+    description: "Inspect keyboard event objects in real-time. View key codes, locations, identifiers, and modifier keys."
+  },
+  "sql-formatter": {
+    title: "SQL Query Formatter & Beautifier - OpenDev Hub",
+    description: "Beautify and format SQL statements. Upper-case keywords and adjust layout indentation online."
+  },
+  "svg-optimizer": {
+    title: "SVG Cleaner, Optimizer & Previewer - OpenDev Hub",
+    description: "Optimize SVG vector graphic markup by stripping comments, namespaces, and dimensions. Live rendering included."
+  },
+  "html-entity-coder": {
+    title: "HTML Entity Encoder & Decoder - OpenDev Hub",
+    description: "Convert special characters to HTML entities or decode raw markup safe for browser rendering."
+  },
+  "css-playground": {
+    title: "CSS Shadow & Border Playground - OpenDev Hub",
+    description: "Visually build CSS box shadows, borders, and border-radii using interactive sliders with live HTML box previews."
+  },
+  "dns-lookup": {
+    title: "DNS-over-HTTPS Lookup Client - OpenDev Hub",
+    description: "Perform DNS record resolution queries client-side using public Cloudflare or Google DoH API servers."
   }
 }
 

@@ -29,7 +29,15 @@ import {
   BarcodeGeneratorTool,
   MinifierTool,
   CsvViewerTool,
-  YamlXmlTool
+  YamlXmlTool,
+  JsonToTypescriptTool,
+  YamlJsonConverterTool,
+  KeycodeListenerTool,
+  SqlFormatterTool,
+  SvgOptimizerTool,
+  HtmlEntityCoderTool,
+  CssPlaygroundTool,
+  DnsLookupTool
 } from "./ToolRegistry"
 
 interface ToolboxLayoutProps {
@@ -49,12 +57,15 @@ export function ToolboxLayout({ initialTool }: ToolboxLayoutProps) {
     { name: "Prettier Format", slug: "prettier-formatter", category: "Data Formatters", component: <JsonFormatterTool /> },
     { name: "CSV Grid Viewer", slug: "csv-viewer", category: "Data Formatters", component: <CsvViewerTool /> },
     { name: "YAML/XML View", slug: "yaml-viewer", category: "Data Formatters", component: <YamlXmlTool /> },
+    { name: "JSON to TS Interface", slug: "json-to-typescript", category: "Data Formatters", component: <JsonToTypescriptTool /> },
+    { name: "YAML ↔ JSON", slug: "yaml-json-converter", category: "Data Formatters", component: <YamlJsonConverterTool /> },
     { name: "JWT Decoder", slug: "jwt-decoder", category: "Encoders & Crypto", component: <JwtDecoderTool /> },
     { name: "UUID Generator", slug: "uuid-generator", category: "Encoders & Crypto", component: <UuidGeneratorTool /> },
     { name: "Hash Generator", slug: "hash-generator", category: "Encoders & Crypto", component: <HashGeneratorTool /> },
     { name: "Base64 Converter", slug: "base64-encode", category: "Encoders & Crypto", component: <Base64Tool /> },
     { name: "URL Converter", slug: "url-encode", category: "Encoders & Crypto", component: <UrlTool /> },
     { name: "Password Gen", slug: "password-generator", category: "Encoders & Crypto", component: <PasswordGeneratorTool /> },
+    { name: "HTML Entity Coder", slug: "html-entity-coder", category: "Encoders & Crypto", component: <HtmlEntityCoderTool /> },
     { name: "RegEx Tester", slug: "regex-tester", category: "Text & Parsers", component: <RegexTesterTool /> },
     { name: "Lorem Ipsum", slug: "lorem-ipsum", category: "Text & Parsers", component: <LoremIpsumTool /> },
     { name: "Slug Generator", slug: "slug-generator", category: "Text & Parsers", component: <SlugGeneratorTool /> },
@@ -62,12 +73,17 @@ export function ToolboxLayout({ initialTool }: ToolboxLayoutProps) {
     { name: "Word/Char Counter", slug: "character-counter", category: "Text & Parsers", component: <LoremIpsumTool /> },
     { name: "Cron Parser", slug: "cron-parser", category: "Text & Parsers", component: <CronParserTool /> },
     { name: "Diff Checker", slug: "diff-checker", category: "Text & Parsers", component: <DiffCheckerTool /> },
+    { name: "Keycode Listener", slug: "keycode-listener", category: "Text & Parsers", component: <KeycodeListenerTool /> },
+    { name: "SQL Formatter", slug: "sql-formatter", category: "Text & Parsers", component: <SqlFormatterTool /> },
+    { name: "DNS Lookup", slug: "dns-lookup", category: "Text & Parsers", component: <DnsLookupTool /> },
     { name: "Color Converter", slug: "color-converter", category: "Visuals & CSS", component: <ColorConverterTool /> },
     { name: "Gradient Gen", slug: "gradient-generator", category: "Visuals & CSS", component: <GradientGeneratorTool /> },
     { name: "QR Generator", slug: "qr-generator", category: "Visuals & CSS", component: <QrGeneratorTool /> },
     { name: "Barcode Gen", slug: "barcode-generator", category: "Visuals & CSS", component: <BarcodeGeneratorTool /> },
     { name: "Markdown Preview", slug: "markdown-preview", category: "Visuals & CSS", component: <MarkdownPreviewTool /> },
     { name: "HTML Sandbox Preview", slug: "html-preview", category: "Visuals & CSS", component: <HtmlPreviewTool /> },
+    { name: "CSS Visual Playground", slug: "css-playground", category: "Visuals & CSS", component: <CssPlaygroundTool /> },
+    { name: "SVG Optimizer", slug: "svg-optimizer", category: "Visuals & CSS", component: <SvgOptimizerTool /> },
     { name: "Minifiers (CSS/JS)", slug: "css-minifier", category: "Minifiers", component: <MinifierTool /> }
   ]
 
@@ -215,7 +231,15 @@ export function ToolboxLayout({ initialTool }: ToolboxLayoutProps) {
                   "html-preview": ["markdown-preview", "css-minifier", "js-minifier"],
                   "css-minifier": ["js-minifier", "html-minifier", "gradient-generator"],
                   "js-minifier": ["css-minifier", "html-minifier", "prettier-formatter"],
-                  "html-minifier": ["css-minifier", "js-minifier", "html-preview"]
+                  "html-minifier": ["css-minifier", "js-minifier", "html-preview"],
+                  "json-to-typescript": ["json-formatter", "prettier-formatter", "yaml-json-converter"],
+                  "yaml-json-converter": ["yaml-viewer", "json-formatter", "json-to-typescript"],
+                  "keycode-listener": ["regex-tester", "character-counter", "case-converter"],
+                  "sql-formatter": ["prettier-formatter", "json-formatter", "diff-checker"],
+                  "svg-optimizer": ["html-preview", "markdown-preview", "css-playground"],
+                  "html-entity-coder": ["url-encode", "base64-encode", "jwt-decoder"],
+                  "css-playground": ["gradient-generator", "color-converter", "svg-optimizer"],
+                  "dns-lookup": ["cron-parser", "timestamp-converter", "hash-generator"]
                 }
                 const relatedSlugs = relatedMapping[activeTool.slug] || ["json-formatter", "jwt-decoder", "uuid-generator"]
                 const related = relatedSlugs

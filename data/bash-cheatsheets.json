@@ -1,0 +1,85 @@
+[
+  {
+    "category": "File System Operations",
+    "commands": [
+      {
+        "cmd": "ls",
+        "description": "List directory contents. Often used with flags to see hidden files or file details.",
+        "syntax": "ls [flags] [directory]",
+        "example": "ls -la /var/log",
+        "mistake": "Running ls in a folder with millions of files without pagination or limit, causing the terminal output buffer to freeze."
+      },
+      {
+        "cmd": "find",
+        "description": "Search for files in a directory hierarchy based on names, types, sizes, or dates.",
+        "syntax": "find [path] -name \"<pattern>\"",
+        "example": "find . -type f -name \"*.log\" -mtime -7",
+        "mistake": "Forgetting to wrap the name pattern in quotes, which causes the shell to expand the glob pattern locally before running find."
+      },
+      {
+        "cmd": "rm",
+        "description": "Remove files or directories. Use recursive flag to delete folders.",
+        "syntax": "rm -rf <path>",
+        "example": "rm -rf ./tmp/cache",
+        "mistake": "Running 'rm -rf /' or omitting path configurations, which can permanently wipe out the system filesystem."
+      }
+    ]
+  },
+  {
+    "category": "File Permissions",
+    "commands": [
+      {
+        "cmd": "chmod",
+        "description": "Change the access permissions of files or directories (read, write, execute).",
+        "syntax": "chmod [permissions] <file>",
+        "example": "chmod 755 script.sh\nchmod +x deploy.sh",
+        "mistake": "Setting 'chmod 777' on files in production, which gives global write and execute access, creating severe security vulnerabilities."
+      },
+      {
+        "cmd": "chown",
+        "description": "Change file owner and group ownership of files and directories.",
+        "syntax": "chown [owner]:[group] <file>",
+        "example": "chown -R www-data:www-data /var/www/html",
+        "mistake": "Forgetting the -R flag when you want to change ownership for all nested files and subdirectories."
+      }
+    ]
+  },
+  {
+    "category": "Pipelines & Redirection",
+    "commands": [
+      {
+        "cmd": "stdout & stderr redirect",
+        "description": "Redirect command standard output (stdout) or standard error (stderr) to a file or stream.",
+        "syntax": "<command> > file.txt 2>&1\n# Append stdout:\n<command> >> file.txt",
+        "example": "npm run start > output.log 2>&1 &",
+        "mistake": "Using '>' when you mean to append. '>' will overwrite the file entirely, destroying previous logs. Use '>>' to append."
+      },
+      {
+        "cmd": "xargs",
+        "description": "Build and execute command lines from standard input (useful for chaining output files to arguments).",
+        "syntax": "find . -name \"*.tmp\" | xargs rm",
+        "example": "cat ips.txt | xargs -I {} ping -c 1 {}",
+        "mistake": "Forgetting that xargs splits on spaces/newlines, which can fail or cause issues if filenames contain spaces. Use 'find -print0 | xargs -0' to solve this."
+      }
+    ]
+  },
+  {
+    "category": "Process Control",
+    "commands": [
+      {
+        "cmd": "kill",
+        "description": "Send a signal to a process (usually to terminate or kill it by PID).",
+        "syntax": "kill [-signal] <pid>",
+        "example": "kill -9 12345",
+        "mistake": "Using 'kill -9' (SIGKILL) immediately. Always try 'kill -15' (SIGTERM) first to allow the process to clean up connection resources and write files."
+      },
+      {
+        "cmd": "nohup",
+        "description": "Run a command immune to hangups, allowing background processes to continue running even after you log out of the SSH session.",
+        "syntax": "nohup <command> > output.log 2>&1 &",
+        "example": "nohup node server.js &",
+        "mistake": "Forgetting to add '&' at the end, which keeps the process in the foreground instead of putting it into the background."
+      }
+    ]
+  }
+]

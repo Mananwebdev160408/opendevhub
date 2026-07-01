@@ -1,0 +1,99 @@
+[
+  {
+    "category": "Pod Management",
+    "commands": [
+      {
+        "cmd": "kubectl get pods",
+        "description": "List all pods in the current namespace with basic status, restarts count, and age.",
+        "syntax": "kubectl get pods [flags]",
+        "example": "kubectl get pods -n kube-system\nkubectl get pods -o wide",
+        "mistake": "Looking for pods in the default namespace when they are deployed in a specific namespace. Use -n <namespace> or -A to list all namespaces."
+      },
+      {
+        "cmd": "kubectl describe pod",
+        "description": "Show detailed state information of a specific pod, including lifecycle events, container states, and volumes.",
+        "syntax": "kubectl describe pod <pod-name>",
+        "example": "kubectl describe pod my-web-app-7c569f-x12y",
+        "mistake": "Running kubectl describe when logs would be more useful for application errors. Describe is best for scheduling errors, ImagePullBackOff, or Evicted states."
+      },
+      {
+        "cmd": "kubectl logs",
+        "description": "Print the logs for a container in a pod. Useful for troubleshooting startup or application run errors.",
+        "syntax": "kubectl logs <pod-name> [-c <container-name>]",
+        "example": "kubectl logs my-web-app-7c569f-x12y -f --tail 100",
+        "mistake": "Forgetting to specify the container name using -c if the pod has multiple containers (e.g. sidecars or initContainers)."
+      },
+      {
+        "cmd": "kubectl exec",
+        "description": "Execute a command inside a running container of a pod. Often used to open an interactive bash/sh shell.",
+        "syntax": "kubectl exec -it <pod-name> [-c <container-name>] -- <command>",
+        "example": "kubectl exec -it my-web-app-7c569f-x12y -- /bin/sh",
+        "mistake": "Forgetting the double-dash '--' separator before the command, which causes kubectl to parse shell flags incorrectly."
+      }
+    ]
+  },
+  {
+    "category": "Deployments & Scaling",
+    "commands": [
+      {
+        "cmd": "kubectl scale",
+        "description": "Set a new size for a deployment, replica set, or stateful set. Increases or decreases container instances.",
+        "syntax": "kubectl scale --replicas=<count> deployment/<deployment-name>",
+        "example": "kubectl scale --replicas=5 deployment/api-server",
+        "mistake": "Manually scaling replicas for resources managed by a HorizontalPodAutoscaler (HPA), as HPA will overwrite your scaling adjustments immediately."
+      },
+      {
+        "cmd": "kubectl rollout status",
+        "description": "Watch the progress of a deployment update (rolling restart/upgrade) until it finishes.",
+        "syntax": "kubectl rollout status deployment/<deployment-name>",
+        "example": "kubectl rollout status deployment/api-server",
+        "mistake": "Running next steps in CI/CD pipeline without checking rollout status, resulting in broken deployment failures going undetected."
+      },
+      {
+        "cmd": "kubectl rollout undo",
+        "description": "Roll back a deployment to the previous revision, or rollback to a specific revision history number.",
+        "syntax": "kubectl rollout undo deployment/<deployment-name> [--to-revision=<number>]",
+        "example": "kubectl rollout undo deployment/api-server --to-revision=3",
+        "mistake": "Rolling back without checking deployment rollout history first (via 'kubectl rollout history'), which might make you roll back to a bad state."
+      }
+    ]
+  },
+  {
+    "category": "Service & Networking",
+    "commands": [
+      {
+        "cmd": "kubectl port-forward",
+        "description": "Forward one or more local ports to a pod or service. Great for debugging cluster microservices locally without exposing them.",
+        "syntax": "kubectl port-forward <pod-or-service> <local-port>:<remote-port>",
+        "example": "kubectl port-forward svc/postgres-db 5432:5432",
+        "mistake": "Closing the terminal window or shell process while using port-forward, which terminates the active forwarding tunnel."
+      },
+      {
+        "cmd": "kubectl expose",
+        "description": "Expose a deployment, pod, or replica set as a new Kubernetes Service, mapping internal ports to cluster IPs or load balancers.",
+        "syntax": "kubectl expose deployment <deploy-name> --port=<external-port> --target-port=<container-port> --type=<ClusterIP|NodePort|LoadBalancer>",
+        "example": "kubectl expose deployment web-server --port=80 --target-port=8080 --type=NodePort",
+        "mistake": "Exposing services with target ports that do not match the port exposed by the application in the container image."
+      }
+    ]
+  },
+  {
+    "category": "Cluster Diagnostics",
+    "commands": [
+      {
+        "cmd": "kubectl top",
+        "description": "Display CPU and memory usage metrics for cluster nodes or pods. Requires Metrics Server to be installed in the cluster.",
+        "syntax": "kubectl top <node|pod>",
+        "example": "kubectl top pod -n production\nkubectl top node",
+        "mistake": "Assuming top works without Metrics Server deployed, resulting in a 'Metrics API not available' error."
+      },
+      {
+        "cmd": "kubectl cluster-info",
+        "description": "Print connection and diagnostic endpoint URLs for cluster master and core addons services (DNS, dashboard).",
+        "syntax": "kubectl cluster-info",
+        "example": "kubectl cluster-info",
+        "mistake": "Running commands without checking cluster-info context, causing commands to run against production instead of staging/local."
+      }
+    ]
+  }
+]
