@@ -187,6 +187,14 @@ export function CmdKDialog({ open, setOpen }: CmdKDialogProps) {
             <Terminal className="mr-2 h-4 w-4 text-purple-400" />
             <span>CSS Bezier Timing Playground</span>
           </CommandItem>
+          <CommandItem onSelect={() => runCommand(() => router.push("/readme-builder"))} className="font-mono text-xs border border-transparent hover:border-border">
+            <Terminal className="mr-2 h-4 w-4 text-accent" />
+            <span>GitHub Profile README Builder</span>
+          </CommandItem>
+          <CommandItem onSelect={() => runCommand(() => router.push("/commit-builder"))} className="font-mono text-xs border border-transparent hover:border-border">
+            <Terminal className="mr-2 h-4 w-4 text-primary" />
+            <span>Conventional Commit Message Builder</span>
+          </CommandItem>
         </CommandGroup>
 
         <CommandSeparator className="my-1" />

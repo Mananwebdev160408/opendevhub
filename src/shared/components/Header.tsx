@@ -37,6 +37,8 @@ export function Header() {
         { label: "ISSUES", href: "/issues", description: "Find beginner-friendly 'good first issues' and track live open bugs across GitHub." },
         { label: "TRENDING", href: "/trending", description: "Analyze what repositories and languages are gaining the most traction today." },
         { label: "ORGANIZATIONS", href: "/orgs", description: "Explore prominent open source software foundations, communities, and creators." },
+        { label: "README BUILDER", href: "/readme-builder", description: "Generate copy-pasteable Markdown READMEs for your GitHub profile with ease." },
+        { label: "COMMIT BUILDER", href: "/commit-builder", description: "Format and construct git commit messages following Conventional Commits specs." },
       ]
     },
     {

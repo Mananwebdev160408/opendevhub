@@ -20,7 +20,9 @@ const PRECACHE_ASSETS = [
   '/cron-builder',
   '/css-bezier',
   '/http-status',
-  '/licenses'
+  '/licenses',
+  '/readme-builder',
+  '/commit-builder'
 ];
 
 // Install event: cache pre-defined routes
