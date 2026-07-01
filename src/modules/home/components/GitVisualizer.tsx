@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { GitBranch, GitCommit, RefreshCw, GitPullRequest, Plus } from "lucide-react"
+import { GitBranch, GitCommit, RefreshCw, GitPullRequest, Plus, ZoomIn, ZoomOut } from "lucide-react"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -92,8 +92,59 @@ export function GitVisualizer() {
   const [msgIndex, setMsgIndex] = React.useState<number>(0)
   const [newBranchName, setNewBranchName] = React.useState<string>("")
   const [mergeTarget, setMergeTarget] = React.useState<string>("main")
+  const [zoom, setZoom] = React.useState<number>(1.0)
 
   const logsContainerRef = React.useRef<HTMLDivElement>(null)
+  const graphContainerRef = React.useRef<HTMLDivElement>(null)
+
+  // Drag-to-scroll / panning states
+  const [isDragging, setIsDragging] = React.useState(false)
+  const [startX, setStartX] = React.useState(0)
+  const [startY, setStartY] = React.useState(0)
+  const [scrollLeft, setScrollLeft] = React.useState(0)
+  const [scrollTop, setScrollTop] = React.useState(0)
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement
+    // Avoid dragging when clicking control buttons, selectors, SVG interactives or text inputs
+    if (
+      target.closest('.z-20') ||
+      target.closest('button') ||
+      target.closest('select') ||
+      target.closest('circle') ||
+      target.closest('a') ||
+      target.closest('input')
+    ) {
+      return
+    }
+
+    setIsDragging(true)
+    const container = graphContainerRef.current
+    if (container) {
+      setStartX(e.pageX - container.offsetLeft)
+      setStartY(e.pageY - container.offsetTop)
+      setScrollLeft(container.scrollLeft)
+      setScrollTop(container.scrollTop)
+    }
+  }
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging) return
+    e.preventDefault()
+    const container = graphContainerRef.current
+    if (container) {
+      const x = e.pageX - container.offsetLeft
+      const y = e.pageY - container.offsetTop
+      const walkX = (x - startX) * 1.5
+      const walkY = (y - startY) * 1.5
+      container.scrollLeft = scrollLeft - walkX
+      container.scrollTop = scrollTop - walkY
+    }
+  }
+
+  const handleMouseUpOrLeave = () => {
+    setIsDragging(false)
+  }
 
   // Auto-scroll logs to bottom
   React.useEffect(() => {
@@ -393,10 +444,56 @@ export function GitVisualizer() {
 
           {/* ── SVG commit graph ── */}
           <div
-            className="w-full overflow-x-auto p-6 bg-zinc-950 border-b-2 border-foreground bg-grid-pattern relative"
-            style={{ minHeight: `${svgHeight + 48}px` }}
+            ref={graphContainerRef}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUpOrLeave}
+            onMouseLeave={handleMouseUpOrLeave}
+            className={`w-full overflow-auto p-6 bg-zinc-950 border-b-2 border-foreground bg-grid-pattern relative group/graph resize-y ${
+              isDragging ? "cursor-grabbing" : "cursor-grab"
+            }`}
+            style={{ 
+              height: "320px",
+              minHeight: "180px",
+              maxHeight: "800px"
+            }}
           >
-            <svg width={viewWidth} height={svgHeight} className="overflow-visible select-none">
+            {/* Zoom Controls */}
+            <div className="absolute top-4 right-4 z-20 flex items-center gap-1 bg-black/80 border border-zinc-800 p-1 rounded backdrop-blur select-none">
+              <button
+                onClick={() => setZoom((z) => Math.max(0.5, z - 0.1))}
+                className="p-1 hover:bg-zinc-800 text-zinc-400 hover:text-foreground transition-colors cursor-pointer rounded"
+                title="Zoom Out"
+              >
+                <ZoomOut className="h-3.5 w-3.5" />
+              </button>
+              <span className="font-mono text-[9px] font-bold text-zinc-500 min-w-[32px] text-center">
+                {Math.round(zoom * 100)}%
+              </span>
+              <button
+                onClick={() => setZoom((z) => Math.min(2.0, z + 0.1))}
+                className="p-1 hover:bg-zinc-800 text-zinc-400 hover:text-foreground transition-colors cursor-pointer rounded"
+                title="Zoom In"
+              >
+                <ZoomIn className="h-3.5 w-3.5" />
+              </button>
+              {zoom !== 1.0 && (
+                <button
+                  onClick={() => setZoom(1.0)}
+                  className="p-1 hover:bg-zinc-800 text-[8px] font-black uppercase text-accent hover:text-primary transition-colors cursor-pointer rounded ml-1"
+                  title="Reset Zoom"
+                >
+                  Reset
+                </button>
+              )}
+            </div>
+
+            <svg 
+              width={viewWidth * zoom} 
+              height={svgHeight * zoom} 
+              className="overflow-visible select-none transition-all duration-150"
+            >
+              <g transform={`scale(${zoom})`} className="transition-transform duration-150" style={{ transformOrigin: "top left" }}>
 
               {/* Branch lane lines + name labels */}
               {branches.map((b) => (
@@ -520,6 +617,7 @@ export function GitVisualizer() {
                   </g>
                 )
               })}
+              </g>
             </svg>
           </div>
 
