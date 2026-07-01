@@ -1,0 +1,308 @@
+[
+  {
+    "category": "Core Top-Level Keys",
+    "commands": [
+      {
+        "cmd": "version",
+        "description": "Specifies the Compose file format version for backward compatibility. (Deprecated in the modern Compose Specification but still widely seen in older projects).",
+        "syntax": "version: \"<version_number>\"",
+        "example": "version: \"3.8\"",
+        "mistake": "Using a version number that does not match your Docker Engine capabilities, or quoting the version improperly causing parsing errors."
+      },
+      {
+        "cmd": "services",
+        "description": "The root key under which you define all the containerized components of your multi-container application.",
+        "syntax": "services:\n  <service_name>:\n    # Service configuration goes here",
+        "example": "services:\n  web:\n    image: nginx:alpine\n  db:\n    image: postgres:15-alpine",
+        "mistake": "Nesting service definitions at the wrong indentation level (they must be indented under 'services:')."
+      },
+      {
+        "cmd": "volumes",
+        "description": "Declares named volumes at the top level to share persistent storage across multiple services or persist data beyond container lifecycle.",
+        "syntax": "volumes:\n  <volume_name>:\n    [driver: <driver_name>]\n    [external: true]",
+        "example": "services:\n  db:\n    image: postgres:15-alpine\n    volumes:\n      - db_data:/var/lib/postgresql/data\n\nvolumes:\n  db_data:",
+        "mistake": "Declaring a volume on a service without also defining it in the top-level 'volumes:' section (unless using raw host paths)."
+      },
+      {
+        "cmd": "networks",
+        "description": "Declares custom networks at the top level to control container-to-container communication and security isolation.",
+        "syntax": "networks:\n  <network_name>:\n    [driver: <driver_type>]\n    [external: true]",
+        "example": "services:\n  web:\n    image: nginx\n    networks:\n      - frontend\n  api:\n    image: node-app\n    networks:\n      - frontend\n      - backend\n\nnetworks:\n  frontend:\n  backend:",
+        "mistake": "Failing to declare custom networks in the top-level 'networks:' block before referencing them within individual services."
+      },
+      {
+        "cmd": "secrets",
+        "description": "Defines sensitive data files (like keys, certificates, or passwords) that can be mounted into services securely without exposing them in environment variables.",
+        "syntax": "secrets:\n  <secret_name>:\n    file: <path_to_secret_file>\n# Or external secrets",
+        "example": "services:\n  app:\n    image: my-secure-app\n    secrets:\n      - db_password\n\nsecrets:\n  db_password:\n    file: ./secrets/db_password.txt",
+        "mistake": "Committing the raw secret files to public Git repositories, or path mismatches causing Docker to fail to find the secret file."
+      },
+      {
+        "cmd": "configs",
+        "description": "Defines non-sensitive configuration files (like nginx configs, app settings) at the top level, allowing services to mount them as read-only files.",
+        "syntax": "configs:\n  <config_name>:\n    file: <path_to_config_file>",
+        "example": "services:\n  web:\n    image: nginx\n    configs:\n      - source: nginx_config\n        target: /etc/nginx/nginx.conf\n\nconfigs:\n  nginx_config:\n    file: ./config/nginx.conf",
+        "mistake": "Editing the source config file on the host and expecting immediate updates inside the container without restarting the service container."
+      }
+    ]
+  },
+  {
+    "category": "Build Configuration",
+    "commands": [
+      {
+        "cmd": "build",
+        "description": "Specifies build options that are applied at image build time when running 'docker compose build' or starting services.",
+        "syntax": "services:\n  <service_name>:\n    build:\n      context: <path_to_dir>\n      dockerfile: <dockerfile_name>",
+        "example": "services:\n  api:\n    build:\n      context: ./backend\n      dockerfile: Dockerfile.dev\n      args:\n        NODE_ENV: development",
+        "mistake": "Using a build definition and expecting Docker Compose to automatically rebuild on every run. You must run 'docker compose up --build' to force updates."
+      },
+      {
+        "cmd": "context",
+        "description": "Specifies the path to the directory containing a Dockerfile, or a URL to a git repository, used as the build context.",
+        "syntax": "build:\n  context: <path_to_directory>",
+        "example": "build:\n  context: ./src/frontend",
+        "mistake": "Setting context to a path containing large unused folders (like node_modules or large datasets) without a .dockerignore file, leading to slow build times."
+      },
+      {
+        "cmd": "dockerfile",
+        "description": "Specifies an alternate Dockerfile name relative to the build context directory. Default is 'Dockerfile'.",
+        "syntax": "build:\n  dockerfile: <filename>",
+        "example": "build:\n  context: .\n  dockerfile: docker/Dockerfile.prod",
+        "mistake": "Specifying an absolute path to the Dockerfile or a path that falls outside of the declared build context directory."
+      },
+      {
+        "cmd": "args",
+        "description": "Defines build-time arguments (ARG) passed to the Dockerfile. These are not accessible inside the running container.",
+        "syntax": "build:\n  args:\n    - <key>=<value>\n# Or key: value format",
+        "example": "build:\n  context: .\n  args:\n    API_VERSION: \"1.2.0\"\n    BUILD_PLATFORM: \"linux/amd64\"",
+        "mistake": "Confusing 'build: args' (build-time variables) with 'environment' (runtime variables). Image containers cannot access build args after compilation."
+      },
+      {
+        "cmd": "target",
+        "description": "Builds the specified stage named in a multi-stage Dockerfile.",
+        "syntax": "build:\n  target: <stage_name>",
+        "example": "build:\n  context: .\n  dockerfile: Dockerfile\n  target: builder",
+        "mistake": "Referencing a stage name that does not exist in the target Dockerfile, resulting in a build error."
+      },
+      {
+        "cmd": "cache_from",
+        "description": "Specifies a list of images that the engine uses for cache resolution during image building.",
+        "syntax": "build:\n  cache_from:\n    - <image_name>:<tag>",
+        "example": "build:\n  context: .\n  cache_from:\n    - myapp:latest\n    - alpine:latest",
+        "mistake": "Using cached images that are stale, or failing to push built stages beforehand to allow other environments (like CI/CD) to pull cache."
+      }
+    ]
+  },
+  {
+    "category": "Service Image & Metadata",
+    "commands": [
+      {
+        "cmd": "image",
+        "description": "Specifies the image to start the container from. If the image does not exist locally, Compose attempts to pull it from the registry.",
+        "syntax": "image: <image_name>:<tag>",
+        "example": "image: redis:7.0-alpine",
+        "mistake": "Using the 'latest' tag in production. Image tags can be updated silently in registries, causing unpredictable deployments. Pin exact versions."
+      },
+      {
+        "cmd": "container_name",
+        "description": "Specifies a custom name for the container, rather than letting Docker Compose generate a default name based on project and service names.",
+        "syntax": "container_name: <custom_name>",
+        "example": "container_name: production-db-instance",
+        "mistake": "Defining a static container_name on a service that you plan to scale up. Custom names must be unique; running multiple instances will fail."
+      },
+      {
+        "cmd": "hostname",
+        "description": "Sets a custom hostname inside the container's shell environment.",
+        "syntax": "hostname: <hostname_string>",
+        "example": "hostname: mail-server",
+        "mistake": "Confusing 'hostname' with network alias. Services resolve others by service name in Compose network, not hostname unless mapped."
+      },
+      {
+        "cmd": "labels",
+        "description": "Adds metadata labels to the generated container, which are useful for documentation or monitoring tools like Traefik/Prometheus.",
+        "syntax": "labels:\n  - \"<key>=<value>\"",
+        "example": "labels:\n  - \"traefik.enable=true\"\n  - \"com.example.description=Accounting API\"",
+        "mistake": "Forgetting to quote labels with special characters (like dots or dashes), causing YAML parsing failures."
+      },
+      {
+        "cmd": "user",
+        "description": "Overrides the default user inside the container. You can specify user UID/GID or username.",
+        "syntax": "user: \"<uid>:<gid>\"",
+        "example": "user: \"1000:1000\"",
+        "mistake": "Running as a non-root UID while mounting volumes owned by root, leading to 'Permission Denied' errors inside the container."
+      },
+      {
+        "cmd": "working_dir",
+        "description": "Overrides the default working directory specified in the Dockerfile (WORKDIR) for commands.",
+        "syntax": "working_dir: <path_to_directory>",
+        "example": "working_dir: /var/www/app",
+        "mistake": "Setting a working_dir that does not exist in the image or volume mounts, causing container execution crashes immediately."
+      }
+    ]
+  },
+  {
+    "category": "Environment & Execution",
+    "commands": [
+      {
+        "cmd": "environment",
+        "description": "Defines runtime environment variables available inside the running container.",
+        "syntax": "environment:\n  - <KEY>=<VALUE>\n# Or dictionary key: value",
+        "example": "environment:\n  NODE_ENV: production\n  DB_PORT: 5432\n  DEBUG: \"false\"",
+        "mistake": "Exposing raw passwords, secret keys, or API tokens directly in the compose file. Use env files or secrets instead."
+      },
+      {
+        "cmd": "env_file",
+        "description": "Loads environment variables from an external file (.env). Keeps sensitive keys out of docker-compose.yml.",
+        "syntax": "env_file:\n  - <path_to_file>",
+        "example": "env_file:\n  - .env\n  - .env.production",
+        "mistake": "Forgetting to add .env files to .gitignore, resulting in secrets being pushed to source control repos."
+      },
+      {
+        "cmd": "command",
+        "description": "Overrides the default command (CMD) specified in the container image.",
+        "syntax": "command: <command_string_or_array>",
+        "example": "command: python manage.py runserver 0.0.0.0:8000\n# Or array:\ncommand: [\"npm\", \"run\", \"dev\"]",
+        "mistake": "Passing commands that exit immediately. Docker containers exit when their primary command completes. Use persistent loops or daemons."
+      },
+      {
+        "cmd": "entrypoint",
+        "description": "Overrides the default entrypoint specified in the container image.",
+        "syntax": "entrypoint: <entrypoint_string_or_array>",
+        "example": "entrypoint: /usr/bin/entrypoint.sh\n# Or array:\nentrypoint: [\"/bin/sh\", \"-c\"]",
+        "mistake": "Replacing entrypoint completely without maintaining scripts that handle initializations like database migrations or signal forwarding."
+      },
+      {
+        "cmd": "privileged",
+        "description": "Gives the container root-level access to the host kernel features and devices. Equivalent to running commands directly on host.",
+        "syntax": "privileged: true",
+        "example": "privileged: true",
+        "mistake": "Using 'privileged: true' casually. It creates major security risks; if the container is compromised, the host can be taken over."
+      }
+    ]
+  },
+  {
+    "category": "Ports & Networking",
+    "commands": [
+      {
+        "cmd": "ports",
+        "description": "Exposes container ports to the host machine. Defines mapping as host:container.",
+        "syntax": "ports:\n  - \"<host_port>:<container_port>\"",
+        "example": "ports:\n  - \"8080:80\"\n  - \"127.0.0.1:5432:5432\" # Bind to localhost only",
+        "mistake": "Binding public ports on all interfaces by default (e.g. '5432:5432'), which exposes internal databases to the public internet."
+      },
+      {
+        "cmd": "expose",
+        "description": "Declares internal ports that are accessible ONLY by linked services on the same Docker network. They are not exposed to the host system.",
+        "syntax": "expose:\n  - \"<port_number>\"",
+        "example": "expose:\n  - \"9000\"\n  - \"3000\"",
+        "mistake": "Using 'expose' and trying to access the service from the host browser. Expose is strictly for container-to-container communication."
+      },
+      {
+        "cmd": "networks",
+        "description": "Specifies custom networks that the service containers connect to, mapping defined network aliases.",
+        "syntax": "networks:\n  - <network_name>",
+        "example": "networks:\n  web_net:\n    aliases:\n      - front-end-alias",
+        "mistake": "Connecting services to different custom networks and expecting them to resolve each other's domain names. They must share at least one network."
+      },
+      {
+        "cmd": "extra_hosts",
+        "description": "Adds hostname mappings to the container's internal /etc/hosts file. Useful for resolving host domains.",
+        "syntax": "extra_hosts:\n  - \"<hostname>:<ip_address>\"",
+        "example": "extra_hosts:\n  - \"host.docker.internal:host-gateway\"\n  - \"internal.api:192.168.1.50\"",
+        "mistake": "Hardcoding direct IP addresses that fluctuate in DHCP environments, breaking connection paths."
+      },
+      {
+        "cmd": "dns",
+        "description": "Defines custom DNS servers inside the container to override the default system or host DNS resolvers.",
+        "syntax": "dns:\n  - <dns_ip>",
+        "example": "dns:\n  - 8.8.8.8\n  - 1.1.1.1",
+        "mistake": "Specifying internal DNS servers that the host network cannot resolve, cutting off container external internet access."
+      }
+    ]
+  },
+  {
+    "category": "Storage & Mounts",
+    "commands": [
+      {
+        "cmd": "volumes",
+        "description": "Mounts host paths (bind mounts) or named volumes into the service container at a designated directory path.",
+        "syntax": "volumes:\n  - <host_or_named_volume>:<container_path>[:ro]",
+        "example": "volumes:\n  - ./frontend:/app:cached\n  - db_data:/var/lib/postgresql/data\n  - /etc/configs:/etc/configs:ro # Read-only mount",
+        "mistake": "Using relative host paths (like './data') and forgetting that paths are evaluated relative to the directory containing the docker-compose.yml file."
+      },
+      {
+        "cmd": "tmpfs",
+        "description": "Mounts a temporary in-memory directory inside the container, speeding up disk writes and saving flash drive wear.",
+        "syntax": "tmpfs:\n  - <container_path>",
+        "example": "tmpfs:\n  - /tmp\n  - /var/run",
+        "mistake": "Storing persistent data in tmpfs mounts. All data is completely lost when the container stops or restarts."
+      }
+    ]
+  },
+  {
+    "category": "Control & Startup",
+    "commands": [
+      {
+        "cmd": "depends_on",
+        "description": "Expresses startup and shutdown dependencies between services, ensuring dependencies start first.",
+        "syntax": "depends_on:\n  <service_name>:\n    condition: service_healthy",
+        "example": "depends_on:\n  db:\n    condition: service_healthy\n  redis:\n    condition: service_started",
+        "mistake": "Assuming depends_on waits for a service to be fully ready before starting. You must use 'condition: service_healthy' alongside a declared healthcheck."
+      },
+      {
+        "cmd": "restart",
+        "description": "Defines container restart policies when containers exit due to failures or engine restarts.",
+        "syntax": "restart: \"no\" | always | on-failure | unless-stopped",
+        "example": "restart: unless-stopped",
+        "mistake": "Setting restart to 'always' on temporary utility containers, which creates infinite loops of container start/stop cycles."
+      },
+      {
+        "cmd": "healthcheck",
+        "description": "Declares a test configuration run periodically to check if the service container is healthy.",
+        "syntax": "healthcheck:\n  test: <command_list>\n  interval: <time>\n  timeout: <time>\n  retries: <count>",
+        "example": "healthcheck:\n  test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8080/health\"]\n  interval: 30s\n  timeout: 10s\n  retries: 3\n  start_period: 40s",
+        "mistake": "Setting a short timeout or omitting curl/ping utilities inside slim/alpine images, causing health checks to fail constantly."
+      },
+      {
+        "cmd": "init",
+        "description": "Runs an init process (tini) inside the container as PID 1 to forward signals and reap zombie processes.",
+        "syntax": "init: true",
+        "example": "init: true",
+        "mistake": "Omitting 'init: true' when running JVM, Node.js, or Python apps that spawn child processes, leading to container memory leaks and failure to terminate on 'Ctrl+C'."
+      }
+    ]
+  },
+  {
+    "category": "Deploy & Scaling",
+    "commands": [
+      {
+        "cmd": "deploy",
+        "description": "Defines deployment configurations for Swarm mode or Compose V2 (such as scaling, resources, and updates).",
+        "syntax": "deploy:\n  mode: replicated | global\n  replicas: <count>",
+        "example": "deploy:\n  replicas: 3\n  resources:\n    limits:\n      cpus: '0.50'\n      memory: 512M",
+        "mistake": "Adding deploy properties and expecting them to enforce resources in legacy docker-compose v1 without using newer engine commands."
+      },
+      {
+        "cmd": "replicas",
+        "description": "Specifies the number of container instances running simultaneously for a service.",
+        "syntax": "deploy:\n  replicas: <integer>",
+        "example": "deploy:\n  replicas: 5",
+        "mistake": "Scaling services that bind to a specific static host port. Only one container can bind to a port; others will crash."
+      },
+      {
+        "cmd": "resources",
+        "description": "Sets physical CPU and memory limits/reservations to restrict container resource consumption on the host system.",
+        "syntax": "deploy:\n  resources:\n    limits:\n      cpus: '<limit>'\n      memory: <limit>\n    reservations:\n      cpus: '<reserved>'\n      memory: <reserved>",
+        "example": "deploy:\n  resources:\n    limits:\n      cpus: '0.50'\n      memory: 256M\n    reservations:\n      cpus: '0.25'\n      memory: 128M",
+        "mistake": "Setting memory limits too low for the application runtime (e.g. Node/Java), resulting in OOMKilled (Out of Memory) crash loops."
+      },
+      {
+        "cmd": "restart_policy",
+        "description": "Configures how containers should be restarted when deploy specifications are active (replaces standard restart key in Swarm/V2).",
+        "syntax": "deploy:\n  restart_policy:\n    condition: on-failure | any | none\n    delay: <time>\n    max_attempts: <count>\n    window: <time>",
+        "example": "deploy:\n  restart_policy:\n    condition: on-failure\n    delay: 5s\n    max_attempts: 3\n    window: 120s",
+        "mistake": "Mixing the top-level 'restart' key with 'deploy: restart_policy' inside Swarm. Swarm ignores the standard service restart parameter."
+      }
+    ]
+  }
+]

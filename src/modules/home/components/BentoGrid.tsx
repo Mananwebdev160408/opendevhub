@@ -18,36 +18,35 @@ import {
   Loader2
 } from "lucide-react"
 
-import newsData from "../../../../data/news.json"
 import trendingData from "../../../../data/trending-repositories.json"
-import eventsData from "../../../../data/events.json"
+import eventsDataFallback from "../../../../data/events.json"
+import newsDataFallback from "../../../../data/news.json"
 import apisData from "../../../../data/apis.json"
-import { getTrendingRepositories, searchIssues } from "@/core/services/github"
+import { getTrendingRepositories, searchIssues, type GithubRepo, type GithubIssue } from "@/core/services/github"
+
+const POPULAR_TOOLS = [
+  { name: "JSON Format", slug: "json-formatter" },
+  { name: "JWT Decoder", slug: "jwt-decoder" },
+  { name: "UUID Gen", slug: "uuid-generator" },
+  { name: "Hash Gen", slug: "hash-generator" },
+  { name: "Base64 Code", slug: "base64-encode" },
+  { name: "RegEx Tester", slug: "regex-tester" },
+  { name: "Lorem Ipsum", slug: "lorem-ipsum" },
+  { name: "Slug Gen", slug: "slug-generator" },
+]
 
 export function BentoGrid() {
   const router = useRouter()
 
-  const popularTools = [
-    { name: "JSON Format", slug: "json-formatter" },
-    { name: "JWT Decoder", slug: "jwt-decoder" },
-    { name: "UUID Gen", slug: "uuid-generator" },
-    { name: "Hash Gen", slug: "hash-generator" },
-    { name: "Base64 Code", slug: "base64-encode" },
-    { name: "RegEx Tester", slug: "regex-tester" },
-    { name: "Lorem Ipsum", slug: "lorem-ipsum" },
-    { name: "Slug Gen", slug: "slug-generator" },
-  ]
+  const [issuesFetchError, setIssuesFetchError] = React.useState(false)
 
-  const mockIssues = [
-    { repo: "facebook/react", title: "fix(docs): update hooks render cycle tutorial link", label: "documentation", difficulty: "Easy", html_url: "/issues" },
-    { repo: "vercel/next.js", title: "feat: add support for dynamic local route pre-renders", label: "feature", difficulty: "Medium", html_url: "/issues" },
-    { repo: "shadcn/ui", title: "bug: custom input group border overlapping in dark mode", label: "bug", difficulty: "Easy", html_url: "/issues" }
-  ]
-
-  const [trendingRepos, setTrendingRepos] = React.useState<any[]>([])
-  const [liveIssues, setLiveIssues] = React.useState<any[]>([])
+  const [trendingRepos, setTrendingRepos] = React.useState<GithubRepo[]>([])
+  const [liveIssues, setLiveIssues] = React.useState<GithubIssue[]>([])
   const [isTrendingLoading, setIsTrendingLoading] = React.useState(true)
   const [isIssuesLoading, setIsIssuesLoading] = React.useState(true)
+
+  const [previewNews, setPreviewNews] = React.useState(newsDataFallback.slice(0, 2))
+  const [previewEvents, setPreviewEvents] = React.useState(eventsDataFallback.slice(0, 2))
 
   React.useEffect(() => {
     const fetchTrending = async () => {
@@ -65,17 +64,60 @@ export function BentoGrid() {
     const fetchIssues = async () => {
       try {
         const data = await searchIssues({ q: 'is:issue state:open label:"good first issue"', perPage: 3 })
-        setLiveIssues(data.items)
+        if (data.items.length === 0) {
+          setIssuesFetchError(true)
+        } else {
+          setLiveIssues(data.items)
+        }
       } catch (e) {
         console.error("Failed to load bento issues:", e)
-        setLiveIssues(mockIssues)
+        setIssuesFetchError(true)
+        setLiveIssues([])
       } finally {
         setIsIssuesLoading(false)
       }
     }
 
+    const fetchPreviewNews = async () => {
+      try {
+        const res = await fetch("https://dev.to/api/articles?tag=programming&per_page=2&page=1")
+        if (!res.ok) throw new Error("dev.to fetch failed")
+        const data = await res.json()
+        if (Array.isArray(data) && data.length > 0) {
+          setPreviewNews(data.map((item: any) => ({
+            id: item.id.toString(),
+            title: item.title,
+            category: item.tag_list?.[0] || "programming",
+            date: item.published_at?.substring(0, 10) ?? "",
+            url: item.url,
+            description: item.description ?? "",
+            source: item.user?.name ?? "Dev.to",
+          })))
+        }
+      } catch (e) {
+        console.error("Bento news preview fetch failed, using static fallback:", e)
+        // previewNews already initialised with newsDataFallback
+      }
+    }
+
+    const fetchPreviewEvents = async () => {
+      try {
+        const res = await fetch("/api/events?preview=2")
+        if (!res.ok) throw new Error("events API fetch failed")
+        const data = await res.json()
+        if (Array.isArray(data) && data.length > 0) {
+          setPreviewEvents(data.slice(0, 2))
+        }
+      } catch (e) {
+        console.error("Bento events preview fetch failed, using static fallback:", e)
+        // previewEvents already initialised with eventsDataFallback
+      }
+    }
+
     fetchTrending()
     fetchIssues()
+    fetchPreviewNews()
+    fetchPreviewEvents()
   }, [])
 
   return (
@@ -101,9 +143,9 @@ export function BentoGrid() {
           ) : (
             <div className="p-4 flex-grow grid grid-cols-1 sm:grid-cols-2 gap-4">
               {trendingRepos.map((repo) => {
-                const ownerLogin = repo.owner?.login || repo.owner
-                const starsCount = repo.stargazers_count !== undefined ? repo.stargazers_count : repo.stars
-                const forksCount = repo.forks_count !== undefined ? repo.forks_count : repo.forks
+                const ownerLogin = typeof repo.owner === 'string' ? repo.owner : repo.owner?.login ?? ''
+                const starsCount = repo.stargazers_count
+                const forksCount = repo.forks_count
                 return (
                   <div 
                     key={repo.id || `${ownerLogin}-${repo.name}`} 
@@ -153,11 +195,22 @@ export function BentoGrid() {
               <Loader2 className="h-6 w-6 animate-spin text-accent" />
               <span>LOAD_API_ISSUES</span>
             </div>
+          ) : issuesFetchError ? (
+            <div className="flex-grow flex flex-col items-center justify-center p-8 text-zinc-600 font-mono text-xs gap-2 text-center">
+              <Info className="h-5 w-5 text-zinc-500" />
+              <span className="text-zinc-500 font-bold">API_RATE_LIMITED</span>
+              <span className="text-[10px] text-zinc-600 leading-relaxed max-w-[180px]">
+                GitHub rate limit hit. Visit the Issues page directly.
+              </span>
+              <Link href="/issues" className="mt-1 text-[10px] text-accent underline font-black hover:text-primary">
+                BROWSE ISSUES →
+              </Link>
+            </div>
           ) : (
             <div className="p-4 flex-grow grid grid-cols-1 sm:grid-cols-3 gap-4 bg-dot-pattern">
               {liveIssues.map((issue, idx) => {
-                const repoName = issue.repo_name || issue.repo || "unknown/repo"
-                const labelName = issue.labels && issue.labels.length > 0 ? issue.labels[0].name : (issue.label || "good-first-issue")
+                const repoName = issue.repo_name || "unknown/repo"
+                const labelName = issue.labels && issue.labels.length > 0 ? issue.labels[0].name : "good-first-issue"
                 return (
                   <div 
                     key={issue.id || idx} 
@@ -166,7 +219,7 @@ export function BentoGrid() {
                     <div>
                       <span className="text-[9px] text-zinc-500 block font-bold truncate">{repoName}</span>
                       <a 
-                        href={issue.html_url || "/issues"}
+                        href={issue.html_url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-xs font-black text-foreground hover:underline line-clamp-2 mt-1 leading-snug"
@@ -179,7 +232,7 @@ export function BentoGrid() {
                         {labelName}
                       </span>
                       <span className="text-[8px] border px-1.5 py-0.5 font-bold uppercase border-green-800 bg-green-950/30 text-green-400">
-                        {issue.difficulty || "Easy"}
+                        OPEN
                       </span>
                     </div>
                   </div>
@@ -234,7 +287,7 @@ export function BentoGrid() {
           </div>
           <div className="p-4 flex-grow flex flex-col justify-between bg-checkered-pattern">
             <div className="grid grid-cols-1 gap-2">
-              {popularTools.map((tool) => (
+              {POPULAR_TOOLS.map((tool) => (
                 <Link
                   key={tool.slug}
                   href={`/tools?tool=${tool.slug}`}
@@ -263,7 +316,7 @@ export function BentoGrid() {
             </Link>
           </div>
           <div className="p-4 flex-grow grid grid-cols-1 sm:grid-cols-2 gap-4 bg-stripes-pattern">
-            {eventsData.slice(0, 2).map((event) => (
+            {previewEvents.map((event) => (
               <div 
                 key={event.name} 
                 className="p-3 border-2 border-foreground bg-black shadow-[2px_2px_0px_0px_var(--border)] flex flex-col justify-between font-mono"
@@ -293,7 +346,7 @@ export function BentoGrid() {
             </Link>
           </div>
           <div className="p-4 flex-grow flex flex-col justify-center divide-y divide-border/60">
-            {newsData.slice(0, 2).map((item) => (
+            {previewNews.map((item) => (
               <div key={item.id} className="py-2.5 first:pt-0 last:pb-0 font-mono">
                 <div className="flex items-center gap-2">
                   <span className="text-[8px] bg-primary text-primary-foreground px-1 py-0.5 font-black uppercase">

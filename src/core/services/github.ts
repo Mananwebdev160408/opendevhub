@@ -49,17 +49,38 @@ export interface GithubIssue {
   repo_owner?: string
 }
 
-const BASE_URL = "https://api.github.com"
+/** Builds the correct URL for GitHub API calls.
+ * - Client-side: routes through /api/github proxy (adds auth server-side, avoids CORS)
+ * - Server-side: hits api.github.com directly with the token from env
+ */
+function getFetchUrl(path: string, queryParams?: Record<string, string | number>): string {
+  if (typeof window !== "undefined") {
+    const url = new URL("/api/github", window.location.origin)
+    url.searchParams.set("path", path)
+    if (queryParams) {
+      Object.entries(queryParams).forEach(([key, val]) => {
+        url.searchParams.set(key, String(val))
+      })
+    }
+    return url.toString()
+  }
 
-function getHeaders() {
+  const url = new URL(`https://api.github.com/${path}`)
+  if (queryParams) {
+    Object.entries(queryParams).forEach(([key, val]) => {
+      url.searchParams.set(key, String(val))
+    })
+  }
+  return url.toString()
+}
+
+function getHeaders(): Record<string, string> {
   const headers: Record<string, string> = {
     Accept: "application/vnd.github.v3+json",
   }
-  
   if (typeof window === "undefined" && process.env.GITHUB_TOKEN) {
     headers.Authorization = `token ${process.env.GITHUB_TOKEN}`
   }
-  
   return headers
 }
 
@@ -235,26 +256,7 @@ export async function getRepositoryReadme(owner: string, name: string): Promise<
 
   return ""
 }
-function getFetchUrl(path: string, queryParams?: Record<string, string | number>) {
-  if (typeof window !== "undefined") {
-    const url = new URL("/api/github", window.location.origin)
-    url.searchParams.set("path", path)
-    if (queryParams) {
-      Object.entries(queryParams).forEach(([key, val]) => {
-        url.searchParams.set(key, String(val))
-      })
-    }
-    return url.toString()
-  }
-  
-  const url = new URL(`https://api.github.com/${path}`)
-  if (queryParams) {
-    Object.entries(queryParams).forEach(([key, val]) => {
-      url.searchParams.set(key, String(val))
-    })
-  }
-  return url.toString()
-}
+
 
 export async function searchOrganizations(params: {
   q: string

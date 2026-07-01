@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { SearchIcon, Terminal, Settings, ArrowRight, FileText, Activity } from "lucide-react"
+import { Terminal, Settings, ArrowRight, FileText, Activity } from "lucide-react"
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -146,6 +146,18 @@ export function CmdKDialog({ open, setOpen }: CmdKDialogProps) {
           <CommandItem onSelect={() => runCommand(() => router.push("/tools"))} className="font-mono text-xs border border-transparent hover:border-border">
             <Settings className="mr-2 h-4 w-4 text-amber-400" />
             <span>Developer Toolbox</span>
+          </CommandItem>
+          <CommandItem onSelect={() => runCommand(() => router.push("/git-cheatsheets"))} className="font-mono text-xs border border-transparent hover:border-border">
+            <Terminal className="mr-2 h-4 w-4 text-accent" />
+            <span>Git Cheatsheets</span>
+          </CommandItem>
+          <CommandItem onSelect={() => runCommand(() => router.push("/yaml-cheatsheets"))} className="font-mono text-xs border border-transparent hover:border-border">
+            <Terminal className="mr-2 h-4 w-4 text-primary" />
+            <span>YAML Cheatsheets</span>
+          </CommandItem>
+          <CommandItem onSelect={() => runCommand(() => router.push("/docker-compose-cheatsheets"))} className="font-mono text-xs border border-transparent hover:border-border">
+            <Terminal className="mr-2 h-4 w-4 text-blue-400" />
+            <span>Docker Compose Cheatsheet</span>
           </CommandItem>
         </CommandGroup>
 

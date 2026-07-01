@@ -46,6 +46,7 @@ export function Header() {
         { label: "TOOLBOX", href: "/tools", description: "Interactive utilities including JWT Decoders, JSON Formatters, Regex Testers, and Base64 Converters." },
         { label: "GIT CHEATS", href: "/git-cheatsheets", description: "Universal Git cheatsheet and recovery troubleshooting guide for common command errors." },
         { label: "YAML CHEATS", href: "/yaml-cheatsheets", description: "Comprehensive YAML cheatsheet defining all options, fields, syntax rules, and usecases." },
+        { label: "DOCKER COMPOSE", href: "/docker-compose-cheatsheets", description: "Comprehensive Docker Compose cheatsheet outlining services, networks, volumes, and deployment options." },
         { label: "HTTP CODES", href: "/http-status", description: "Visual index of HTTP status codes with detailed explanations, headers, and code snippets." },
       ]
     },
