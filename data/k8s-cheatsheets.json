@@ -95,5 +95,88 @@
         "mistake": "Running commands without checking cluster-info context, causing commands to run against production instead of staging/local."
       }
     ]
+  },
+  {
+    "category": "Namespace Management",
+    "commands": [
+      {
+        "cmd": "kubectl create namespace",
+        "description": "Create a new namespace within the cluster to isolate resource groups.",
+        "syntax": "kubectl create namespace <namespace-name>",
+        "example": "kubectl create namespace staging",
+        "mistake": "Creating namespaces manually for production apps instead of using Infrastructure as Code (IaC) manifests, which leads to configuration drift."
+      },
+      {
+        "cmd": "kubectl config set-context",
+        "description": "Change the default namespace for the current active kubectl context permanently, avoiding having to append -n every time.",
+        "syntax": "kubectl config set-context --current --namespace=<namespace-name>",
+        "example": "kubectl config set-context --current --namespace=development",
+        "mistake": "Forgetting which namespace is set as default and accidentally deleting or modifying resources in the wrong namespace."
+      }
+    ]
+  },
+  {
+    "category": "Configuration & Secrets",
+    "commands": [
+      {
+        "cmd": "kubectl create configmap",
+        "description": "Create a ConfigMap from literal values, files, or directories to inject non-sensitive configuration data into containers.",
+        "syntax": "kubectl create configmap <config-name> --from-literal=<key>=<value> | --from-file=<path>",
+        "example": "kubectl create configmap app-config --from-literal=API_URL=https://api.example.com --from-file=configs/settings.json",
+        "mistake": "Storing sensitive information like database passwords or API keys in a ConfigMap instead of using a Kubernetes Secret resource."
+      },
+      {
+        "cmd": "kubectl create secret",
+        "description": "Create a Secret resource containing sensitive information (e.g. passwords, OAuth tokens, SSH keys). Automatically Base64 encodes values.",
+        "syntax": "kubectl create secret generic <secret-name> --from-literal=<key>=<value> | --from-file=<path>",
+        "example": "kubectl create secret generic db-credentials --from-literal=db-password=SuperSecretPass123",
+        "mistake": "Committing raw cleartext passwords to Git repositories inside shell commands or files used to create secrets."
+      }
+    ]
+  },
+  {
+    "category": "Advanced Troubleshooting",
+    "commands": [
+      {
+        "cmd": "kubectl cp",
+        "description": "Copy files and directories to or from containers in a running pod. Great for pulling log files or uploading hotfixes during debug sessions.",
+        "syntax": "kubectl cp <source-path> <pod-name>:<destination-path> [-c <container-name>]\nkubectl cp <pod-name>:<source-path> <destination-path> [-c <container-name>]",
+        "example": "kubectl cp ./nginx.conf web-pod-abc-123:/etc/nginx/nginx.conf\nkubectl cp web-pod-abc-123:/var/log/nginx/error.log ./error.log",
+        "mistake": "Using 'kubectl cp' and forgetting that the container requires the 'tar' binary installed inside it for file copies to work."
+      },
+      {
+        "cmd": "kubectl run",
+        "description": "Create and run a temporary, interactive pod in the cluster. Highly useful for running network diagnostic tools like ping, curl, or nslookup.",
+        "syntax": "kubectl run <pod-name> --image=<image-name> --rm -it -- <command>",
+        "example": "kubectl run dns-test --image=busybox --rm -it -- nslookup kubernetes.default.svc.cluster.local",
+        "mistake": "Omitting the '--rm' flag, which leaves the debugging pod in Completed/Error state in your cluster forever after you exit."
+      }
+    ]
+  },
+  {
+    "category": "Resource Management & Lifecycle",
+    "commands": [
+      {
+        "cmd": "kubectl apply",
+        "description": "Create or apply configuration changes to resources from a file or stdin using declarative YAML/JSON files.",
+        "syntax": "kubectl apply -f <file-or-directory-path>",
+        "example": "kubectl apply -f deployments/web-app.yaml\nkubectl apply -f k8s-configs/",
+        "mistake": "Running 'kubectl apply' without first validating configurations with 'kubectl diff' or '--dry-run=client' to verify changes."
+      },
+      {
+        "cmd": "kubectl delete",
+        "description": "Delete Kubernetes resources by file path, resource type and name, or label selectors.",
+        "syntax": "kubectl delete -f <file-path> | <resource-type> <resource-name> | -l <label-selector>",
+        "example": "kubectl delete -f deployments/web-app.yaml\nkubectl delete pod -l app=nginx",
+        "mistake": "Using 'kubectl delete' on resources without checking dependencies or target namespaces, accidentally taking down critical system resources."
+      },
+      {
+        "cmd": "kubectl get events",
+        "description": "List events in the current namespace sorted by creation timestamp. Crucial for understanding scheduling failures, crashes, and volume issues.",
+        "syntax": "kubectl get events --sort-by='.metadata.creationTimestamp'",
+        "example": "kubectl get events --sort-by='.metadata.creationTimestamp'",
+        "mistake": "Filtering through massive lists of events without sorting or restricting to a namespace, making it hard to find relevant error events."
+      }
+    ]
   }
 ]

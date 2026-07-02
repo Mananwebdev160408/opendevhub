@@ -78,6 +78,10 @@ export const LoremIpsumTool = dynamic(
   () => import("./tools/ParserTools").then((m) => m.LoremIpsumTool),
   { ssr: false, loading: Loading }
 )
+export const WordCharCounterTool = dynamic(
+  () => import("./tools/ParserTools").then((m) => m.WordCharCounterTool),
+  { ssr: false, loading: Loading }
+)
 export const SlugGeneratorTool = dynamic(
   () => import("./tools/ParserTools").then((m) => m.SlugGeneratorTool),
   { ssr: false, loading: Loading }
@@ -95,7 +99,7 @@ export const CronParserTool = dynamic(
   { ssr: false, loading: Loading }
 )
 export const KeycodeListenerTool = dynamic(
-  () => import("./tools/ParserTools").then((m) => m.KeycodeListenerTool),
+  () => import("./tools/KeycodeListenerTool").then((m) => m.KeycodeListenerTool),
   { ssr: false, loading: Loading }
 )
 export const SqlFormatterTool = dynamic(

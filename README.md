@@ -1,4 +1,4 @@
-﻿# OpenDevHub
+# OpenDevHub
 
 > **The Ultimate Developer Toolbox & Open Source Directory**
 
@@ -54,7 +54,6 @@ All tools run entirely **in-browser** — no server calls, no data leaves your m
 - JSON Formatter & Validator
 - CSV Grid Viewer
 - YAML / XML Viewer
-- Prettier Formatter
 
 ### Encoders & Crypto
 - JWT Decoder

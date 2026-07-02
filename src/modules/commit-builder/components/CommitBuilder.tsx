@@ -117,14 +117,16 @@ export function CommitBuilder() {
                     <button
                       key={type.name}
                       onClick={() => setActiveType(type.name)}
-                      className={`p-2 border border-border text-[9.5px] uppercase text-left flex flex-col justify-between cursor-pointer transition-all hover:bg-zinc-950 ${
+                      className={`p-2 border border-border text-[9.5px] uppercase text-left flex flex-col justify-between cursor-pointer transition-all hover:bg-zinc-950 group ${
                         isSelected
                           ? "bg-black border-foreground text-foreground shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,1)]"
                           : "text-zinc-500 border-zinc-800"
                       }`}
                     >
                       <span className={type.color}>{type.name}</span>
-                      <span className="text-[7.5px] text-zinc-600 lowercase font-normal leading-normal mt-0.5">
+                      <span className={`text-[10px] lowercase font-normal leading-normal mt-1 transition-colors ${
+                        isSelected ? "text-zinc-300" : "text-zinc-400 group-hover:text-zinc-300"
+                      }`}>
                         {type.desc}
                       </span>
                     </button>

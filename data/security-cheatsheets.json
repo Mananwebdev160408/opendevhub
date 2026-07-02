@@ -15,6 +15,27 @@
         "syntax": "text.replace(/&/g, '&amp;').replace(/</g, '&lt;')",
         "example": "const cleanInput = DOMPurify.sanitize(userInput);\ndocument.getElementById('output').innerHTML = cleanInput;",
         "mistake": "Using dangerouslySetInnerHTML or innerHTML directly on raw inputs from search query parameters or user profiles."
+      },
+      {
+        "cmd": "IDOR / BOLA Prevention",
+        "description": "Insecure Direct Object Reference / Broken Object Level Authorization. Never trust user-provided IDs without verifying ownership.",
+        "syntax": "if (resource.ownerId !== currentUser.id) throw new UnauthorizedError();",
+        "example": "// Safe:\nconst document = await Document.findById(req.params.id);\nif (!document || document.ownerId !== req.user.id) {\n  return res.status(403).send('Access denied');\n}",
+        "mistake": "Relying on client-side route guards or URL obfuscation to protect access to private files or sensitive data records."
+      },
+      {
+        "cmd": "SSRF (Server-Side Request Forgery) Defense",
+        "description": "Sanitize and validate user-supplied URLs against an allowlist before making requests from the backend server.",
+        "syntax": "if (!allowedDomains.includes(parsedUrl.hostname)) throw new Error('Untrusted domain');",
+        "example": "// Safe:\nconst targetUrl = new URL(req.body.url);\nconst allowedHosts = ['api.partner.com', 'images.partner.com'];\nif (!allowedHosts.includes(targetUrl.hostname)) {\n  throw new Error('Forbidden Destination');\n}\nawait axios.get(targetUrl.href);",
+        "mistake": "Making raw HTTP fetch calls to user-submitted URLs directly, enabling attackers to probe internal loopback services like localhost/metadata."
+      },
+      {
+        "cmd": "JWT Signature Validation",
+        "description": "Ensure JWT tokens are verified using robust cryptography keys and expiration checks on the server.",
+        "syntax": "jwt.verify(token, secretKey, { algorithms: ['HS256'] })",
+        "example": "// Safe:\nconst decoded = jwt.verify(token, process.env.JWT_SECRET, {\n  algorithms: ['HS256'],\n  issuer: 'my-app-auth'\n});",
+        "mistake": "Using jwt.decode() instead of jwt.verify(), which extracts header payload fields without checking if the token signature is valid."
       }
     ]
   },
@@ -34,6 +55,27 @@
         "syntax": "Strict-Transport-Security: max-age=63072000; includeSubDomains; preload",
         "example": "res.setHeader(\n  'Strict-Transport-Security',\n  'max-age=63072000; includeSubDomains; preload'\n);",
         "mistake": "Enabling HSTS with a short max-age duration or without testing subdomains, potentially locking out users from legacy HTTP APIs."
+      },
+      {
+        "cmd": "X-Frame-Options",
+        "description": "Prevents clickjacking attacks by dictating whether pages can be embedded within frame tags on external websites.",
+        "syntax": "X-Frame-Options: DENY | SAMEORIGIN",
+        "example": "res.setHeader('X-Frame-Options', 'SAMEORIGIN');",
+        "mistake": "Neglecting to declare X-Frame-Options (or using CSP frame-ancestors), enabling bad actors to overlay transparent clickable layers on your page."
+      },
+      {
+        "cmd": "X-Content-Type-Options",
+        "description": "Forces the browser to respect content-type headers, preventing MIME-type sniffing vulnerabilities.",
+        "syntax": "X-Content-Type-Options: nosniff",
+        "example": "res.setHeader('X-Content-Type-Options', 'nosniff');",
+        "mistake": "Forgetting to set 'nosniff', which allows browsers to execute uploaded user text/HTML assets as scripts."
+      },
+      {
+        "cmd": "Referrer-Policy",
+        "description": "Controls how much reference metadata (such as paths or search queries) is sent when navigating to external websites.",
+        "syntax": "Referrer-Policy: no-referrer | same-origin | strict-origin-when-cross-origin",
+        "example": "res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');",
+        "mistake": "Using Referrer-Policy 'unsafe-url', which leaks sensitive query tokens (e.g. password-reset links) to external analytics scripts."
       }
     ]
   },
@@ -53,6 +95,39 @@
         "syntax": "crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, data)",
         "example": "const iv = crypto.getRandomValues(new Uint8Array(12));\nconst cipher = await crypto.subtle.encrypt(\n  { name: 'AES-GCM', iv },\n  aesKey,\n  textEncoder.encode(secretData)\n);",
         "mistake": "Reusing Initialization Vectors (IVs) or using insecure encryption modes like AES-ECB, which leak patterns in encrypted data."
+      },
+      {
+        "cmd": "CSRF Mitigation (SameSite Cookies)",
+        "description": "Use anti-CSRF tokens or enforce strict SameSite attributes on cookies to prevent cross-site request forgery attacks.",
+        "syntax": "Set-Cookie: session=xyz; SameSite=Lax; Secure; HttpOnly",
+        "example": "res.cookie('sessionId', token, {\n  httpOnly: true,\n  secure: true,\n  sameSite: 'lax'\n});",
+        "mistake": "Leaving SameSite as 'None' without adding CSRF tokens, allowing cross-site clicks to make state-changing GET/POST requests silently."
+      },
+      {
+        "cmd": "Cryptographically Secure Randoms",
+        "description": "Always use cryptographically secure pseudorandom number generators (CSPRNG) for sensitive keys, IDs, or tokens.",
+        "syntax": "crypto.randomBytes(size) | crypto.getRandomValues(typedArray)",
+        "example": "// Node.js:\nconst token = crypto.randomBytes(32).toString('hex');\n// Browser Web Crypto:\nconst array = new Uint32Array(10);\nwindow.crypto.getRandomValues(array);",
+        "mistake": "Using Math.random() to generate session IDs, passwords, or salts, which are mathematically predictable and easily reverse-engineered."
+      }
+    ]
+  },
+  {
+    "category": "API Security & Rate Limiting",
+    "commands": [
+      {
+        "cmd": "Rate Limiting",
+        "description": "Limit the number of requests a client can make in a given timeframe to prevent DoS attacks and brute-force logins.",
+        "syntax": "rateLimit({ windowMs: 15 * 60 * 1000, limit: 100 })",
+        "example": "const limiter = rateLimit({\n  windowMs: 15 * 60 * 1000, // 15 minutes\n  max: 100, // Limit each IP to 100 requests per window\n  message: 'Too many requests from this IP'\n});\napp.use('/api/', limiter);",
+        "mistake": "Rate-limiting using local server memory in stateless cluster environments, which allows clients to bypass limits by hit-testing different instances."
+      },
+      {
+        "cmd": "CORS Origin Policy",
+        "description": "Restrict client-side cross-origin access to your APIs. Maintain a strict allowlist of origins instead of allowing any domain.",
+        "syntax": "Access-Control-Allow-Origin: https://trustedapp.com",
+        "example": "const corsOptions = {\n  origin: ['https://opendevhub.com', 'https://admin.opendevhub.com'],\n  methods: ['GET', 'POST', 'PUT', 'DELETE'],\n  credentials: true\n};\napp.use(cors(corsOptions));",
+        "mistake": "Setting 'Access-Control-Allow-Origin: *' combined with 'Access-Control-Allow-Credentials: true', which is an invalid and highly insecure CORS policy."
       }
     ]
   }

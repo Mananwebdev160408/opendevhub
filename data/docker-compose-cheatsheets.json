@@ -304,5 +304,80 @@
         "mistake": "Mixing the top-level 'restart' key with 'deploy: restart_policy' inside Swarm. Swarm ignores the standard service restart parameter."
       }
     ]
+  },
+  {
+    "category": "Compose CLI Commands",
+    "commands": [
+      {
+        "cmd": "docker compose up",
+        "description": "Builds, (re)creates, starts, and attaches to containers for all or specified services. Runs in foreground by default.",
+        "syntax": "docker compose up [flags] [service...]",
+        "example": "docker compose up -d\ndocker compose up --build web-api",
+        "mistake": "Forgetting the '-d' flag when running in terminal, which blocks the shell and displays logs until terminated, or neglecting to use '--build' when Dockerfile code changes."
+      },
+      {
+        "cmd": "docker compose down",
+        "description": "Stops containers and removes containers, networks, volumes, and images created by 'up'. Clean up resources.",
+        "syntax": "docker compose down [flags]",
+        "example": "docker compose down\ndocker compose down -v --rmi all",
+        "mistake": "Forgetting that 'docker compose down' by default does not delete named volumes. Add '-v' or '--volumes' if you need a clean state."
+      },
+      {
+        "cmd": "docker compose build",
+        "description": "Build or rebuild images associated with services defined in the Compose file. Does not start containers.",
+        "syntax": "docker compose build [flags] [service...]",
+        "example": "docker compose build --no-cache api-server",
+        "mistake": "Assuming 'docker compose build' automatically runs the new container. You must run 'docker compose up' afterwards to instantiate it."
+      },
+      {
+        "cmd": "docker compose ps",
+        "description": "List all containers associated with the current Compose project, displaying their command, state, and port mappings.",
+        "syntax": "docker compose ps [flags] [service...]",
+        "example": "docker compose ps --all",
+        "mistake": "Failing to see a stopped or crashed container because you ran 'docker compose ps' without the '--all' flag in older versions."
+      },
+      {
+        "cmd": "docker compose logs",
+        "description": "View aggregated log output from all running services or a specific service container.",
+        "syntax": "docker compose logs [flags] [service...]",
+        "example": "docker compose logs -f --tail 100 web-app",
+        "mistake": "Running logs without '-f' (follow) or '--tail' limits on large projects, resulting in terminal spam and long buffer delays."
+      },
+      {
+        "cmd": "docker compose exec",
+        "description": "Run an interactive command inside a running service container. Most commonly used to spawn an interactive shell.",
+        "syntax": "docker compose exec [flags] <service> <command>",
+        "example": "docker compose exec -it db psql -U postgres\ndocker compose exec api sh",
+        "mistake": "Trying to run 'exec' on a container/service that is not currently running. To start a container and run a command, use 'docker compose run'."
+      },
+      {
+        "cmd": "docker compose run",
+        "description": "Run a one-off command against a service. Spawns a new temporary container with the service's configuration.",
+        "syntax": "docker compose run [flags] <service> [command]",
+        "example": "docker compose run --rm api python manage.py migrate",
+        "mistake": "Running commands without the '--rm' flag, which leaves zombie stopped containers behind on the host system."
+      },
+      {
+        "cmd": "docker compose pull",
+        "description": "Fetch and download the latest tag versions of registry images declared in the services section.",
+        "syntax": "docker compose pull [service...]",
+        "example": "docker compose pull db redis",
+        "mistake": "Deploying updates without running pull first, which might cause compose to continue using older cached image versions on the host."
+      },
+      {
+        "cmd": "docker compose config",
+        "description": "Validate syntax, parse environment variables, and print the merged, expanded docker-compose configuration.",
+        "syntax": "docker compose config [flags]",
+        "example": "docker compose config --services",
+        "mistake": "Deploying Compose files to production without checking the resolved configuration via 'config' first to confirm environment interpolations."
+      },
+      {
+        "cmd": "docker compose restart",
+        "description": "Restart all running service containers or specific ones. Keeps network and volume states intact.",
+        "syntax": "docker compose restart [service...]",
+        "example": "docker compose restart web nginx",
+        "mistake": "Using 'restart' to apply environment or docker-compose.yml configuration changes. Compose configuration updates require 'docker compose up -d'."
+      }
+    ]
   }
 ]

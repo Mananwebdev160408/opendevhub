@@ -46,17 +46,23 @@ export function Header() {
       description: "Essential developer utilities and helpers to format configurations, inspect tokens, and verify network responses.",
       links: [
         { label: "TOOLBOX", href: "/tools", description: "Interactive utilities including JWT Decoders, JSON Formatters, Regex Testers, and Base64 Converters." },
-        { label: "GIT CHEATS", href: "/git-cheatsheets", description: "Universal Git cheatsheet and recovery troubleshooting guide for common command errors." },
-        { label: "YAML CHEATS", href: "/yaml-cheatsheets", description: "Comprehensive YAML cheatsheet defining all options, fields, syntax rules, and usecases." },
-        { label: "DOCKER COMPOSE", href: "/docker-compose-cheatsheets", description: "Comprehensive Docker Compose cheatsheet outlining services, networks, volumes, and deployment options." },
         { label: "HTTP CODES", href: "/http-status", description: "Visual index of HTTP status codes with detailed explanations, headers, and code snippets." },
-        { label: "KUBERNETES CHEATS", href: "/k8s-cheatsheets", description: "Kubectl command index covering pod operations, deployments, and cluster debugs." },
-        { label: "LINUX/BASH REF", href: "/bash-cheatsheets", description: "Bash command reference detailing file systems, pipeline flows, and file permissions." },
         { label: "CSS VISUAL GUIDE", href: "/css-visual-guide", description: "Interactive workspace to visually toggle and test Flexbox and CSS Grid layout parameters." },
-        { label: "SECURITY CHEATS", href: "/security-cheatsheets", description: "Secure code guide mapping OWASP defenses, security headers, and crypto APIs." },
         { label: "REGEX VISUALIZER", href: "/regex-visualizer", description: "Visualize regular expression parsing trees and sequence paths in live schematics." },
         { label: "CRON BUILDER", href: "/cron-builder", description: "Build CRON expressions interactively and visualize the next 10 calculated trigger dates." },
         { label: "CSS BEZIER PLAY", href: "/css-bezier", description: "Drag-and-drop cubic bezier editor with timing physics simulation and CSS transitions." },
+      ]
+    },
+    {
+      label: "CHEAT SHEETS",
+      description: "Comprehensive, searchable, offline-first command references and syntax registries for systems, scripting, and deployment.",
+      links: [
+        { label: "GIT CHEATS", href: "/git-cheatsheets", description: "Universal Git cheatsheet and recovery troubleshooting guide for common command errors." },
+        { label: "YAML CHEATS", href: "/yaml-cheatsheets", description: "Comprehensive YAML cheatsheet defining all options, fields, syntax rules, and usecases." },
+        { label: "DOCKER COMPOSE", href: "/docker-compose-cheatsheets", description: "Comprehensive Docker Compose cheatsheet outlining services, networks, volumes, and deployment options." },
+        { label: "KUBERNETES CHEATS", href: "/k8s-cheatsheets", description: "Kubectl command index covering pod operations, deployments, and cluster debugs." },
+        { label: "LINUX/BASH REF", href: "/bash-cheatsheets", description: "Bash command reference detailing file systems, pipeline flows, and file permissions." },
+        { label: "SECURITY CHEATS", href: "/security-cheatsheets", description: "Secure code guide mapping OWASP defenses, security headers, and crypto APIs." },
       ]
     },
     {
@@ -90,6 +96,10 @@ export function Header() {
     "DEV TOOLS": {
       quote: "First, solve the problem. Then, write the code. — John Johnson",
       stat: "UTILITIES: 30+ client-side JSON formatters, token parsers & regex validators."
+    },
+    "CHEAT SHEETS": {
+      quote: "Give me six hours to chop down a tree and I will spend the first four sharpening the axe. — Abraham Lincoln",
+      stat: "REFERENCE: 6 comprehensive cheat sheets mapping syntax, configs, commands, and common pitfalls."
     },
     "RESOURCES": {
       quote: "The best error message is the one that never shows up. — Thomas Fuchs",

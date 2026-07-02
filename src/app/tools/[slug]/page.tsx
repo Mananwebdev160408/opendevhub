@@ -15,9 +15,9 @@ export async function generateStaticParams() {
     "url-decode", "regex-tester", "timestamp-converter", "color-converter",
     "gradient-generator", "lorem-ipsum", "slug-generator", "case-converter",
     "password-generator", "markdown-preview", "html-preview", "diff-checker",
-    "cron-parser", "character-counter", "word-counter", "line-counter",
+    "cron-parser", "character-counter",
     "qr-generator", "barcode-generator", "css-minifier", "js-minifier",
-    "html-minifier", "prettier-formatter", "csv-viewer", "yaml-viewer", "xml-viewer",
+    "html-minifier", "csv-viewer", "yaml-viewer", "xml-viewer",
     "json-to-typescript", "yaml-json-converter", "keycode-listener", "sql-formatter",
     "svg-optimizer", "html-entity-coder", "css-playground", "dns-lookup"
   ]
@@ -113,14 +113,6 @@ const toolMetadata: Record<string, { title: string; description: string }> = {
     title: "Word & Character Counter - OpenDev Hub",
     description: "Count words, characters, sentences, lines, and estimate read time of text blocks instantly."
   },
-  "word-counter": {
-    title: "Word Counter - OpenDev Hub",
-    description: "Count words, characters, and spaces in your paragraphs or reports for copywriting."
-  },
-  "line-counter": {
-    title: "Line Counter - OpenDev Hub",
-    description: "Calculate lines, empty spaces, and character counts inside code files or plain text."
-  },
   "qr-generator": {
     title: "QR Code Generator - OpenDev Hub",
     description: "Generate customized QR codes with custom colors, margins, error correction levels, and download as PNG."
@@ -140,10 +132,6 @@ const toolMetadata: Record<string, { title: string; description: string }> = {
   "html-minifier": {
     title: "HTML Code Minifier - OpenDev Hub",
     description: "Compress HTML markup. Strip whitespace, comments, and empty attributes for high-performance loading."
-  },
-  "prettier-formatter": {
-    title: "Prettier Code Formatter - OpenDev Hub",
-    description: "Format files using Prettier configuration. Beautify JS, CSS, HTML, and Markdown code."
   },
   "csv-viewer": {
     title: "CSV Grid Viewer & Parser - OpenDev Hub",

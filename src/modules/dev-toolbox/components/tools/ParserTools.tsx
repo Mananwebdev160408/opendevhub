@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Copy, Check, Play, RefreshCw, Eye, X } from "lucide-react"
+import { Copy, Check, Play, RefreshCw, Eye, X, Trash2, Clipboard, FileText, Sparkles, BookOpen, Volume2, Hash, SlidersHorizontal } from "lucide-react"
 import { CopyBtn } from "./ToolHelpers"
 
 export function RegexTesterTool() {
@@ -622,117 +622,7 @@ export function CronParserTool() {
   )
 }
 
-export function KeycodeListenerTool() {
-  const [keyData, setKeyData] = React.useState<{
-    key: string
-    code: string
-    which: number
-    location: string
-    shift: boolean
-    ctrl: boolean
-    alt: boolean
-    meta: boolean
-  } | null>({
-    key: "Start typing...",
-    code: "KeyName",
-    which: 0,
-    location: "Standard Keyboard",
-    shift: false,
-    ctrl: false,
-    alt: false,
-    meta: false
-  })
 
-  React.useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      e.preventDefault()
-      let loc = "Standard Keyboard"
-      if (e.location === 1) loc = "Left Side Key"
-      if (e.location === 2) loc = "Right Side Key"
-      if (e.location === 3) loc = "Numpad Key"
-
-      setKeyData({
-        key: e.key === " " ? "Space" : e.key,
-        code: e.code,
-        which: e.which || e.keyCode,
-        location: loc,
-        shift: e.shiftKey,
-        ctrl: e.ctrlKey,
-        alt: e.altKey,
-        meta: e.metaKey
-      })
-    }
-
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [])
-
-  return (
-    <div className="space-y-4 font-mono">
-      <span className="text-xs font-bold uppercase text-zinc-500 block border-b border-border pb-2">KEYBOARD KEYCODE EVENT LISTENER</span>
-      <div className="text-center py-2 text-[10px] text-zinc-400 font-bold uppercase bg-zinc-950 border border-dashed border-zinc-800">
-        FOCUS INSIDE THIS WINDOW AND PRESS ANY KEY TO INSPECT
-      </div>
-
-      {keyData && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
-          <div className="md:col-span-1 border-4 border-foreground p-5 bg-black flex flex-col justify-center items-center shadow-[4px_4px_0px_0px_#ffffff] text-center min-h-48">
-            <span className="text-[10px] text-zinc-500 font-bold uppercase block mb-2">event.key</span>
-            <div className="text-3xl font-black text-accent truncate max-w-full uppercase">{keyData.key}</div>
-          </div>
-
-          <div className="md:col-span-1 border-4 border-foreground p-5 bg-zinc-950 flex flex-col justify-center items-center shadow-[4px_4px_0px_0px_var(--primary)] text-center min-h-48">
-            <span className="text-[10px] text-zinc-500 font-bold uppercase block mb-2">event.which (keyCode)</span>
-            <div className="text-5xl font-black text-primary">{keyData.which || "-"}</div>
-          </div>
-
-          <div className="md:col-span-1 border-4 border-foreground p-5 bg-black flex flex-col justify-center items-center shadow-[4px_4px_0px_0px_#ffffff] text-center min-h-48">
-            <span className="text-[10px] text-zinc-500 font-bold uppercase block mb-2">event.code</span>
-            <div className="text-xl font-bold text-yellow-400 truncate max-w-full">{keyData.code}</div>
-          </div>
-        </div>
-      )}
-
-      {keyData && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="border border-border bg-zinc-950 p-4">
-            <span className="text-[10px] text-zinc-500 font-bold uppercase block mb-2">MODIFIER KEY STATUSES</span>
-            <div className="grid grid-cols-2 gap-2 text-xs font-black">
-              <div className={`p-2 border text-center ${keyData.ctrl ? "bg-accent border-foreground text-accent-foreground" : "border-zinc-800 text-zinc-600"}`}>
-                CTRL Key
-              </div>
-              <div className={`p-2 border text-center ${keyData.shift ? "bg-accent border-foreground text-accent-foreground" : "border-zinc-800 text-zinc-600"}`}>
-                SHIFT Key
-              </div>
-              <div className={`p-2 border text-center ${keyData.alt ? "bg-accent border-foreground text-accent-foreground" : "border-zinc-800 text-zinc-600"}`}>
-                ALT Key
-              </div>
-              <div className={`p-2 border text-center ${keyData.meta ? "bg-accent border-foreground text-accent-foreground" : "border-zinc-800 text-zinc-600"}`}>
-                META Key (Cmd/Win)
-              </div>
-            </div>
-          </div>
-
-          <div className="border border-border bg-zinc-950 p-4 space-y-2 text-xs">
-            <span className="text-[10px] text-zinc-500 font-bold uppercase block mb-2">ADDITIONAL DATA</span>
-            <div className="flex justify-between border-b border-zinc-800/40 pb-1.5">
-              <span className="text-zinc-500">Key Location:</span>
-              <span className="font-bold text-foreground">{keyData.location}</span>
-            </div>
-            <div className="flex justify-between border-b border-zinc-800/40 pb-1.5">
-              <span className="text-zinc-500">Char Code:</span>
-              <span className="font-bold text-foreground">{keyData.which}</span>
-            </div>
-            <div className="flex justify-between pb-0.5">
-              <span className="text-zinc-500">Key Identifier:</span>
-              <span className="font-bold text-foreground">{keyData.code || "-"}</span>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
 
 export function SqlFormatterTool() {
   const [input, setInput] = React.useState("select id, name, created_at from users where active = 1 and role = 'admin' order by created_at desc limit 10;")
@@ -966,6 +856,359 @@ export function DnsLookupTool() {
               </tbody>
             </table>
           )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export function WordCharCounterTool({ defaultMode = "character" }: { defaultMode?: "character" | "word" | "line" }) {
+  const [text, setText] = React.useState("")
+
+  const stats = React.useMemo(() => {
+    const charCount = text.length
+    const charNoSpaces = text.replace(/\s/g, "").length
+    const wordCount = text.trim() === "" ? 0 : text.trim().split(/\s+/).length
+    const lineCount = text === "" ? 0 : text.split("\n").length
+    const sentenceCount = text.trim() === "" ? 0 : text.split(/[.!?]+/).filter(s => s.trim().length > 0).length
+    const paragraphCount = text.trim() === "" ? 0 : text.split(/\n\s*\n/).filter(p => p.trim().length > 0).length
+    
+    // Estimations
+    const readTime = Math.ceil(wordCount / 200)
+    const speakTime = (wordCount / 130).toFixed(1)
+
+    return {
+      charCount,
+      charNoSpaces,
+      wordCount,
+      lineCount,
+      sentenceCount,
+      paragraphCount,
+      readTime,
+      speakTime
+    }
+  }, [text])
+
+  const analytics = React.useMemo(() => {
+    if (!text.trim()) return { topWords: [], topChars: [] }
+
+    // Word frequency
+    const words = text
+      .toLowerCase()
+      .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?"']/g, "")
+      .split(/\s+/)
+      .filter(Boolean)
+    
+    const wordFreq: Record<string, number> = {}
+    words.forEach(w => {
+      wordFreq[w] = (wordFreq[w] || 0) + 1
+    })
+    const topWords = Object.entries(wordFreq)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+
+    // Character frequency (alphanumeric only)
+    const chars = text
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, "")
+      .split("")
+    
+    const charFreq: Record<string, number> = {}
+    chars.forEach(c => {
+      charFreq[c] = (charFreq[c] || 0) + 1
+    })
+    const topChars = Object.entries(charFreq)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+
+    return { topWords, topChars }
+  }, [text])
+
+  const loadSample = () => {
+    setText(
+      "OpenDev Hub is a high-density developer sandbox workspace built with Next.js and Tailwind CSS.\n\n" +
+      "It features formatting, encoding, and parsing utility widgets. All computations run 100% locally client-side in the browser, ensuring your data is kept secure and private.\n\n" +
+      "Start typing, pasting, or playing around with these tools to see live stats update!"
+    )
+  }
+
+  const handlePaste = async () => {
+    try {
+      const clipboardText = await navigator.clipboard.readText()
+      setText(clipboardText)
+    } catch (err) {
+      // Fallback
+    }
+  }
+
+  const trimWhitespace = () => {
+    setText(text.replace(/\s+/g, " ").trim())
+  }
+
+  const removeEmptyLines = () => {
+    setText(
+      text
+        .split("\n")
+        .filter(line => line.trim() !== "")
+        .join("\n")
+    )
+  }
+
+  const convertCase = (type: "upper" | "lower" | "title" | "sentence") => {
+    if (!text) return
+    if (type === "upper") {
+      setText(text.toUpperCase())
+    } else if (type === "lower") {
+      setText(text.toLowerCase())
+    } else if (type === "title") {
+      setText(
+        text.replace(/\w\S*/g, w => w.charAt(0).toUpperCase() + w.substring(1).toLowerCase())
+      )
+    } else if (type === "sentence") {
+      setText(
+        text
+          .toLowerCase()
+          .replace(/(^\s*|[.!?]\s+)([a-z])/g, m => m.toUpperCase())
+      )
+    }
+  }
+
+  return (
+    <div className="space-y-6 font-mono">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-border pb-3 gap-2">
+        <div>
+          <span className="text-xs font-bold uppercase text-zinc-500 block">TEXT & METRIC ANALYSIS</span>
+          <span className="text-[10px] text-zinc-400 font-bold block mt-0.5">
+            REALTIME COUNTING & WHITESPACE UTILITIES
+          </span>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={loadSample}
+            className="px-2 py-1 bg-zinc-900 border border-zinc-700 hover:border-foreground hover:bg-black text-[10px] font-bold text-zinc-400 hover:text-foreground cursor-pointer transition-all flex items-center gap-1"
+          >
+            <Sparkles className="h-3 w-3 text-accent" /> LOAD SAMPLE
+          </button>
+          <button
+            onClick={() => setText("")}
+            className="px-2 py-1 bg-red-950/20 border border-red-900/50 hover:border-red-500 hover:bg-red-950/40 text-[10px] font-bold text-red-400 cursor-pointer transition-all flex items-center gap-1"
+          >
+            <Trash2 className="h-3 w-3" /> CLEAR
+          </button>
+        </div>
+      </div>
+
+      {/* Grid of Main Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {/* Character Card */}
+        <div
+          className={`border-2 p-3 bg-zinc-950 relative overflow-hidden transition-all ${
+            defaultMode === "character"
+              ? "border-primary shadow-[3px_3px_0px_0px_var(--primary)]"
+              : "border-border shadow-[2px_2px_0px_0px_#27272a]"
+          }`}
+        >
+          <div className="absolute top-1.5 right-1.5 opacity-10">
+            <Hash className="h-8 w-8" />
+          </div>
+          <span className="text-[9px] text-zinc-500 font-black uppercase block">Characters</span>
+          <div className="text-2xl font-black text-foreground mt-1">{stats.charCount}</div>
+          <span className="text-[9px] text-zinc-400 font-bold block mt-0.5">
+            {stats.charNoSpaces} without spaces
+          </span>
+        </div>
+
+        {/* Word Card */}
+        <div
+          className={`border-2 p-3 bg-zinc-950 relative overflow-hidden transition-all ${
+            defaultMode === "word"
+              ? "border-accent shadow-[3px_3px_0px_0px_var(--accent)]"
+              : "border-border shadow-[2px_2px_0px_0px_#27272a]"
+          }`}
+        >
+          <div className="absolute top-1.5 right-1.5 opacity-10">
+            <FileText className="h-8 w-8" />
+          </div>
+          <span className="text-[9px] text-zinc-500 font-black uppercase block">Words</span>
+          <div className="text-2xl font-black text-foreground mt-1">{stats.wordCount}</div>
+          <span className="text-[9px] text-zinc-400 font-bold block mt-0.5">
+            Avg len: {stats.wordCount > 0 ? (stats.charNoSpaces / stats.wordCount).toFixed(1) : 0} chars
+          </span>
+        </div>
+
+        {/* Line Card */}
+        <div
+          className={`border-2 p-3 bg-zinc-950 relative overflow-hidden transition-all ${
+            defaultMode === "line"
+              ? "border-yellow-500 shadow-[3px_3px_0px_0px_#eab308]"
+              : "border-border shadow-[2px_2px_0px_0px_#27272a]"
+          }`}
+        >
+          <div className="absolute top-1.5 right-1.5 opacity-10">
+            <SlidersHorizontal className="h-8 w-8" />
+          </div>
+          <span className="text-[9px] text-zinc-500 font-black uppercase block">Lines</span>
+          <div className="text-2xl font-black text-foreground mt-1">{stats.lineCount}</div>
+          <span className="text-[9px] text-zinc-400 font-bold block mt-0.5">
+            {text.split("\n").filter(l => l.trim() === "").length} blank lines
+          </span>
+        </div>
+
+        {/* Read/Speak Time Card */}
+        <div className="border-2 border-border p-3 bg-zinc-950 shadow-[2px_2px_0px_0px_#27272a] relative overflow-hidden">
+          <div className="absolute top-1.5 right-1.5 opacity-10">
+            <BookOpen className="h-8 w-8" />
+          </div>
+          <span className="text-[9px] text-zinc-500 font-black uppercase block">Reading / Speaking</span>
+          <div className="text-lg font-black text-foreground mt-1">
+            ~{stats.readTime}m / {stats.speakTime}m
+          </div>
+          <span className="text-[9px] text-zinc-400 font-bold block mt-1.5">
+            {stats.paragraphCount} paragraphs · {stats.sentenceCount} sentences
+          </span>
+        </div>
+      </div>
+
+      {/* Main Layout Area */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Editor Area */}
+        <div className="lg:col-span-2 space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] text-zinc-400 font-bold block">PASTE OR TYPE YOUR TEXT:</span>
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={handlePaste}
+                className="px-2 py-0.5 bg-zinc-900 border border-zinc-700 hover:border-foreground hover:bg-black text-[9px] font-bold text-zinc-400 hover:text-foreground cursor-pointer transition-all flex items-center gap-1"
+                title="Paste from clipboard"
+              >
+                <Clipboard className="h-2.5 w-2.5" /> PASTE
+              </button>
+              {text && <CopyBtn value={text} />}
+            </div>
+          </div>
+          <textarea
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            placeholder="Start typing or pasting text here..."
+            className="w-full h-72 bg-black border-2 border-foreground p-3 text-xs leading-relaxed focus:outline-none focus:border-primary placeholder:text-zinc-700 resize-none font-mono"
+          />
+
+          {/* Quick Actions Row */}
+          <div className="flex flex-wrap gap-2 pt-1.5">
+            <button
+              onClick={trimWhitespace}
+              disabled={!text}
+              className="px-2.5 py-1 border border-zinc-800 bg-zinc-950 hover:border-foreground hover:bg-black text-[10px] font-bold text-zinc-400 hover:text-foreground disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all uppercase"
+            >
+              Trim Spaces
+            </button>
+            <button
+              onClick={removeEmptyLines}
+              disabled={!text}
+              className="px-2.5 py-1 border border-zinc-800 bg-zinc-950 hover:border-foreground hover:bg-black text-[10px] font-bold text-zinc-400 hover:text-foreground disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all uppercase"
+            >
+              Remove Blank Lines
+            </button>
+            <button
+              onClick={() => convertCase("upper")}
+              disabled={!text}
+              className="px-2.5 py-1 border border-zinc-800 bg-zinc-950 hover:border-foreground hover:bg-black text-[10px] font-bold text-zinc-400 hover:text-foreground disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all uppercase"
+            >
+              UPPERCASE
+            </button>
+            <button
+              onClick={() => convertCase("lower")}
+              disabled={!text}
+              className="px-2.5 py-1 border border-zinc-800 bg-zinc-950 hover:border-foreground hover:bg-black text-[10px] font-bold text-zinc-400 hover:text-foreground disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all uppercase"
+            >
+              lowercase
+            </button>
+            <button
+              onClick={() => convertCase("title")}
+              disabled={!text}
+              className="px-2.5 py-1 border border-zinc-800 bg-zinc-950 hover:border-foreground hover:bg-black text-[10px] font-bold text-zinc-400 hover:text-foreground disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all uppercase"
+            >
+              Title Case
+            </button>
+            <button
+              onClick={() => convertCase("sentence")}
+              disabled={!text}
+              className="px-2.5 py-1 border border-zinc-800 bg-zinc-950 hover:border-foreground hover:bg-black text-[10px] font-bold text-zinc-400 hover:text-foreground disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all uppercase"
+            >
+              Sentence Case
+            </button>
+          </div>
+        </div>
+
+        {/* Frequency & Density Analysis */}
+        <div className="space-y-4">
+          <div>
+            <span className="text-[10px] text-zinc-400 font-bold block mb-1.5 uppercase">Word Density (Top 5)</span>
+            <div className="border border-border bg-zinc-950 p-3 min-h-[148px] flex flex-col justify-center">
+              {!text.trim() ? (
+                <span className="text-[10px] text-zinc-600 italic block text-center">
+                  No word data. Type some text to analyze frequency.
+                </span>
+              ) : (
+                <div className="space-y-2">
+                  {analytics.topWords.map(([word, count]) => {
+                    const totalWords = text.trim().split(/\s+/).filter(Boolean).length
+                    const percentage = totalWords > 0 ? ((count / totalWords) * 100).toFixed(1) : 0
+                    return (
+                      <div key={word} className="text-xs space-y-1">
+                        <div className="flex justify-between font-bold text-[10px]">
+                          <span className="text-accent truncate max-w-[120px]">"{word}"</span>
+                          <span className="text-zinc-400">
+                            {count}x ({percentage}%)
+                          </span>
+                        </div>
+                        <div className="w-full bg-zinc-900 h-1.5 border border-zinc-800">
+                          <div
+                            className="bg-accent h-full"
+                            style={{ width: `${percentage}%` }}
+                          />
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div>
+            <span className="text-[10px] text-zinc-400 font-bold block mb-1.5 uppercase">Letter Density (Top 5)</span>
+            <div className="border border-border bg-zinc-950 p-3 min-h-[148px] flex flex-col justify-center">
+              {!text.trim() ? (
+                <span className="text-[10px] text-zinc-600 italic block text-center">
+                  No letter data. Type some text to analyze frequency.
+                </span>
+              ) : (
+                <div className="space-y-2">
+                  {analytics.topChars.map(([char, count]) => {
+                    const totalChars = text.toLowerCase().replace(/[^a-z0-9]/g, "").length
+                    const percentage = totalChars > 0 ? ((count / totalChars) * 100).toFixed(1) : 0
+                    return (
+                      <div key={char} className="text-xs space-y-1">
+                        <div className="flex justify-between font-bold text-[10px]">
+                          <span className="text-primary uppercase">"{char}"</span>
+                          <span className="text-zinc-400">
+                            {count}x ({percentage}%)
+                          </span>
+                        </div>
+                        <div className="w-full bg-zinc-900 h-1.5 border border-zinc-800">
+                          <div
+                            className="bg-primary h-full"
+                            style={{ width: `${percentage}%` }}
+                          />
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -31,9 +31,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "url-decode", "regex-tester", "timestamp-converter", "color-converter",
     "gradient-generator", "lorem-ipsum", "slug-generator", "case-converter",
     "password-generator", "markdown-preview", "html-preview", "diff-checker",
-    "cron-parser", "character-counter", "word-counter", "line-counter",
+    "cron-parser", "character-counter",
     "qr-generator", "barcode-generator", "css-minifier", "js-minifier",
-    "html-minifier", "prettier-formatter", "csv-viewer", "yaml-viewer", "xml-viewer"
+    "html-minifier", "csv-viewer", "yaml-viewer", "xml-viewer",
+    "json-to-typescript", "yaml-json-converter", "keycode-listener", "sql-formatter",
+    "svg-optimizer", "html-entity-coder", "css-playground", "dns-lookup"
   ]
 
   const staticEntries: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
