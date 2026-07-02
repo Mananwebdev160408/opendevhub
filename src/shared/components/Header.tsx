@@ -70,6 +70,10 @@ export function Header() {
         { label: "APIs DIRECTORY", href: "/apis", description: "Searchable catalog of over 700+ free, public REST APIs classified by category." },
         { label: "MARKDOWN READER", href: "/resources", description: "Read raw GitHub Markdown files and repository READMEs in a clean reader format." },
         { label: "EVENTS TIMELINE", href: "/events", description: "Schedule of upcoming open-source programs, hackathons, and contribution events." },
+        { label: "FONT EXPLORER", href: "/fonts", description: "Interactive preview and CSS code generator for popular web typography." },
+        { label: "PACKAGE COMPARE", href: "/npm-compare", description: "Compare npm package statistics, bundle sizes, downloads, and metadata." },
+        { label: "DEV GLOSSARY", href: "/glossary", description: "Searchable reference of core developer terms, acronyms, and design patterns." },
+        { label: "COLOR PALETTE", href: "/colors", description: "Neo-brutalist custom color palette generator, picker, and format exporter." },
       ]
     },
     {
@@ -101,7 +105,7 @@ export function Header() {
     },
     "RESOURCES": {
       quote: "The best error message is the one that never shows up. — Thomas Fuchs",
-      stat: "CATALOG: 770+ active public APIs, raw markdown reader & live timeline events."
+      stat: "CATALOG: 770+ APIs, MD reader, events, fonts, npm compare, dev terms & color palettes."
     },
     "MORE": {
       quote: "Clean code always looks like it was written by someone who cares. — Michael Feathers",

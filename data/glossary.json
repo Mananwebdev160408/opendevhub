@@ -1,0 +1,602 @@
+[
+  {
+    "term": "ACID",
+    "fullForm": "Atomicity, Consistency, Isolation, Durability",
+    "category": "Databases",
+    "definition": "A set of properties of database transactions intended to guarantee data validity despite errors, power failures, and other mishaps.",
+    "example": "Relational databases like PostgreSQL guarantee ACID transactions. If a transfer fails mid-way, the transaction is rolled back, preventing partial updates.",
+    "related": ["SQL vs NoSQL", "Idempotency", "CAP Theorem"]
+  },
+  {
+    "term": "CORS",
+    "fullForm": "Cross-Origin Resource Sharing",
+    "category": "Security",
+    "definition": "A browser security mechanism that uses HTTP headers to tell browsers to give a web application running at one origin access to selected resources from a different origin.",
+    "example": "If your frontend is on domain-a.com and calls domain-b.com/api, domain-b.com must return 'Access-Control-Allow-Origin: https://domain-a.com' header.",
+    "related": ["XSS", "API Gateway", "HTTPS / SSL"]
+  },
+  {
+    "term": "CI/CD",
+    "fullForm": "Continuous Integration / Continuous Deployment",
+    "category": "DevOps",
+    "definition": "A workflow pipeline that automates the integration of code changes (testing, linting) and the automated deployment of verified changes to servers.",
+    "example": "GitHub Actions or GitLab CI running unit tests on every pull request, then automatically releasing a new container image to production when merged.",
+    "related": ["Docker", "Kubernetes", "GitOps", "Zero Downtime Deployment"]
+  },
+  {
+    "term": "CSRF",
+    "fullForm": "Cross-Site Request Forgery",
+    "category": "Security",
+    "definition": "An attack that forces an authenticated user to execute unwanted actions on a web application in which they're currently authenticated.",
+    "example": "An attacker emails a link with an image tag '<img src=\"https://bank.com/transfer?to=attacker&amount=1000\">'. If logged in, the browser makes the request.",
+    "related": ["CORS", "XSS", "JWT"]
+  },
+  {
+    "term": "CDN",
+    "fullForm": "Content Delivery Network",
+    "category": "DevOps",
+    "definition": "A geographically distributed group of servers that work together to provide fast delivery of Internet content like HTML, JS, CSS, and images.",
+    "example": "Cloudflare or CloudFront caching static assets globally at edge nodes, reducing latency by delivering files from server close to the user's region.",
+    "related": ["DNS", "Load Balancing", "High Availability (HA)"]
+  },
+  {
+    "term": "DNS",
+    "fullForm": "Domain Name System",
+    "category": "Systems",
+    "definition": "The phonebook of the Internet. It translates human-readable domain names (like google.com) to machine-readable IP addresses (like 142.250.190.46).",
+    "example": "When navigating to opendevhub.com, your system queries a DNS resolver, which returns the server's IP address so your browser can connect.",
+    "related": ["CDN", "Load Balancing", "High Availability (HA)"]
+  },
+  {
+    "term": "Docker",
+    "fullForm": "Containerization Engine",
+    "category": "DevOps",
+    "definition": "An open-source platform that enables developers to package, ship, and run applications in isolated environments called containers.",
+    "example": "Writing a Dockerfile with instructions to copy your Node.js code, install node_modules, and run it on a specific Linux base image.",
+    "related": ["CI/CD", "Kubernetes", "Monolith"]
+  },
+  {
+    "term": "DOM",
+    "fullForm": "Document Object Model",
+    "category": "Frontend",
+    "definition": "A programming interface for web documents. It represents the page so that programs can change the document structure, style, and content.",
+    "example": "Using JavaScript to interact with the DOM: 'document.getElementById(\"submit-btn\").innerText = \"Loading...\"'.",
+    "related": ["Hydration", "SSR", "CSR", "Shadow DOM"]
+  },
+  {
+    "term": "Event Sourcing",
+    "fullForm": "State Event Logging Pattern",
+    "category": "Backend",
+    "definition": "An architectural pattern in which changes to the application state are stored as a sequence of events, rather than just updating the current state in-place.",
+    "example": "A banking ledger system. Instead of storing currentBalance = $1000, it stores: Deposit($500), Withdraw($200), Deposit($700). State is computed from the log.",
+    "related": ["ACID", "Microservices", "Message Queue (MQ)"]
+  },
+  {
+    "term": "GraphQL",
+    "fullForm": "Graph Query Language",
+    "category": "Backend",
+    "definition": "A query language for APIs and a runtime for fulfilling those queries with your existing data. It allows clients to request exactly what they need.",
+    "example": "Client requests 'query { user(id: 1) { name email } }' and the server returns only the name and email, resolving over-fetching issues.",
+    "related": ["REST", "gRPC", "API Gateway"]
+  },
+  {
+    "term": "gRPC",
+    "fullForm": "Google Remote Procedure Call",
+    "category": "Backend",
+    "definition": "A high-performance RPC framework developed by Google that uses HTTP/2 for transport and Protocol Buffers as the interface description language.",
+    "example": "Microservices writing Protobuf files defining contracts. Service A calls Service B's functions directly over a fast, binary TCP connection.",
+    "related": ["GraphQL", "REST", "Microservices"]
+  },
+  {
+    "term": "JWT",
+    "fullForm": "JSON Web Token",
+    "category": "Security",
+    "definition": "An open standard that defines a compact and self-contained way for securely transmitting information between parties as a JSON object, signed cryptographically.",
+    "example": "An Authorization header containing 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'. The server decodes it using a secret key to verify user claims.",
+    "related": ["OAuth 2.0", "CORS", "OpenID Connect (OIDC)"]
+  },
+  {
+    "term": "Kubernetes",
+    "fullForm": "Container Orchestration Engine",
+    "category": "DevOps",
+    "definition": "An open-source container orchestration system for automating software deployment, scaling, and management.",
+    "example": "Defining a Deployment manifest specifying 3 replicas of a Docker image, letting Kubernetes handle autoscaling, restarts, and rollouts.",
+    "related": ["Docker", "Load Balancing", "Service Mesh"]
+  },
+  {
+    "term": "Microservices",
+    "fullForm": "Distributed Service Architecture",
+    "category": "Systems",
+    "definition": "An architectural style that structures an application as a collection of small, autonomous, loosely coupled services that communicate over APIs.",
+    "example": "An e-commerce platform splitting its codebase into Auth Service, Inventory Service, Payments Service, and Delivery Service.",
+    "related": ["gRPC", "REST", "Event Sourcing", "Monolith", "Service Mesh"]
+  },
+  {
+    "term": "OAuth 2.0",
+    "fullForm": "Open Authorization Protocol",
+    "category": "Security",
+    "definition": "An industry-standard protocol for authorization that enables applications to obtain limited access to user accounts on an HTTP service, like Google or GitHub.",
+    "example": "A website showing a 'Log in with GitHub' button. It redirects to GitHub, asks user for permission, and returns an access token to the site.",
+    "related": ["JWT", "OpenID Connect (OIDC)"]
+  },
+  {
+    "term": "REST",
+    "fullForm": "Representational State Transfer",
+    "category": "Backend",
+    "definition": "An architectural style for designing networked applications. It relies on a stateless, client-server communication protocol, almost always HTTP.",
+    "example": "An API exposing endpoints like 'GET /users/123' to fetch user data, and 'POST /users' to create a new user, utilizing HTTP verbs.",
+    "related": ["GraphQL", "gRPC", "API Gateway"]
+  },
+  {
+    "term": "SOLID",
+    "fullForm": "Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion",
+    "category": "Systems",
+    "definition": "A mnemonic acronym for five design principles intended to make software designs more understandable, flexible, and maintainable.",
+    "example": "Single Responsibility: A class should have only one reason to change (e.g. an InvoicePrinter class separate from Invoice calculation).",
+    "related": ["MVC (Model-View-Controller)", "Object-Relational Mapping (ORM)"]
+  },
+  {
+    "term": "SQL vs NoSQL",
+    "fullForm": "Structured vs Non-Structured Databases",
+    "category": "Databases",
+    "definition": "SQL databases are relational, table-based, schema-driven, and scale vertically. NoSQL databases are non-relational, document/key-value based, dynamic-schema, and scale horizontally.",
+    "example": "PostgreSQL (SQL) storing users in tables with strict foreign keys vs. MongoDB (NoSQL) storing user profiles as flexible JSON-like documents.",
+    "related": ["ACID", "Object-Relational Mapping (ORM)", "CAP Theorem"]
+  },
+  {
+    "term": "SSR",
+    "fullForm": "Server-Side Rendering",
+    "category": "Frontend",
+    "definition": "The ability of a web application to render the HTML markup on the server instead of rendering it in the browser's client-side runtime.",
+    "example": "Next.js rendering a page with dynamic DB data on the server, responding with pre-built HTML, which improves SEO and initial page load speed.",
+    "related": ["CSR", "Hydration", "DOM", "Server Actions"]
+  },
+  {
+    "term": "CSR",
+    "fullForm": "Client-Side Rendering",
+    "category": "Frontend",
+    "definition": "A web application rendering pages directly in the browser's DOM using client-side JavaScript. The server sends a bare-bones HTML page with JS bundles.",
+    "example": "A standard Create React App loading index.html containing '<div id=\"root\"></div>' and rendering the entire page after loading a bundle.js file.",
+    "related": ["SSR", "Hydration", "DOM", "Single Page Application (SPA)"]
+  },
+  {
+    "term": "WebSockets",
+    "fullForm": "Bi-directional Socket Connections",
+    "category": "Backend",
+    "definition": "A communications protocol providing full-duplex communication channels over a single TCP connection, allowing real-time client-server communication.",
+    "example": "A chat app client opening a connection: 'const socket = new WebSocket(\"wss://...\")' and receiving instant messages from server without polling.",
+    "related": ["REST", "Long Polling", "Server-Sent Events (SSE)"]
+  },
+  {
+    "term": "Hydration",
+    "fullForm": "DOM Event Attachment Process",
+    "category": "Frontend",
+    "definition": "A client-side process where JavaScript loads in the browser, attaches event listeners to pre-rendered HTML supplied by the server, making it interactive.",
+    "example": "Next.js page loads HTML with a static '<button>Click</button>'. Hydration attaches a 'onClick' listener to that button in the DOM.",
+    "related": ["SSR", "CSR", "DOM"]
+  },
+  {
+    "term": "Debouncing",
+    "fullForm": "Delayed Event execution Technique",
+    "category": "Frontend",
+    "definition": "An optimization technique that limits the rate at which a function gets triggered by delaying execution until a certain amount of idle time has elapsed.",
+    "example": "A search input field calling an API. Debouncing ensures the API is called only after the user stops typing for 500ms.",
+    "related": ["Throttling", "Memoization"]
+  },
+  {
+    "term": "Throttling",
+    "fullForm": "Fixed-rate Function execution Technique",
+    "category": "Frontend",
+    "definition": "An optimization technique that limits the maximum number of times a function can be called over a given time interval.",
+    "example": "Attaching a scroll event listener. Throttling ensures the listener runs at most once every 100ms, protecting scroll responsiveness.",
+    "related": ["Debouncing", "Rate Limiting"]
+  },
+  {
+    "term": "Memoization",
+    "fullForm": "Caching Computed function Results",
+    "category": "Frontend",
+    "definition": "An optimization technique used primarily to speed up computer programs by storing the results of expensive function calls and returning the cached result.",
+    "example": "In React, using 'useMemo(() => computeExpensiveValue(a, b), [a, b])' to prevent recalculation on every state update unless dependency changes.",
+    "related": ["Debouncing", "Throttling"]
+  },
+  {
+    "term": "Load Balancing",
+    "fullForm": "Traffic Distribution System",
+    "category": "Systems",
+    "definition": "The process of distributing network traffic across multiple servers to ensure no single server bears too much load, improving availability.",
+    "example": "An NGINX server routing incoming traffic across 4 node app instances using a Round Robin algorithm, handling spikes without crash.",
+    "related": ["CDN", "DNS", "Kubernetes", "High Availability (HA)"]
+  },
+  {
+    "term": "Idempotency",
+    "fullForm": "Repeatable Request Consistency",
+    "category": "Backend",
+    "definition": "The property of certain operations in mathematics and computer science whereby they can be applied multiple times without changing the result.",
+    "example": "A POST request with an 'Idempotency-Key: 1234' header in Stripe. Even if called twice due to timeout, the customer is only charged once.",
+    "related": ["REST", "ACID"]
+  },
+  {
+    "term": "SQL Injection (SQLi)",
+    "fullForm": "Database Query Intrusion",
+    "category": "Security",
+    "definition": "A security vulnerability where an attacker manipulates SQL queries by injecting malicious SQL statements into entry fields.",
+    "example": "Submitting 'admin' OR '1'='1' as a username to bypass password checks if queries are concatenated directly (without prepared statements).",
+    "related": ["XSS", "CSRF", "SQL vs NoSQL"]
+  },
+  {
+    "term": "XSS (Cross-Site Scripting)",
+    "fullForm": "Client-Side Script Injection",
+    "category": "Security",
+    "definition": "A security vulnerability where an attacker injects malicious client-side scripts into web pages viewed by other users.",
+    "example": "Saving a comment containing '<script>stealCookies(document.cookie)</script>' which runs in the browsers of all visitors reading that comment.",
+    "related": ["CSRF", "SQL Injection (SQLi)", "Content Security Policy (CSP)"]
+  },
+  {
+    "term": "Rate Limiting",
+    "fullForm": "Request Frequency Control",
+    "category": "Security",
+    "definition": "A network traffic management strategy that limits the number of requests a user or IP address can make to an API within a specific timeframe.",
+    "example": "An API returning HTTP 429 Too Many Requests if a client sends more than 60 requests per minute to prevent brute-force attacks.",
+    "related": ["Throttling", "Load Balancing", "DDoS Attack"]
+  },
+  {
+    "term": "Tree Shaking",
+    "fullForm": "Dead Code Elimination",
+    "category": "Frontend",
+    "definition": "A term commonly used in the JavaScript context for dead-code elimination. It relies on the static structure of ES2015 module syntax (import and export) to discard unused code during bundle compilation.",
+    "example": "Using Webpack or Rollup: if you 'import { clone } from \"lodash-es\"', tree shaking ensures the bundle excludes all other unused Lodash functions, reducing payload sizes.",
+    "related": ["CSR", "Single Page Application (SPA)", "Web Vitals"]
+  },
+  {
+    "term": "Web Components",
+    "fullForm": "Reusable Modular Elements",
+    "category": "Frontend",
+    "definition": "A suite of different technologies allowing you to create reusable custom elements—with their functionality encapsulated away from the rest of your code—and utilize them in your web apps.",
+    "example": "Creating a custom HTML tag '<custom-user-card>' using JavaScript CustomElementRegistry, templates, and the Shadow DOM.",
+    "related": ["DOM", "Shadow DOM"]
+  },
+  {
+    "term": "Event Loop",
+    "fullForm": "Asynchronous Task Scheduler",
+    "category": "Frontend",
+    "definition": "The mechanism that allows JavaScript to perform non-blocking I/O operations, despite being single-threaded, by offloading operations to the system kernel whenever possible.",
+    "example": "When `setTimeout` is called, it registers the callback in the Web APIs pool. Once finished, the callback is pushed to the Callback Queue and processed by the Event Loop once the execution stack is empty.",
+    "related": ["Debouncing", "Throttling", "WebSockets"]
+  },
+  {
+    "term": "Server Actions",
+    "fullForm": "Asynchronous Server execution Functions",
+    "category": "Frontend",
+    "definition": "Functions executed on the server side but triggered from the client-side component directly without declaring dedicated REST endpoints.",
+    "example": "In Next.js: declaring 'use server' inside an action function, then calling it inside a form's `onSubmit` trigger to mutate DB values securely.",
+    "related": ["SSR", "REST", "API Gateway"]
+  },
+  {
+    "term": "Shadow DOM",
+    "fullForm": "Encapsulated DOM Trees",
+    "category": "Frontend",
+    "definition": "A web standard that allows developers to attach a hidden, encapsulated DOM subtree to an element, keeping CSS styling and JavaScript isolated from the main document.",
+    "example": "Browsers use Shadow DOM internally to render input controls like '<input type=\"range\">'. Page-wide CSS styles won't bleed into or affect the slider controls.",
+    "related": ["DOM", "Web Components", "CSS Specificity"]
+  },
+  {
+    "term": "Web Vitals",
+    "fullForm": "Google Core Web performance Metrics",
+    "category": "Frontend",
+    "definition": "An initiative by Google to provide unified guidance for quality signals that are essential to delivering a great user experience on the web (LCP, FID, CLS).",
+    "example": "Largest Contentful Paint (LCP) measures loading performance: the time it takes for the page's main content to render (ideal is 2.5 seconds or less).",
+    "related": ["SSR", "Tree Shaking", "Critical Rendering Path (CRP)"]
+  },
+  {
+    "term": "CSS Specificity",
+    "fullForm": "Selector Weighting Hierarchy",
+    "category": "Frontend",
+    "definition": "The algorithm used by browsers to determine which CSS rule gets applied to an element when multiple rules conflict. It is calculated based on selector weight.",
+    "example": "An inline style has higher specificity than an ID selector ('#id'). An ID selector has higher specificity than a class selector ('.class').",
+    "related": ["DOM", "Shadow DOM"]
+  },
+  {
+    "term": "Critical Rendering Path (CRP)",
+    "fullForm": "Browser Rendering Pipeline Stages",
+    "category": "Frontend",
+    "definition": "The sequence of steps the browser goes through to convert HTML, CSS, and JavaScript into actual pixels on the screen.",
+    "example": "Constructing DOM -> Constructing CSSOM -> Combining into Render Tree -> Layout calculations -> Painting pixels.",
+    "related": ["DOM", "Web Vitals", "SSR"]
+  },
+  {
+    "term": "Single Page Application (SPA)",
+    "fullForm": "Dynamic Single HTML web apps",
+    "category": "Frontend",
+    "definition": "A web application that interacts with the user by dynamically rewriting the current web page with new data from the web server, instead of loading entire new pages.",
+    "example": "An application built in React or Vue where navigation happens instantly via client-side routing, loading only JSON payloads for data changes.",
+    "related": ["CSR", "Multi Page Application (MPA)", "Tree Shaking"]
+  },
+  {
+    "term": "Multi Page Application (MPA)",
+    "fullForm": "Traditional Server-rendered Multi-page sites",
+    "category": "Frontend",
+    "definition": "A traditional web application structure where every navigational transition triggers the browser to request and download a new HTML page from the server.",
+    "example": "A legacy WordPress or PHP site where clicking a menu link triggers a full browser reload and downloads a new index.php template.",
+    "related": ["SSR", "Single Page Application (SPA)"]
+  },
+  {
+    "term": "CAP Theorem",
+    "fullForm": "Consistency, Availability, Partition Tolerance Theorem",
+    "category": "Databases",
+    "definition": "A theorem stating that a distributed data store can simultaneously provide at most two of three guarantees: Consistency, Availability, and Partition Tolerance.",
+    "example": "In a network partition, a DB must choose either Consistency (returning errors or blocking to sync) or Availability (returning stale data from local replicas).",
+    "related": ["ACID", "Eventual Consistency", "Database Replication"]
+  },
+  {
+    "term": "Database Sharding",
+    "fullForm": "Horizontal Database Partitioning",
+    "category": "Databases",
+    "definition": "A type of database partitioning that separates very large databases into smaller, faster, more easily managed parts, called data shards, spread across nodes.",
+    "example": "Sharding a users table by country: storing European users on Database Server A and Asian users on Database Server B to optimize speed.",
+    "related": ["CAP Theorem", "Database Replication", "SQL vs NoSQL"]
+  },
+  {
+    "term": "Database Indexing",
+    "fullForm": "Query Performance Lookup Table",
+    "category": "Databases",
+    "definition": "A data structure technique (usually using B-Trees) that improves the speed of data retrieval operations on a database table at the cost of slower writes.",
+    "example": "Adding an index on the email column: 'CREATE INDEX idx_user_email ON users(email);'. Select queries lookup records instantly rather than scanning entire table.",
+    "related": ["SQL vs NoSQL", "Connection Pooling"]
+  },
+  {
+    "term": "Connection Pooling",
+    "fullForm": "Database Connection Reuse Cache",
+    "category": "Databases",
+    "definition": "A cache of database connections maintained so that connections can be reused when future requests to the database are required.",
+    "example": "Instead of opening and closing a TCP socket on every single server request, the app borrows a pre-opened connection from a pool of 10 connections.",
+    "related": ["Database Indexing", "ACID", "Load Balancing"]
+  },
+  {
+    "term": "Write-Ahead Logging (WAL)",
+    "fullForm": "Append-only Transaction Log",
+    "category": "Databases",
+    "definition": "A family of techniques for providing atomicity and durability in database systems. Changes are written to a secure log file before being applied to the DB pages.",
+    "example": "In Postgres, transactions are appended to the WAL file first. If server power goes down, the database replays the log to recover pending transactions.",
+    "related": ["ACID", "Event Sourcing"]
+  },
+  {
+    "term": "Eventual Consistency",
+    "fullForm": "Weak Distributed Consistency Model",
+    "category": "Databases",
+    "definition": "A consistency model used in distributed computing where data updates eventually propagate to all nodes, guaranteeing they match given no new updates.",
+    "example": "DNS updates. When modifying a domain's DNS record, the change does not sync everywhere immediately, but eventually updates across all servers.",
+    "related": ["CAP Theorem", "Database Replication", "Event Sourcing"]
+  },
+  {
+    "term": "Database Replication",
+    "fullForm": "Data Synchronization across Nodes",
+    "category": "Databases",
+    "definition": "The frequent copying of data from a primary database on one server to replicas on other servers to create backups or balance read traffic.",
+    "example": "A primary Postgres database handling all write operations, syncing data to 2 read replicas that serve GET requests, splitting query loads.",
+    "related": ["CAP Theorem", "Database Sharding", "Eventual Consistency"]
+  },
+  {
+    "term": "Message Queue (MQ)",
+    "fullForm": "Asynchronous Broker Communications System",
+    "category": "Backend",
+    "definition": "An asynchronous service-to-service communication protocol used in serverless and microservices architectures to buffer and route message payloads.",
+    "example": "Using RabbitMQ or Apache Kafka: a payment service publishes a 'payment_processed' event. The shipping service consumes it to pack items.",
+    "related": ["Webhooks", "Event Sourcing", "Microservices"]
+  },
+  {
+    "term": "Webhooks",
+    "fullForm": "HTTP Push Notification Subscriptions",
+    "category": "Backend",
+    "definition": "A method of altering the behavior of a web page or application with custom callbacks. They are triggered by events and push payloads via HTTP.",
+    "example": "Stripe sending a POST request to your `/api/stripe-webhook` endpoint to notify your server that a subscription has been successfully paid.",
+    "related": ["Message Queue (MQ)", "Server-Sent Events (SSE)", "API Gateway"]
+  },
+  {
+    "term": "Long Polling",
+    "fullForm": "Client-initiated Hold Connection Technique",
+    "category": "Backend",
+    "definition": "A web development technique where the client requests information from the server and the server holds the request open until new data is available.",
+    "example": "A simple chat app sending an AJAX request. The server waits for a message to arrive before replying, rather than returning empty JSON immediately.",
+    "related": ["WebSockets", "Server-Sent Events (SSE)"]
+  },
+  {
+    "term": "Server-Sent Events (SSE)",
+    "fullForm": "One-way Server Stream Connections",
+    "category": "Backend",
+    "definition": "A server push technology enabling a client to receive automatic, real-time updates from a server over an HTTP connection, in one direction.",
+    "example": "ChatGPT streaming the response text character-by-character into the browser using an EventSource connection rather than waiting for complete output.",
+    "related": ["WebSockets", "Long Polling"]
+  },
+  {
+    "term": "API Gateway",
+    "fullForm": "Unified Service Routing Proxy",
+    "category": "Backend",
+    "definition": "An API management tool that sits between a client and a collection of backend services, acting as a single entry point and reverse proxy.",
+    "example": "Using Kong or AWS API Gateway to handle authentication, CORS pre-flights, rate limiting, and request routing before forwarding to microservices.",
+    "related": ["Microservices", "REST", "Rate Limiting"]
+  },
+  {
+    "term": "Object-Relational Mapping (ORM)",
+    "fullForm": "Relational DB object Mapper",
+    "category": "Backend",
+    "definition": "A programming technique for converting data between incompatible type systems in databases and object-oriented programming languages.",
+    "example": "Using Prisma: 'prisma.user.findMany({ where: { role: \"ADMIN\" } })' instead of writing raw SQL 'SELECT * FROM users WHERE role = 'ADMIN';'.",
+    "related": ["SQL vs NoSQL", "SOLID"]
+  },
+  {
+    "term": "MVC (Model-View-Controller)",
+    "fullForm": "Software architecture Separation pattern",
+    "category": "Backend",
+    "definition": "A software design pattern commonly used for developing user interfaces that divides the program logic into three interconnected elements.",
+    "example": "A Ruby on Rails app: Model manages database users, View renders HTML templates, Controller bridges requests between model query and view output.",
+    "related": ["SOLID", "Monolith"]
+  },
+  {
+    "term": "Infrastructure as Code (IaC)",
+    "fullForm": "Configuration file Infrastructure definition",
+    "category": "DevOps",
+    "definition": "The process of managing and provisioning computer data centers through machine-readable definition files, rather than physical configuration.",
+    "example": "Writing a Terraform or CloudFormation file specifying 2 virtual servers, a firewall, and an S3 bucket, creating the assets in AWS in one command.",
+    "related": ["GitOps", "Docker", "Kubernetes"]
+  },
+  {
+    "term": "GitOps",
+    "fullForm": "Git-sourced Infrastructure control workflow",
+    "category": "DevOps",
+    "definition": "A workflow pattern that uses Git repositories as the single source of truth for infrastructure and application configurations, automating sync.",
+    "example": "Updating a Kubernetes deployment file in Git. A tool like ArgoCD detects the commit and updates the live cluster automatically.",
+    "related": ["CI/CD", "Infrastructure as Code (IaC)"]
+  },
+  {
+    "term": "Blue-Green Deployment",
+    "fullForm": "Dual Environment release Model",
+    "category": "DevOps",
+    "definition": "A deployment strategy that reduces downtime and risk by running two identical production environments, only one of which is live at any time.",
+    "example": "App version v1 runs on Environment Blue (live). Deploy v2 to Green (idle), test it, and toggle the Load Balancer to route users to Green.",
+    "related": ["Canary Release", "Zero Downtime Deployment", "Load Balancing"]
+  },
+  {
+    "term": "Canary Release",
+    "fullForm": "Incremental Traffic release Strategy",
+    "category": "DevOps",
+    "definition": "A deployment strategy where a new version of software is rolled out to a small subset of users before making it available to the entire userbase.",
+    "example": "Routing 95% of traffic to the stable production app (v1) and 5% to the new release (v2) to test error logs and metrics on real users first.",
+    "related": ["Blue-Green Deployment", "Zero Downtime Deployment", "Load Balancing"]
+  },
+  {
+    "term": "Serverless",
+    "fullForm": "On-demand Execution cloud Model",
+    "category": "DevOps",
+    "definition": "A cloud-computing execution model where the cloud provider acts as the server, dynamically managing the allocation and scaling of machine resources.",
+    "example": "Using AWS Lambda or Vercel Functions. You upload a single JS function. The cloud runs it only when requested, billing you by execution milliseconds.",
+    "related": ["Microservices", "API Gateway"]
+  },
+  {
+    "term": "Zero Downtime Deployment",
+    "fullForm": "Continuous Application uptime Release",
+    "category": "DevOps",
+    "definition": "A deployment pipeline setup where servers are updated to a new version without interrupting active client requests or closing service sockets.",
+    "example": "Rolling updates in Kubernetes: spin up new pods of v2, wait for health check passes, and shut down v1 pods sequentially without request drops.",
+    "related": ["Blue-Green Deployment", "Canary Release", "Load Balancing"]
+  },
+  {
+    "term": "Salt & Hash",
+    "fullForm": "Password Encryption security Model",
+    "category": "Security",
+    "definition": "A security practice for storing passwords. A salt (random string) is appended to the password, which is then run through a one-way hashing algorithm.",
+    "example": "Password 'secret123' combined with random salt 'x82j' hashes to 'da83fb...' using bcrypt, preventing attackers from using precomputed rainbow tables.",
+    "related": ["JWT", "HTTPS / SSL"]
+  },
+  {
+    "term": "HTTPS / SSL",
+    "fullForm": "Secure Hypertext Transfer Protocol / Secure Sockets Layer",
+    "category": "Security",
+    "definition": "An extension of HTTP that uses TLS (formerly SSL) to encrypt all communications between a client's browser and the web server, securing data in transit.",
+    "example": "Navigating to a banking site. The browser shows a lock icon, encrypting password inputs so attackers on public Wi-Fi can't read payloads.",
+    "related": ["DNS", "CORS", "Salt & Hash"]
+  },
+  {
+    "term": "Content Security Policy (CSP)",
+    "fullForm": "Domain Resource loading Security policy",
+    "category": "Security",
+    "definition": "An HTTP header that allows site operators to restrict the resources (such as JavaScript, CSS, Images) that the browser is allowed to load for a given page.",
+    "example": "Setting a CSP header: 'default-src 'self' https://trusted.com'. The browser blocks scripts from untrusted external domains, mitigating XSS attacks.",
+    "related": ["XSS", "CORS"]
+  },
+  {
+    "term": "DDoS Attack",
+    "fullForm": "Distributed Denial of Service",
+    "category": "Security",
+    "definition": "A malicious attempt to disrupt normal traffic of a targeted server, service, or network by overwhelming the target with a flood of Internet traffic.",
+    "example": "An attacker controlling 10,000 infected machines (botnet) to spam HTTP requests to a target API, exhausting its memory, causing it to crash.",
+    "related": ["Rate Limiting", "Load Balancing"]
+  },
+  {
+    "term": "Least Privilege Principle",
+    "fullForm": "Restricted Access safety Model",
+    "category": "Security",
+    "definition": "The practice of limiting access rights for users, applications, and system processes to only those permissions absolutely necessary to perform their work.",
+    "example": "Creating an IAM database user that only has READ access to the database, rather than granting full admin permissions to the backend application.",
+    "related": ["OAuth 2.0", "OpenID Connect (OIDC)"]
+  },
+  {
+    "term": "OpenID Connect (OIDC)",
+    "fullForm": "Identity Verification Protocol layer",
+    "category": "Security",
+    "definition": "An identity verification layer built on top of the OAuth 2.0 protocol, allowing clients to verify the identity of the end-user using tokens.",
+    "example": "Signing into a portal using Google. OIDC returns an ID Token (JWT) containing profile details like email and name alongside authorization access.",
+    "related": ["OAuth 2.0", "JWT"]
+  },
+  {
+    "term": "DRY Principle",
+    "fullForm": "Don't Repeat Yourself",
+    "category": "Systems",
+    "definition": "A principle of software development aimed at reducing repetition of software patterns, replacing it with abstractions or data normalization.",
+    "example": "Extracting duplicate database connection parameters scattered across 5 files into a single, shared database helper module.",
+    "related": ["SOLID", "KISS Principle"]
+  },
+  {
+    "term": "YAGNI",
+    "fullForm": "You Aren't Gonna Need It",
+    "category": "Systems",
+    "definition": "A principle of extreme programming that states a programmer should not add functionality until deemed absolutely necessary.",
+    "example": "Refraining from building a complex, multi-currency wallet feature for an MVP site that only takes single dollar payments for now.",
+    "related": ["KISS Principle", "Monolith"]
+  },
+  {
+    "term": "KISS Principle",
+    "fullForm": "Keep It Simple, Stupid",
+    "category": "Systems",
+    "definition": "A design principle stating that systems work best if they are kept simple rather than made complicated; unnecessary complexity should be avoided.",
+    "example": "Using a standard relational table lookup rather than building a complex, distributed key-value caching system when database queries are already fast.",
+    "related": ["DRY Principle", "YAGNI"]
+  },
+  {
+    "term": "Monolith",
+    "fullForm": "Single-tier Software Architecture",
+    "category": "Systems",
+    "definition": "A software architecture model where the user interface, backend application database accesses, and workers are packaged in a single, unified program.",
+    "example": "A Ruby on Rails or Django project containing all tables, HTML rendering routes, and logic modules in one single code repository.",
+    "related": ["Microservices", "YAGNI"]
+  },
+  {
+    "term": "Service Mesh",
+    "fullForm": "Service-to-service communication infrastructure",
+    "category": "Systems",
+    "definition": "A dedicated infrastructure layer built into an application to control service-to-service communications, managing security, routing, and logging.",
+    "example": "Using Istio or Linkerd to handle automatic TLS encryptions, retries, and network telemetry logs between microservices in a cluster.",
+    "related": ["Microservices", "API Gateway", "Load Balancing"]
+  },
+  {
+    "term": "High Availability (HA)",
+    "fullForm": "Continuous Service operational status",
+    "category": "Systems",
+    "definition": "A system design quality that ensures a pre-agreed level of operational performance (usually uptime) is maintained during a given period.",
+    "example": "A multi-region setup with automatic failover. If the AWS US-East region fails, DNS switches traffic to US-West, keeping the site online.",
+    "related": ["Load Balancing", "Fault Tolerance"]
+  },
+  {
+    "term": "Fault Tolerance",
+    "fullForm": "System Resilience to Failures",
+    "category": "Systems",
+    "definition": "The property that enables a system to continue operating properly in the event of the failure of one or more of its internal components.",
+    "example": "An application cluster running 5 node replicas. If 2 servers crash due to hardware issues, the other 3 continue running the application without interruption.",
+    "related": ["High Availability (HA)", "Load Balancing"]
+  },
+  {
+    "term": "Semantic Versioning (SemVer)",
+    "fullForm": "Major.Minor.Patch Versioning Model",
+    "category": "Systems",
+    "definition": "A widely adopted versioning system for software releases defined as: MAJOR version for breaking API changes, MINOR version for backwards-compatible features, and PATCH for backwards-compatible bug fixes.",
+    "example": "Upgrading a package from 2.4.1 to 2.5.0 adds new features without breaking existing code. Upgrading to 3.0.0 will require updating code for breaking changes.",
+    "related": ["SOLID", "KISS Principle"]
+  },
+  {
+    "term": "Race Condition",
+    "fullForm": "Uncontrolled Concurrent operation conflict",
+    "category": "Systems",
+    "definition": "A flaw in an electronic or software system where the output is dependent on the sequence or timing of uncontrollable concurrent events.",
+    "example": "Two threads checking userBalance ($100). Both withdraw $80 at the exact same millisecond. DB checks balance for both as $100, allowing a total withdrawal of $160.",
+    "related": ["ACID", "Event Loop"]
+  }
+]
