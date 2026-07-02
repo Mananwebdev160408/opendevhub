@@ -14,7 +14,7 @@ const MARQUEE_ITEMS = [
   "★ 32+ Offline Core Developer Utilities",
   "★ Direct GitHub API Exploration",
   "★ 1200+ HTTP Status Codes Indexed",
-  "★ No Cost, No Signup, No AI Hype",
+  "★ No Cost, No Signup, No Login Required",
   "★ Open Source MIT Licensed Codebase",
 ]
 

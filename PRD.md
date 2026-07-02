@@ -2,11 +2,11 @@
 
 ## Product Requirements Document (PRD)
 
-**Version:** 1.0
+**Version:** 2.0
 
 **Author:** Manan
 
-**Status:** Planning
+**Status:** Active — Phase 3 & 4 Shipped
 
 ---
 
@@ -70,11 +70,11 @@ The platform will NOT include:
 
 ## Frontend
 
-* Next.js (App Router)
-* TypeScript
-* Tailwind CSS
-* Shadcn UI
-* Framer Motion
+* Next.js 15 (App Router)
+* TypeScript 5
+* Tailwind CSS v4
+* Shadcn UI + Base UI
+* Lucide React (icons)
 
 ---
 
@@ -88,11 +88,7 @@ No separate backend server.
 
 ## Database
 
-Initially:
-
-No database required.
-
-
+Initially: No database required.
 
 ---
 
@@ -116,9 +112,7 @@ Vercel Free Plan
 
 # Module 1 — Repository Explorer
 
-Purpose:
-
-Discover repositories easily.
+Purpose: Discover repositories easily.
 
 Features
 
@@ -133,9 +127,7 @@ Features
 * View repository details
 * Open repository on GitHub
 
-Repository Card
-
-Shows
+Repository Card Shows
 
 * Repository Name
 * Owner
@@ -151,9 +143,7 @@ Shows
 
 # Module 2 — Good First Issues
 
-Purpose
-
-Help beginners contribute.
+Purpose: Help beginners contribute.
 
 Features
 
@@ -165,9 +155,7 @@ Features
 * Recently created
 * Recently updated
 
-Issue Card
-
-Displays
+Issue Card Displays
 
 * Repository
 * Issue title
@@ -180,11 +168,7 @@ Displays
 
 # Module 3 — Trending Repositories
 
-Daily
-
-Weekly
-
-Monthly
+Daily / Weekly / Monthly
 
 Trending by
 
@@ -213,27 +197,9 @@ Sort options
 
 Search organizations.
 
-Example categories
+Example categories: Frontend, Backend, AI, DevOps, Cloud, Security, Mobile, Game Development
 
-Frontend
-
-Backend
-
-AI
-
-DevOps
-
-Cloud
-
-Security
-
-Mobile
-
-Game Development
-
-Organization Page
-
-Contains
+Organization Page Contains
 
 * Description
 * Repositories
@@ -247,143 +213,27 @@ Contains
 
 # Module 5 — Developer Toolbox
 
-One page.
-
-Many tools.
+One page. Many tools. All run 100% in-browser.
 
 ## Utilities
 
-JSON Formatter
-
-JSON Validator
-
-JWT Decoder
-
-UUID Generator
-
-Hash Generator
-
-Base64 Encode
-
-Base64 Decode
-
-URL Encode
-
-URL Decode
-
-Regex Tester
-
-Timestamp Converter
-
-Unix Timestamp
-
-Color Converter
-
-HEX ↔ RGB
-
-HEX ↔ HSL
-
-Gradient Generator
-
-Lorem Ipsum
-
-Slug Generator
-
-Case Converter
-
-Password Generator
-
-Markdown Preview
-
-HTML Preview
-
-Diff Checker
-
-Cron Parser
-
-Character Counter
-
-Word Counter
-
-Line Counter
-
-QR Generator
-
-Barcode Generator
-
-CSS Minifier
-
-JS Minifier
-
-HTML Minifier
-
-Prettier Formatter
-
-CSV Viewer
-
-YAML Viewer
-
-XML Viewer
+JSON Formatter / Validator, JWT Decoder, UUID Generator, Hash Generator, Base64 Encode/Decode, URL Encode/Decode, Regex Tester, Timestamp Converter, Color Converter (HEX/RGB/HSL), Gradient Generator, Lorem Ipsum, Slug Generator, Case Converter, Password Generator, Markdown Preview, HTML Preview, Diff Checker, Cron Parser, Character / Word / Line Counter, QR Generator, Barcode Generator, CSS / JS / HTML Minifier, Prettier Formatter, CSV Viewer, YAML Viewer, XML Viewer
 
 ---
 
 # Module 6 — Git Cheat Sheets
 
-Categories
+Categories: Git Basics, Branching, Merge, Rebase, Reset, Cherry Pick, Stash, Tag, Remote
 
-Git Basics
-
-Branching
-
-Merge
-
-Rebase
-
-Reset
-
-Cherry Pick
-
-Stash
-
-Tag
-
-Remote
-
-Examples
-
-Each command includes
-
-Description
-
-Syntax
-
-Example
-
-Common mistakes
+Each command includes: Description, Syntax, Example, Common mistakes
 
 ---
 
 # Module 7 — HTTP Status Codes
 
-Search by
+Search by: Status code, Meaning, Examples
 
-Status code
-
-Meaning
-
-Examples
-
-Categories
-
-100
-
-200
-
-300
-
-400
-
-500
+Categories: 1xx, 2xx, 3xx, 4xx, 5xx
 
 ---
 
@@ -391,45 +241,9 @@ Categories
 
 Search APIs.
 
-Categories
+Categories: Authentication, Weather, Finance, Movies, Music, Games, Images, AI, Maps, Education, Developer Tools
 
-Authentication
-
-Weather
-
-Finance
-
-Movies
-
-Music
-
-Games
-
-Images
-
-AI
-
-Maps
-
-Education
-
-Developer Tools
-
-Each API contains
-
-Name
-
-Description
-
-Authentication
-
-Rate Limit
-
-Free Tier
-
-Documentation
-
-Website
+Each API contains: Name, Description, Authentication, Rate Limit, Free Tier, Documentation, Website
 
 ---
 
@@ -437,47 +251,9 @@ Website
 
 Curated learning resources.
 
-Categories
+Categories: React, Next.js, TypeScript, JavaScript, Node, Express, Docker, Kubernetes, GraphQL, PostgreSQL, MongoDB, Linux, Git, Tailwind, System Design
 
-React
-
-Next.js
-
-TypeScript
-
-JavaScript
-
-Node
-
-Express
-
-Docker
-
-Kubernetes
-
-GraphQL
-
-PostgreSQL
-
-MongoDB
-
-Linux
-
-Git
-
-Tailwind
-
-System Design
-
-Each resource
-
-Title
-
-Description
-
-Official Link
-
-Difficulty
+Each resource: Title, Description, Official Link, Difficulty
 
 ---
 
@@ -485,55 +261,17 @@ Difficulty
 
 Show upcoming events.
 
-Examples
+Examples: Hacktoberfest, Google Summer of Code, Outreachy, MLH, Open Source Hackathons
 
-Hacktoberfest
-
-Google Summer of Code
-
-Outreachy
-
-MLH
-
-Open Source Hackathons
-
-Each event contains
-
-Timeline
-
-Eligibility
-
-Website
-
-Important Dates
+Each event contains: Timeline, Eligibility, Website, Important Dates
 
 ---
 
 # Module 11 — License Explorer
 
-Search licenses.
+Search licenses: MIT, GPL, Apache, BSD, ISC, Mozilla
 
-MIT
-
-GPL
-
-Apache
-
-BSD
-
-ISC
-
-Mozilla
-
-Each page
-
-Permissions
-
-Conditions
-
-Limitations
-
-Example Usage
+Each page: Permissions, Conditions, Limitations, Example Usage
 
 ---
 
@@ -541,25 +279,7 @@ Example Usage
 
 Browse repositories by topics.
 
-Examples
-
-React
-
-Next.js
-
-Tailwind
-
-TypeScript
-
-Rust
-
-Go
-
-Python
-
-Machine Learning
-
-Game Dev
+Examples: React, Next.js, Tailwind, TypeScript, Rust, Go, Python, Machine Learning, Game Dev
 
 ---
 
@@ -567,59 +287,142 @@ Game Dev
 
 Search Awesome GitHub lists.
 
-Examples
-
-Awesome React
-
-Awesome Node
-
-Awesome CSS
-
-Awesome DevOps
-
-Awesome Docker
-
-Awesome Rust
+Examples: Awesome React, Awesome Node, Awesome CSS, Awesome DevOps, Awesome Docker, Awesome Rust
 
 ---
 
 # Module 14 — Developer News
 
-Latest
+Latest releases, framework updates, major GitHub announcements. Curated links only.
 
-Releases
+---
 
-Framework updates
+# Module 15 — Bash / Shell Cheat Sheet
 
-Major GitHub announcements
+Purpose: Offline searchable reference for shell scripting and terminal commands.
 
-Curated links only.
+Categories
+
+* File & Directory Operations
+* Text Processing (grep, awk, sed)
+* Permissions & Ownership
+* Process Management
+* Networking
+* Shell Scripting Constructs
+
+Each command includes: Description, Syntax, and Example.
+
+---
+
+# Module 16 — YAML Cheat Sheet
+
+Purpose: Quick reference for YAML syntax used in CI/CD, Docker, and Kubernetes configs.
+
+Categories
+
+* Basic Syntax
+* Data Types
+* Collections (Mappings & Sequences)
+* Multi-line Strings
+* Anchors & Aliases
+* Common Gotchas
+
+---
+
+# Module 17 — Docker Compose Cheat Sheet
+
+Purpose: Reference for writing and running Docker Compose files.
+
+Categories
+
+* Service Configuration
+* Networking
+* Volumes
+* Environment Variables
+* Common CLI Commands
+
+---
+
+# Module 18 — Kubernetes (kubectl) Cheat Sheet
+
+Purpose: Offline reference for kubectl commands and core Kubernetes concepts.
+
+Categories
+
+* Cluster Management
+* Pod Operations
+* Deployments & Scaling
+* Services & Networking
+* Config & Secrets
+* Namespaces
+
+---
+
+# Module 19 — Web Security Cheat Sheet
+
+Purpose: Developer-focused security reference covering common vulnerabilities and mitigations.
+
+Categories
+
+* OWASP Top 10
+* HTTP Security Headers
+* CORS & CSP
+* Authentication Best Practices
+* Input Validation
+* Common Attack Patterns
+
+---
+
+# Module 20 — CSS Design Tools
+
+Purpose: Interactive visual utilities for front-end developers.
+
+Tools
+
+* **CSS Bezier Playground** (/css-bezier) — Visual cubic-bezier() timing function editor with animated live preview
+* **CSS Visual Guide** (/css-visual-guide) — Interactive Flexbox & CSS Grid reference with live examples
+* **Flexbox Playground** (/flex) — Real-time layout builder with all flex properties
+* **Color Palette Explorer** (/colors) — Browse palettes, convert HEX/RGB/HSL, check WCAG contrast ratios
+* **Font Explorer** (/fonts) — Preview and compare 1000+ Google Fonts with live text editing
+
+---
+
+# Module 21 — Builder Tools
+
+Purpose: Structured generators that help developers produce consistent output faster.
+
+Tools
+
+* **Commit Message Builder** (/commit-builder) — Conventional Commits scaffolder with type, scope, and body
+* **README Builder** (/readme-builder) — Section-by-section markdown README generator with live preview
+* **NPM Package Comparator** (/npm-compare) — Side-by-side npm package analysis: downloads, size, license, metadata
+
+---
+
+# Module 22 — Developer Glossary
+
+Purpose: A-Z reference of common developer terms, acronyms, and concepts.
+
+Features
+
+* Alphabetical browse
+* Full-text search
+* Category tags (Frontend, Backend, DevOps, Security, etc.)
+* Each term includes a definition, related terms, and example usage
 
 ---
 
 # 6. Navigation
 
-Home
+Home, Repositories, Issues, Organizations, Trending, Resources, Developer Tools
 
-Repositories
+Cheatsheets (Git, Bash, YAML, Docker Compose, K8s, Security)
 
-Issues
+CSS Tools (Bezier, Visual Guide, Flexbox, Colors, Fonts)
 
-Organizations
+Builders (Commit, README, NPM Compare)
 
-Trending
-
-Resources
-
-Developer Tools
-
-Git Cheatsheets
-
-Events
-
-API Directory
-
-About
+Glossary, Events, API Directory, About
 
 ---
 
@@ -627,45 +430,13 @@ About
 
 Sections
 
-Hero
-
-Search Bar
-
-Trending Repositories
-
-Latest Good First Issues
-
-Popular Developer Tools
-
-Featured Resources
-
-Upcoming Events
-
-Latest News
-
-Footer
+Hero, Search Bar, Trending Repositories, Latest Good First Issues, Popular Developer Tools, Featured Resources, Upcoming Events, Latest News, Footer
 
 ---
 
 # 8. Search
 
-Global search.
-
-Search
-
-Repositories
-
-Organizations
-
-Issues
-
-Tools
-
-Resources
-
-Licenses
-
-Events
+Global search across: Repositories, Organizations, Issues, Tools, Resources, Licenses, Events
 
 ---
 
@@ -675,49 +446,22 @@ Every major item gets its own page.
 
 Examples
 
-/tools/json-formatter
+* /tools/json-formatter
+* /tools/password-generator
+* /repos/react
+* /issues/javascript
+* /license/mit
+* /resources/react
+* /apis/weather
+* /events/hacktoberfest
 
-/tools/password-generator
-
-/repos/react
-
-/issues/javascript
-
-/license/mit
-
-/resources/react
-
-/apis/weather
-
-/events/hacktoberfest
-
-Benefits
-
-Thousands of indexable pages.
-
-Fast loading.
-
-High Google ranking potential.
+Benefits: Thousands of indexable pages. Fast loading. High Google ranking potential.
 
 ---
 
 # 10. Performance
 
-Use
-
-Server Components
-
-Static Rendering
-
-Incremental Static Regeneration
-
-Caching
-
-Lazy Loading
-
-Image Optimization
-
-Edge Runtime where appropriate
+Use: Server Components, Static Rendering, Incremental Static Regeneration, Caching, Lazy Loading, Image Optimization, Edge Runtime where appropriate
 
 ---
 
@@ -725,17 +469,7 @@ Edge Runtime where appropriate
 
 Google AdSense
 
-Ads should appear
-
-Home
-
-Repository pages
-
-Resource pages
-
-Tool pages
-
-Blog pages
+Ads should appear: Home, Repository pages, Resource pages, Tool pages, Blog pages
 
 No intrusive ads.
 
@@ -743,25 +477,7 @@ No intrusive ads.
 
 # 12. Future Features
 
-Bookmarks
-
-Dark Mode
-
-PWA
-
-Weekly Newsletter
-
-Email Alerts
-
-Contributor Rankings
-
-GitHub OAuth
-
-Community Contributions
-
-Custom Collections
-
-Browser Extension
+Bookmarks, Dark Mode, PWA, Weekly Newsletter, Email Alerts, Contributor Rankings, GitHub OAuth, Community Contributions, Custom Collections, Browser Extension
 
 ---
 
@@ -771,142 +487,152 @@ OpenDev Hub uses a domain-driven, module-based folder structure designed to stri
 
 ### SOLID Architecture Principles
 1. **Single Responsibility Principle (SRP)**:
-   * Next.js `src/app/` folder serves strictly as the routing and entry-point layer. It contains no business logic or visual structures; it delegates layout and page logic to specific domain modules.
+   * Next.js src/app/ folder serves strictly as the routing and entry-point layer. It contains no business logic or visual structures; it delegates layout and page logic to specific domain modules.
    * Inside each module, directories are split by their responsibility (e.g. data fetching services are isolated from UI components, which are isolated from React hooks).
 2. **Open-Closed Principle (OCP)**:
-   * The structure is open for extension but closed for modification. Adding a new module or feature is as simple as adding a new folder under `src/modules/` without modifying other features.
+   * The structure is open for extension but closed for modification. Adding a new module or feature is as simple as adding a new folder under src/modules/ without modifying other features.
 3. **Liskov Substitution Principle (LSP)**:
-   * Shared interfaces, abstractions, and generic types are housed under `src/shared/types/` and `src/core/`, ensuring swapability and contract compatibility across components and services.
+   * Shared interfaces, abstractions, and generic types are housed under src/shared/types/ and src/core/, ensuring swapability and contract compatibility across components and services.
 4. **Interface Segregation Principle (ISP)**:
-   * Every module exposes a clean public interface via a barrel file (`index.ts`). Routes (`app/`) or other components can only import from this public interface, preventing the leakage of internal helper details and reducing bloat.
+   * Every module exposes a clean public interface via a barrel file (index.ts). Routes (pp/) or other components can only import from this public interface, preventing the leakage of internal helper details and reducing bloat.
 5. **Dependency Inversion Principle (DIP)**:
    * High-level routing and modules depend on abstract service layers and types rather than directly on concrete configurations.
-   * Core infrastructural modules (like HTTP clients and configuration parsers) reside in `src/core/`, decoupled from domain/feature-specific logic.
+   * Core infrastructural modules (like HTTP clients and configuration parsers) reside in src/core/, decoupled from domain/feature-specific logic.
 
 ### Folder Layout Diagram
 ```text
 src/
-├── app/                  # Next.js App Router (Routing & Entrypoints only)
-│   ├── layout.tsx        # Global layout & HTML shell
-│   ├── page.tsx          # Home page (delegates to modules/home)
-│   ├── repos/            # /repos route -> delegates to modules/repo-explorer
-│   ├── issues/           # /issues route -> delegates to modules/issue-explorer
-│   ├── tools/            # /tools route -> delegates to modules/dev-toolbox
+├── app/                          # Next.js App Router (Routing & Entrypoints only)
+│   ├── layout.tsx                # Global layout & HTML shell
+│   ├── page.tsx                  # Home page
+│   ├── repos/                    # /repos -> modules/repo-explorer
+│   ├── issues/                   # /issues -> modules/issue-explorer
+│   ├── tools/                    # /tools -> modules/dev-toolbox
+│   ├── git-cheatsheets/          # Module 6
+│   ├── bash-cheatsheets/         # Module 15
+│   ├── yaml-cheatsheets/         # Module 16
+│   ├── docker-compose-cheatsheets/ # Module 17
+│   ├── k8s-cheatsheets/          # Module 18
+│   ├── security-cheatsheets/     # Module 19
+│   ├── css-bezier/               # Module 20
+│   ├── css-visual-guide/         # Module 20
+│   ├── flex/                     # Module 20
+│   ├── colors/                   # Module 20
+│   ├── fonts/                    # Module 20
+│   ├── commit-builder/           # Module 21
+│   ├── readme-builder/           # Module 21
+│   ├── npm-compare/              # Module 21
+│   ├── glossary/                 # Module 22
 │   └── ...
-├── modules/              # Domain-driven features/modules (SOLID Boundaries)
-│   ├── repo-explorer/    # Module 1: Repository Explorer
-│   │   ├── components/   # UI elements specific to Repository Explorer
-│   │   ├── hooks/        # React hooks (e.g., useRepoSearch)
-│   │   ├── services/     # API request logic (GitHub API, etc.)
-│   │   ├── types/        # TypeScript interfaces unique to Repository Explorer
-│   │   ├── utils/        # Small domain-specific utility helpers
-│   │   └── index.ts      # Module public interface/barrel file (ISP/Encapsulation)
-│   ├── issue-explorer/   # Module 2: Good First Issues
+├── modules/                      # Domain-driven features/modules (SOLID Boundaries)
+│   ├── repo-explorer/            # Module 1: Repository Explorer
+│   │   ├── components/           # UI elements
+│   │   ├── hooks/                # React hooks (e.g., useRepoSearch)
+│   │   ├── services/             # API request logic (GitHub API, etc.)
+│   │   ├── types/                # TypeScript interfaces
+│   │   ├── utils/                # Domain-specific utilities
+│   │   └── index.ts              # Module public barrel file
+│   ├── issue-explorer/           # Module 2: Good First Issues
 │   │   └── ...
-│   ├── trending/         # Module 3: Trending Repositories
+│   ├── trending/                 # Module 3: Trending Repositories
 │   │   └── ...
-│   ├── org-explorer/     # Module 4: Open Source Organizations
+│   ├── org-explorer/             # Module 4: Open Source Organizations
 │   │   └── ...
-│   ├── dev-toolbox/      # Module 5: Developer Toolbox
+│   ├── dev-toolbox/              # Module 5: Developer Toolbox
 │   │   └── ...
-│   └── ...
-├── shared/               # Reusable UI & cross-cutting components (DRY/SRP)
-│   ├── components/       # Primitive UI elements (e.g., design system, shadcn components)
-│   ├── hooks/            # Global custom hooks (e.g., useDebounce, useTheme)
-│   ├── utils/            # General helpers (e.g., class merge helpers like `cn`)
-│   └── types/            # Shared cross-domain TypeScript types
-└── core/                 # App-wide configuration & infrastructure (DIP)
-    ├── config/           # App configuration/env variables validation
-    └── services/         # Core clients (e.g., API clients, telemetry/logging)
+│   ├── git-cheatsheets/          # Module 6: Git Cheatsheets
+│   │   └── ...
+│   ├── http-status/              # Module 7: HTTP Status Codes
+│   │   └── ...
+│   ├── api-directory/            # Module 8: API Directory
+│   │   └── ...
+│   ├── resources-hub/            # Module 9: Resources Hub
+│   │   └── ...
+│   ├── events/                   # Module 10: Open Source Events
+│   │   └── ...
+│   ├── bash-cheatsheets/         # Module 15: Bash Cheatsheets
+│   │   └── ...
+│   ├── yaml-cheatsheets/         # Module 16: YAML Cheatsheets
+│   │   └── ...
+│   ├── docker-compose-cheatsheets/ # Module 17: Docker Compose
+│   │   └── ...
+│   ├── k8s-cheatsheets/          # Module 18: Kubernetes Cheatsheets
+│   │   └── ...
+│   ├── security-cheatsheets/     # Module 19: Security Cheatsheets
+│   │   └── ...
+│   ├── css-bezier/               # Module 20: CSS Bezier Playground
+│   │   └── ...
+│   ├── css-visual-guide/         # Module 20: CSS Visual Guide
+│   │   └── ...
+│   ├── colors/                   # Module 20: Color Explorer
+│   │   └── ...
+│   ├── fonts/                    # Module 20: Font Explorer
+│   │   └── ...
+│   ├── commit-builder/           # Module 21: Commit Builder
+│   │   └── ...
+│   ├── readme-builder/           # Module 21: README Builder
+│   │   └── ...
+│   ├── npm-compare/              # Module 21: NPM Package Comparator
+│   │   └── ...
+│   └── glossary/                 # Module 22: Developer Glossary
+│       └── ...
+├── shared/                       # Reusable UI & cross-cutting components (DRY/SRP)
+│   ├── components/               # Primitive UI elements (design system, shadcn)
+│   ├── hooks/                    # Global custom hooks (e.g., useDebounce)
+│   ├── utils/                    # General helpers (e.g., cn)
+│   └── types/                    # Shared cross-domain TypeScript types
+└── core/                         # App-wide configuration & infrastructure (DIP)
+    ├── config/                   # App configuration/env variables validation
+    └── services/                 # Core clients (API clients, telemetry/logging)
 ```
 
 ---
 
 # 14. Success Metrics
 
-Monthly Users
-
-Returning Users
-
-Average Session Duration
-
-Pages Per Session
-
-Search Traffic
-
-Tool Usage
-
-Repository Clicks
-
-Issue Clicks
-
-Ad Revenue
+Monthly Users, Returning Users, Average Session Duration, Pages Per Session, Search Traffic, Tool Usage, Repository Clicks, Issue Clicks, Ad Revenue
 
 ---
 
 # 15. Development Phases
 
-## Phase 1
+## Phase 1 — ✅ Shipped
 
-Project Setup
-
-Landing Page
-
-Navigation
-
-Theme
-
-SEO
-
-Deployment
+Project Setup, Landing Page, Navigation, Theme, SEO, Deployment
 
 ---
 
-## Phase 2
+## Phase 2 — ✅ Shipped
 
-Repository Explorer
-
-Trending
-
-Issue Explorer
-
-Organization Explorer
+Repository Explorer, Trending, Issue Explorer, Organization Explorer
 
 ---
 
-## Phase 3
+## Phase 3 — ✅ Shipped
 
-Developer Toolbox
+Developer Toolbox (25+ tools), Git Cheatsheets, HTTP Status Pages, License Explorer
 
-Git Cheatsheets
+Bash / YAML / Docker Compose / Kubernetes / Security Cheatsheets
 
-HTTP Status Pages
-
-License Explorer
+CSS Bezier Playground, CSS Visual Guide & Flexbox Playground
 
 ---
 
-## Phase 4
+## Phase 4 — ✅ Shipped
 
-API Directory
+API Directory, Resources Hub, Events
 
-Resources Hub
+Color Palette Explorer, Font Explorer
 
-Events
+Commit Builder, README Builder, NPM Package Comparator
 
-Awesome Lists
+Developer Glossary
 
 ---
 
 ## Phase 5
 
-Developer News
-
-Performance Optimization
-
-Analytics
-
-Advertisements
+Developer News, Performance Optimization, Analytics, Advertisements
 
 ---
 
@@ -914,6 +640,7 @@ Advertisements
 
 OpenDev Hub should become one of the best free developer resource platforms by combining open-source discovery, developer utilities, curated learning resources, and practical references into a single fast, SEO-friendly website. Every page should provide immediate value without requiring an account, allowing the platform to grow organically through search traffic while remaining inexpensive to host on the Vercel free tier.
 
+---
 
 # 16. Data Synchronization Strategy
 
@@ -929,26 +656,26 @@ To keep hosting costs at zero while ensuring data remains reasonably up to date,
 
 ```text
 GitHub Action (Runs Every Hour)
-            │
-            ▼
+            |
+            v
 Fetch External APIs / RSS Feeds
-            │
-            ▼
+            |
+            v
 Process & Clean Data
-            │
-            ▼
+            |
+            v
 Generate Static JSON Files
-            │
-            ▼
+            |
+            v
 Commit Updated Files to Repository
-            │
-            ▼
+            |
+            v
 GitHub Push Trigger
-            │
-            ▼
+            |
+            v
 Vercel Automatically Redeploys
-            │
-            ▼
+            |
+            v
 Users Receive Updated Data
 ```
 
@@ -959,7 +686,7 @@ Users Receive Updated Data
 1. A GitHub Action is scheduled to run at a fixed interval (e.g., every hour).
 2. The action fetches data from public APIs, RSS feeds, or other official sources.
 3. The fetched data is validated, cleaned, and transformed into a consistent structure.
-4. Static JSON files are generated inside the project's `/data` directory.
+4. Static JSON files are generated inside the project's /data directory.
 5. If the generated data has changed, the GitHub Action commits the updated files back to the repository.
 6. The new commit automatically triggers a Vercel deployment.
 7. The deployed application serves the latest data directly from static JSON files.
@@ -1045,12 +772,14 @@ As OpenDev Hub grows, this architecture can evolve to:
 
 ## Decision
 
-For Version 1.0, GitHub Actions will act as the project's scheduled data synchronization layer. This approach provides a reliable, cost-effective, and maintenance-friendly solution that aligns with the project's goal of remaining fully deployable on the Vercel Free Plan without requiring a dedicated backend server.
+For Version 2.0, GitHub Actions will act as the project's scheduled data synchronization layer. This approach provides a reliable, cost-effective, and maintenance-friendly solution that aligns with the project's goal of remaining fully deployable on the Vercel Free Plan without requiring a dedicated backend server.
 
+---
 
 # 17. Free-Tier Infrastructure & Architecture Guardrails
 
 ## Purpose
+
 To ensure 100% compatibility with the Vercel, GitHub, and Next.js free-tier constraints while scaling to thousands of indexable, SEO-friendly pages. This section provides strict directives for the AI implementation agent to avoid build timeouts, deployment caps, and API rate-limiting blocks.
 
 ---
@@ -1059,19 +788,18 @@ To ensure 100% compatibility with the Vercel, GitHub, and Next.js free-tier cons
 
 | Infrastructure Vector | Free-Tier Limit | Platform Risk | Targeted Module Fixes |
 | :--- | :--- | :--- | :--- |
-| **Vercel Build Duration** | Max 45 minutes per build | Build timeout when pre-rendering thousands of dynamic pages. | **On-Demand ISR:** Use empty `generateStaticParams` arrays to defer compilation to runtime. <br>• *Applies to:* **Module 1** (Repository Explorer), **Module 2** (Good First Issues), **Module 4** (Organizations). |
-| **Vercel Daily Deployments** | Max 100 builds per day | Automated hourly cron pushes waste build limits when no new data exists. | **Smart Git Diffs:** Workflow logic blocks upstream pushes if JSON changes are absent. <br>• *Applies to:* **Module 3** (Trending), **Module 10** (Events), **Module 14** (News). |
-| **GitHub API Access** | 60 requests/hr unauthenticated | Application crashes on direct user search proxies. | **Dual Pipeline:** Server-side sync via `GH_TOKEN` (5,000 req/hr) + direct client-side proxy. <br>• *Applies to:* **Module 1** (Repository Explorer), **Module 2** (Good First Issues). |
-| **Serverless Function Window** | 10s default execution limit | Network latency timeouts on third-party API fetches. | **Static JSON Reads:** Read from local disk `/data/*.json` rather than making runtime network calls. <br>• *Applies to:* **Module 8** (API Directory), **Module 9** (Resources), **Module 13** (Awesome Lists). |
+| **Vercel Build Duration** | Max 45 minutes per build | Build timeout when pre-rendering thousands of dynamic pages. | **On-Demand ISR:** Use empty generateStaticParams arrays to defer compilation to runtime. Applies to: **Module 1** (Repository Explorer), **Module 2** (Good First Issues), **Module 4** (Organizations). |
+| **Vercel Daily Deployments** | Max 100 builds per day | Automated hourly cron pushes waste build limits when no new data exists. | **Smart Git Diffs:** Workflow logic blocks upstream pushes if JSON changes are absent. Applies to: **Module 3** (Trending), **Module 10** (Events), **Module 14** (News). |
+| **GitHub API Access** | 60 requests/hr unauthenticated | Application crashes on direct user search proxies. | **Dual Pipeline:** Server-side sync via GH_TOKEN (5,000 req/hr) + direct client-side proxy. Applies to: **Module 1** (Repository Explorer), **Module 2** (Good First Issues). |
+| **Serverless Function Window** | 10s default execution limit | Network latency timeouts on third-party API fetches. | **Static JSON Reads:** Read from local disk /data/*.json rather than making runtime network calls. Applies to: **Module 8** (API Directory), **Module 9** (Resources), **Module 13** (Awesome Lists). |
 
 ---
 
-## Concrete Implementation Patterns for AI Agents
-
-The implementation agent must strictly adhere to the following three structural design patterns across all targeted modules:
+## Concrete Implementation Patterns
 
 ### Pattern A: Dynamic Catch-All with Fallback (Modules 1, 2, & 4)
-For deeply nested resource routes (such as `/repos/[owner]/[name]` or `/issues/[id]`), do **not** generate page variants at build time. Implement dynamic runtime caching via Incremental Static Regeneration (ISR).
+
+For deeply nested resource routes (such as /repos/[owner]/[name] or /issues/[id]), do **not** generate page variants at build time. Implement dynamic runtime caching via Incremental Static Regeneration (ISR).
 
 ```typescript
 // app/repos/[owner]/[name]/page.tsx
@@ -1090,9 +818,8 @@ interface RepoPageProps {
 
 export default async function RepoPage({ params }: RepoPageProps) {
   const { owner, name } = await params;
-  
+
   try {
-    // Fetch via GitHub authenticated API token inside Server Component
     const res = await fetch(`https://api.github.com/repos/${owner}/${name}`, {
       headers: {
         Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
@@ -1114,10 +841,15 @@ export default async function RepoPage({ params }: RepoPageProps) {
     notFound();
   }
 }
-Pattern B: Optimized Change-Aware Sync Workflow (Modules 3, 10, & 14)
+```
+
+---
+
+### Pattern B: Optimized Change-Aware Sync Workflow (Modules 3, 10, & 14)
+
 The scheduled synchronization GitHub action must include verification gates to check for file changes before pushing to main and triggering a Vercel deployment.
 
-YAML
+```yaml
 # .github/workflows/data-sync.yml
 name: Scheduled Data Sync
 
@@ -1151,31 +883,34 @@ jobs:
           git config --local user.email "agent-sync@opendevhub.local"
           git config --local user.name "OpenDev Sync Bot"
           git add data/
-          
-          # Check if changes exist in the data/ directory to prevent redundant Vercel deployments
+
           if git diff --staged --quiet; then
             echo "No data adjustments found. Skipping push execution."
           else
             git commit -m "chore(data): automated static dataset ingestion [skip ci]"
             git push origin main
           fi
-Pattern C: Zero-Compute Client-Side Operations (Modules 5, 8, & 13)
-Module 5 (Developer Toolbox): All tools must run completely in-browser via pure client state or Web Workers. Server-side computation or Server Actions are strictly prohibited.
+```
 
-Modules 8 & 13 (Directories): Search functionality must load the static target JSON file generated by the automation pipeline directly onto the client side, running in-memory filtering (Fuse.js or basic array filtering) locally to avoid hitting Vercel serverless function timeouts.
+---
 
-TypeScript
-// components/tools/api-explorer.tsx
+### Pattern C: Zero-Compute Client-Side Operations (Modules 5, 8, & 13)
+
+**Module 5 (Developer Toolbox):** All tools must run completely in-browser via pure client state or Web Workers. Server-side computation or Server Actions are strictly prohibited.
+
+**Modules 8 & 13 (Directories):** Search functionality must load the static target JSON file directly onto the client side, running in-memory filtering locally to avoid hitting Vercel serverless function timeouts.
+
+```typescript
+// modules/api-directory/components/APIExplorer.tsx
 'use client';
 
 import { useState, useTransition } from 'react';
-import apiDirectoryData from '@/data/apis.json'; // Sourced from static generation pipeline
+import apiDirectoryData from '@/data/apis.json';
 
 export function APIExplorer() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isPending, startTransition] = useTransition();
 
-  // Instant filtering executes locally within the client memory stack, saving compute costs
   const filteredAPIs = apiDirectoryData.filter((item) =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.description.toLowerCase().includes(searchQuery.toLowerCase())
@@ -1189,7 +924,7 @@ export function APIExplorer() {
         className="w-full bg-zinc-900 border border-zinc-800 rounded p-2 text-sm text-slate-100"
         onChange={(e) => startTransition(() => setSearchQuery(e.target.value))}
       />
-      {isPending && <p className="text-xs text-zinc-500">Filtering database...</p>}
+      {isPending && <p className="text-xs text-zinc-500">Filtering...</p>}
       <div className="grid gap-4">
         {filteredAPIs.slice(0, 20).map((api) => (
           <div key={api.name} className="p-4 rounded-lg border border-zinc-800 bg-zinc-950">
@@ -1201,41 +936,45 @@ export function APIExplorer() {
     </div>
   );
 }
-Strict Compliance Requirements for the AI Agent
-Static Pre-render Prohibition: Do not invoke generateStaticParams for items sourced from dynamic developer ecosystems (e.g., individual GitHub issues or dynamic repository addresses). Keep these paths un-built until user request.
-
-Local Client Fallbacks: Keep the main Next.js build clean of third-party network fetches. If an external layout endpoint or feed times out, fall back cleanly to your static local dataset file located under /data.
-
-No Database Imports: Ensure modules 1 through 14 match structural schemas using static .json configuration endpoints inside the code repository. Do not connect external SQL/NoSQL parameters until Phase 5 development thresholds are explicitly hit.
+```
 
 ---
 
-# 18. UI & Aesthetics - Maximalist Design Guidelines
+## Strict Compliance Requirements
+
+* **Static Pre-render Prohibition:** Do not invoke generateStaticParams for items sourced from dynamic developer ecosystems. Keep these paths un-built until user request.
+* **Local Client Fallbacks:** Keep the main Next.js build clean of third-party network fetches. If an external endpoint times out, fall back cleanly to the static local dataset under /data.
+* **No Database Imports:** Use static .json configuration files inside the repository. Do not connect external SQL/NoSQL systems until Phase 5 thresholds are explicitly hit.
+
+---
+
+# 18. UI & Aesthetics — Maximalist Design Guidelines
 
 OpenDev Hub will adopt a **Maximalist UI** style. Unlike minimalist, blank-canvas developer portals, a maximalist design prioritizes high visual energy, high information density, expressive typography, and engaging micro-interactions to create a memorable, premium, and active user experience.
 
 ### Key Characteristics of the Maximalist UI
+
 * **High Information Density**: Screen real estate is fully optimized with cards, badges, statistics, activity trackers, and dense lists. No empty space is wasted; everything is rich with valuable developer data.
 * **Expressive Typography**: Oversized, bold headings utilizing monospaced or punchy sans-serif web fonts (e.g., Space Grotesk, Syne, or Outfit) mixed with compact, high-contrast monospace text for technical data.
 * **Structured Layering & Neo-Brutalism Details**:
-  * Heavy, crisp borders (e.g., solid 2px or 3px border-zinc-800 or colored borders) with zero-blur offset hard shadows (often referred to as Neo-Brutalist shadows) to give elements a tangible, tactile feel.
+  * Heavy, crisp borders (e.g., solid 2px or 3px `border-zinc-800` or colored borders) with zero-blur offset hard shadows to give elements a tangible, tactile feel.
   * Overlapping cards, badges, and tabs that stack dynamically.
 * **Rich Micro-Interactions & Motion**:
   * Smooth, snappy Framer Motion animations for list loading, tool transitions, and hover states.
-  * Hover effects that shift border colors, offset shadows, rotate tiny details (like gears, chevron icons, or external links), or highlight cells.
+  * Hover effects that shift border colors, offset shadows, or highlight cells.
   * Continuous subtle motion cues, such as ticking counts or minor layout changes on filter toggles.
-* **Color Scheme**:
-  * **Nova-Neutral Maximalist Color Palette**: The system will leverage a highly stylized, high-contrast dark theme canvas with rich layout panels and extremely vibrant neon accents to guide the developer's eye:
-    ```css
-    /* Custom Nova-Neutral Maximalist Color Palette */
-    :root {
-      --background: #000000;         /* Pure Canvas Black */
-      --card: #111113;               /* Bento Grid Surface Panel */
-      --foreground: #fafafa;         /* Stark White High-Contrast Text */
-      --muted-foreground: #a1a1aa;   /* Slate Gray Secondary Text */
-      --border: #262626;             /* Crisp Industrial Grid Border */
-      --input: #262626;              /* Interactive Element Outline */
-      --primary: #a855f7;            /* Saturated Neon Purple Accent */
-      --accent: #2dd4bf;             /* Saturated Neon Teal Accent */
-    }
-    ```
+* **Color Scheme — Nova-Neutral Maximalist Palette**:
+
+```css
+/* Custom Nova-Neutral Maximalist Color Palette */
+:root {
+  --background: #000000;         /* Pure Canvas Black */
+  --card: #111113;               /* Bento Grid Surface Panel */
+  --foreground: #fafafa;         /* Stark White High-Contrast Text */
+  --muted-foreground: #a1a1aa;   /* Slate Gray Secondary Text */
+  --border: #262626;             /* Crisp Industrial Grid Border */
+  --input: #262626;              /* Interactive Element Outline */
+  --primary: #a855f7;            /* Saturated Neon Purple Accent */
+  --accent: #2dd4bf;             /* Saturated Neon Teal Accent */
+}
+```

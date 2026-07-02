@@ -2,9 +2,9 @@
 
 > **The Ultimate Developer Toolbox & Open Source Directory**
 
-Discover open-source repositories, search good first issues, explore public APIs, access developer tools, and browse Git cheatsheets — all in one high-density, zero-fluff portal.
+Discover open-source repositories, search good first issues, explore public APIs, access developer tools, browse cheatsheets, and explore CSS/design utilities — all in one high-density, zero-fluff portal.
 
-[![Next.js](https://img.shields.io/badge/Next.js-16.2.9-black?logo=next.js)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4-06B6D4?logo=tailwindcss)](https://tailwindcss.com/)
@@ -14,10 +14,14 @@ Discover open-source repositories, search good first issues, explore public APIs
 
 ## ✨ Highlights
 
-- 🧰 **32+ Offline Developer Utilities** — all computation happens in the browser
+- 🧰 **40+ Offline Developer Utilities** — all computation happens in the browser
 - 🔍 **Direct GitHub API Exploration** — repos, issues, trending, and orgs
 - 📖 **1200+ HTTP Status Codes** indexed and searchable
 - 🗂 **API Directory** — curated public APIs catalogue
+- 🎨 **CSS Visual Tools** — Bezier playground, Flexbox/Grid guide, Color & Font explorers
+- 📋 **6 Cheatsheet Collections** — Git, Bash, YAML, Docker Compose, Kubernetes, Security
+- 🔨 **Builder Tools** — Commit Builder, README Builder, NPM Package Comparator
+- 📚 **Dev Glossary** — A–Z developer terminology reference
 - 📰 **Dev News & Events** — stay updated with the open-source world
 - 🔐 **Zero cookies, zero tracking, zero sign-up**
 - 🆓 **100% free and open-source** (MIT Licensed)
@@ -28,7 +32,7 @@ Discover open-source repositories, search good first issues, explore public APIs
 
 | Route | Description |
 |---|---|
-| `/` | Home — Hero, Bento grid overview, philosophy, Git visualizer, deep-dive, FAQ |
+| `/` | Home — Hero, Bento grid overview, Git visualizer, FAQ |
 | `/tools` | Dev Toolbox — 25+ in-browser utilities organized by category |
 | `/repos` | Repository Explorer — search GitHub repos |
 | `/trending` | Trending Repositories — daily / weekly / monthly |
@@ -36,13 +40,29 @@ Discover open-source repositories, search good first issues, explore public APIs
 | `/orgs` | Organization Explorer — search GitHub organizations |
 | `/apis` | API Directory — curated catalogue of public APIs |
 | `/git-cheatsheets` | Git Cheatsheets — offline, searchable reference |
+| `/bash-cheatsheets` | Bash Cheatsheets — shell commands & scripting reference |
+| `/yaml-cheatsheets` | YAML Cheatsheets — syntax & structure reference |
+| `/docker-compose-cheatsheets` | Docker Compose Cheatsheets — service configuration reference |
+| `/k8s-cheatsheets` | Kubernetes Cheatsheets — `kubectl` commands & concepts |
+| `/security-cheatsheets` | Security Cheatsheets — OWASP, headers, and best practices |
 | `/http-status` | HTTP Status Codes — 1200+ codes explained |
-| `/events` | Developer Events — upcoming conferences & meetups |
+| `/css-bezier` | CSS Bezier Curve Playground — visual timing function editor |
+| `/css-visual-guide` | CSS Visual Guide — interactive Flexbox & Grid reference |
+| `/flex` | Flexbox Playground — live interactive layout builder |
+| `/colors` | Color Palette Explorer — palettes, conversions & accessibility |
+| `/fonts` | Font Explorer — preview and compare Google Fonts |
+| `/commit-builder` | Commit Message Builder — Conventional Commits scaffolder |
+| `/readme-builder` | README Builder — markdown README generator |
+| `/npm-compare` | NPM Package Comparator — side-by-side package analysis |
+| `/glossary` | Dev Glossary — A–Z developer terminology reference |
+| `/events` | Developer Events — upcoming conferences & open-source programs |
 | `/news` | Dev News feed |
 | `/resources` | Resources Hub — curated awesome lists & learning material |
 | `/licenses` | Open Source License Explorer |
 | `/about` | About the project |
+| `/contact` | Contact page |
 | `/privacy` | Privacy policy |
+| `/terms` | Terms of service |
 
 ---
 
@@ -81,7 +101,46 @@ All tools run entirely **in-browser** — no server calls, no data leaves your m
 - HTML Sandbox Preview
 
 ### Minifiers
-- CSS / JS Minifier
+- CSS / JS / HTML Minifier
+
+---
+
+## 🎨 CSS & Design Tools
+
+Interactive visual utilities for front-end developers:
+
+| Tool | Route | Description |
+|---|---|---|
+| CSS Bezier Playground | `/css-bezier` | Visual editor for `cubic-bezier()` timing functions with live preview |
+| CSS Visual Guide | `/css-visual-guide` | Interactive reference for Flexbox & CSS Grid layouts |
+| Flexbox Playground | `/flex` | Live builder: tweak flex properties and see results in real time |
+| Color Palette Explorer | `/colors` | Browse palettes, convert colors, check WCAG contrast ratios |
+| Font Explorer | `/fonts` | Preview and compare 1000+ Google Fonts with live text editing |
+
+---
+
+## 📋 Cheatsheet Library
+
+Offline, searchable, categorized references for everyday developer commands:
+
+| Cheatsheet | Route |
+|---|---|
+| Git | `/git-cheatsheets` |
+| Bash / Shell | `/bash-cheatsheets` |
+| YAML | `/yaml-cheatsheets` |
+| Docker Compose | `/docker-compose-cheatsheets` |
+| Kubernetes (kubectl) | `/k8s-cheatsheets` |
+| Web Security | `/security-cheatsheets` |
+
+---
+
+## 🔨 Builder Tools
+
+| Tool | Route | Description |
+|---|---|---|
+| Commit Builder | `/commit-builder` | Structured Conventional Commits generator with scope, type & body |
+| README Builder | `/readme-builder` | Section-based markdown README generator with live preview |
+| NPM Compare | `/npm-compare` | Side-by-side download stats, size, licenses, and metadata comparison |
 
 ---
 
@@ -165,40 +224,67 @@ opendevhub/
 │   ├── resources.json           # Curated resources
 │   └── ...
 ├── src/
-│   ├── app/                     # Next.js App Router pages
-│   │   ├── page.tsx             # Home page
-│   │   ├── layout.tsx           # Root layout
-│   │   ├── tools/               # Dev Toolbox route
-│   │   ├── repos/               # Repo Explorer route
-│   │   ├── trending/            # Trending route
-│   │   ├── issues/              # Issue Explorer route
-│   │   ├── orgs/                # Org Explorer route
-│   │   ├── apis/                # API Directory route
-│   │   ├── git-cheatsheets/     # Git Cheatsheets route
-│   │   ├── http-status/         # HTTP Status route
-│   │   └── api/                 # Next.js API routes (GitHub proxy)
+│   ├── app/                             # Next.js App Router pages
+│   │   ├── page.tsx                     # Home page
+│   │   ├── layout.tsx                   # Root layout
+│   │   ├── tools/                       # Dev Toolbox route
+│   │   ├── repos/                       # Repo Explorer route
+│   │   ├── trending/                    # Trending route
+│   │   ├── issues/                      # Issue Explorer route
+│   │   ├── orgs/                        # Org Explorer route
+│   │   ├── apis/                        # API Directory route
+│   │   ├── git-cheatsheets/             # Git Cheatsheets route
+│   │   ├── bash-cheatsheets/            # Bash Cheatsheets route
+│   │   ├── yaml-cheatsheets/            # YAML Cheatsheets route
+│   │   ├── docker-compose-cheatsheets/  # Docker Compose Cheatsheets route
+│   │   ├── k8s-cheatsheets/             # Kubernetes Cheatsheets route
+│   │   ├── security-cheatsheets/        # Security Cheatsheets route
+│   │   ├── http-status/                 # HTTP Status route
+│   │   ├── css-bezier/                  # Bezier Playground route
+│   │   ├── css-visual-guide/            # CSS Visual Guide route
+│   │   ├── flex/                        # Flexbox Playground route
+│   │   ├── colors/                      # Color Explorer route
+│   │   ├── fonts/                       # Font Explorer route
+│   │   ├── commit-builder/              # Commit Builder route
+│   │   ├── readme-builder/              # README Builder route
+│   │   ├── npm-compare/                 # NPM Compare route
+│   │   ├── glossary/                    # Dev Glossary route
+│   │   └── api/                         # Next.js API routes (GitHub proxy)
 │   ├── core/
 │   │   └── services/
-│   │       ├── github.ts        # GitHub REST API client
-│   │       └── github-server.ts # Server-side GitHub helpers
-│   ├── modules/                 # Feature modules
-│   │   ├── home/                # Landing page sections
-│   │   ├── dev-toolbox/         # All 25+ tool implementations
-│   │   ├── repo-explorer/       # Repository search & display
-│   │   ├── issue-explorer/      # Issue search & display
-│   │   ├── trending/            # Trending repositories
-│   │   ├── org-explorer/        # Organization search
-│   │   ├── api-directory/       # Public APIs catalogue
-│   │   ├── git-cheatsheets/     # Git reference module
-│   │   ├── http-status/         # HTTP status codes module
-│   │   ├── events/              # Events module
-│   │   └── resources-hub/       # Resources & awesome lists
+│   │       ├── github.ts                # GitHub REST API client
+│   │       └── github-server.ts         # Server-side GitHub helpers
+│   ├── modules/                         # Feature modules (domain-driven)
+│   │   ├── home/                        # Landing page sections
+│   │   ├── dev-toolbox/                 # All 25+ tool implementations
+│   │   ├── repo-explorer/               # Repository search & display
+│   │   ├── issue-explorer/              # Issue search & display
+│   │   ├── trending/                    # Trending repositories
+│   │   ├── org-explorer/               # Organization search
+│   │   ├── api-directory/              # Public APIs catalogue
+│   │   ├── git-cheatsheets/            # Git reference module
+│   │   ├── bash-cheatsheets/           # Bash reference module
+│   │   ├── yaml-cheatsheets/           # YAML reference module
+│   │   ├── docker-compose-cheatsheets/ # Docker Compose reference module
+│   │   ├── k8s-cheatsheets/            # Kubernetes reference module
+│   │   ├── security-cheatsheets/       # Security reference module
+│   │   ├── http-status/                # HTTP status codes module
+│   │   ├── css-bezier/                 # Bezier curve playground module
+│   │   ├── css-visual-guide/           # CSS visual guide module
+│   │   ├── colors/                     # Color explorer module
+│   │   ├── fonts/                      # Font explorer module
+│   │   ├── commit-builder/             # Commit builder module
+│   │   ├── readme-builder/             # README builder module
+│   │   ├── npm-compare/                # NPM compare module
+│   │   ├── glossary/                   # Dev glossary module
+│   │   ├── events/                     # Events module
+│   │   └── resources-hub/              # Resources & awesome lists
 │   ├── components/
-│   │   └── ui/                  # shadcn/ui component library
+│   │   └── ui/                         # shadcn/ui component library
 │   ├── shared/
-│   │   └── components/          # Header, Footer, shared UI
-│   ├── hooks/                   # Custom React hooks
-│   └── lib/                     # Utility functions
+│   │   └── components/                 # Header, Footer, shared UI
+│   ├── hooks/                          # Custom React hooks
+│   └── lib/                            # Utility functions
 ├── public/                      # Static assets
 ├── package.json
 ├── next.config.ts
@@ -239,9 +325,10 @@ Contributions are welcome! Here's how you can help:
 
 ### Ideas for Contribution
 - Add new developer tools to the Toolbox
+- Add new cheatsheet sections or categories
 - Expand the data in `data/*.json` files (new APIs, events, resources)
 - Improve search and filtering UX
-- Add new sections to Git Cheatsheets
+- Add new CSS/design playground features
 - Bug fixes and performance improvements
 
 ---
@@ -256,6 +343,7 @@ This project is licensed under the **MIT License** — see the [LICENSE](./LICEN
 
 - [GitHub REST API](https://docs.github.com/en/rest) — for powering the open-source exploration features
 - [shadcn/ui](https://ui.shadcn.com/) — for the accessible, composable component primitives
+- [Google Fonts](https://fonts.google.com/) — powering the Font Explorer
 - The open-source community — for inspiring this project
 
 ---
@@ -263,5 +351,5 @@ This project is licensed under the **MIT License** — see the [LICENSE](./LICEN
 <p align="center">
   Built with ❤️ for developers, by developers.
   <br/>
-  <strong>No Cost · No Signup · No AI Hype · 100% Open Source</strong>
+  <strong>No Cost · No Signup · 100% Open Source</strong>
 </p>
