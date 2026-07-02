@@ -22,6 +22,8 @@ import {
   BookOpen,
   ArrowUp,
   ArrowDown,
+  Maximize2,
+  Minimize2,
 } from "lucide-react";
 import { marked } from "marked";
 
@@ -76,6 +78,7 @@ export function ReadmeBuilder() {
   const [previewTheme, setPreviewTheme] = React.useState<"dark" | "light">(
     "dark",
   );
+  const [isFullscreen, setIsFullscreen] = React.useState(false);
 
   // State Declarations
   // ── 1. GREETING & INTRO ──
@@ -1141,13 +1144,13 @@ export function ReadmeBuilder() {
         statsMd += `  <a href="https://github.com/${githubUser}">\n    <img src="https://github-readme-activity-graph.vercel.app/graph?username=${githubUser}&theme=${graphTheme}" alt="Activity Graph" />\n  </a>\n`;
       }
       if (showTrophyCard) {
-        statsMd += `  <a href="https://github.com/${githubUser}">\n    <img src="https://github-profile-trophy.vercel.app/?username=${githubUser}&theme=${trophyTheme}&column=${trophyColumns}" alt="Trophies" />\n  </a>\n`;
+        statsMd += `  <a href="https://github.com/${githubUser}">\n    <img src="https://github-trophies.devomb.com/?username=${githubUser}&theme=${trophyTheme}&column=${trophyColumns}" alt="Trophies" />\n  </a>\n`;
       }
       if (showLeetcodeCard && leetcodeUser) {
-        statsMd += `  <a href="https://leetcode-stats.vercel.app/api?username=${leetcodeUser}&theme=${leetcodeTheme}" alt="LeetCode Stats" />\n  </a>\n`;
+        statsMd += `  <a href="https://github.com/JacobLinCool/LeetCard">\n    <img src="https://leetcard.jacoblin.cool/${leetcodeUser}?theme=${leetcodeTheme}" alt="LeetCode Stats" />\n  </a>\n`;
       }
       if (showJokesCard) {
-        statsMd += `  <img src="https://github-readme-jokes.vercel.app/api?theme=${jokesTheme}" alt="GitHub Readme Jokes" />\n`;
+        statsMd += `  <img src="https://readme-jokes.vercel.app/api?theme=${jokesTheme}" alt="GitHub Readme Jokes" />\n`;
       }
       statsMd += `</p>\n\n`;
       mdParts.stats = statsMd;
@@ -1436,7 +1439,7 @@ export function ReadmeBuilder() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* ── LEFT EDITOR WORKSPACE - 6 Columns ── */}
-        <div className="lg:col-span-6 border-2 border-foreground bg-card flex flex-col min-h-[680px]">
+        <div className={`lg:col-span-6 border-2 border-foreground bg-card flex flex-col min-h-[680px] ${isFullscreen ? "hidden" : ""}`}>
           {/* Horizontal Tabs Menu */}
           <div className="flex flex-wrap border-b-2 border-foreground bg-black text-[10px] font-bold uppercase select-none">
             {[
@@ -2716,7 +2719,7 @@ export function ReadmeBuilder() {
         </div>
 
         {/* ── RIGHT PREVIEW PANEL - 6 Columns ── */}
-        <div className="lg:col-span-6 border-2 border-foreground bg-[#0a0a0c] flex flex-col min-h-[680px]">
+        <div className={`${isFullscreen ? "lg:col-span-12" : "lg:col-span-6"} border-2 border-foreground bg-[#0a0a0c] flex flex-col min-h-[680px]`}>
           {/* Preview Toolbar */}
           <div className="border-b border-foreground p-3 bg-black flex flex-wrap items-center justify-between gap-3 select-none">
             {/* Preview Modes */}
@@ -2774,6 +2777,19 @@ export function ReadmeBuilder() {
               >
                 <Download className="h-3.5 w-3.5" />
                 <span>Download</span>
+              </button>
+
+              <button
+                onClick={() => setIsFullscreen(!isFullscreen)}
+                className="px-2 py-1.5 border-2 border-foreground bg-black hover:bg-zinc-900 text-foreground shadow-[2px_2px_0px_0px_#ffffff] text-[10px] font-bold uppercase flex items-center gap-1 cursor-pointer"
+                title={isFullscreen ? "Exit Fullscreen" : "Fullscreen Preview/Code"}
+              >
+                {isFullscreen ? (
+                  <Minimize2 className="h-3.5 w-3.5" />
+                ) : (
+                  <Maximize2 className="h-3.5 w-3.5" />
+                )}
+                <span>{isFullscreen ? "Exit" : "Fullscreen"}</span>
               </button>
             </div>
           </div>
