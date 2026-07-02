@@ -225,7 +225,7 @@ export function DevGlossary() {
                   <div
                     key={item.term}
                     className={`border-2 border-foreground bg-zinc-950 shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-all overflow-hidden ${
-                      isExpanded ? "border-accent shadow-[4px_4px_0px_0px_var(--accent)]" : ""
+                      isExpanded ? "border-accent shadow-neo-accent" : ""
                     }`}
                   >
                     {/* Header trigger */}

@@ -565,61 +565,937 @@ export function DiffCheckerTool() {
   )
 }
 
+// ── Two-way Cron Parser & Generator Helpers ─────────────────────────────────
+
+interface FieldState {
+  type: "every" | "interval" | "range" | "specific";
+  interval: number;
+  intervalStart: number;
+  rangeStart: number;
+  rangeEnd: number;
+  specific: number[];
+}
+
+const MONTH_NAMES = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+const DAY_NAMES = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+
+const MONTH_FULL = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+const DAY_FULL = [
+  "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+];
+
+const FIELDS_META = [
+  { label: "🕒 Minutes", name: "Minute", key: "min" },
+  { label: "⏰ Hours", name: "Hour", key: "hour" },
+  { label: "📅 Day of Month", name: "Day of Month", key: "dom" },
+  { label: "🗓️ Month", name: "Month", key: "mon" },
+  { label: "📆 Day of Week", name: "Day of Week", key: "dow" },
+];
+
+const PRESETS = [
+  { name: "Every minute", value: "* * * * *" },
+  { name: "Every 5 minutes", value: "*/5 * * * *" },
+  { name: "Every hour (at :00)", value: "0 * * * *" },
+  { name: "Every 2 hours", value: "0 */2 * * *" },
+  { name: "Daily at midnight", value: "0 0 * * *" },
+  { name: "Daily at 9:30 AM", value: "30 9 * * *" },
+  { name: "Weekly (Sunday midnight)", value: "0 0 * * 0" },
+  { name: "Monthly (1st at midnight)", value: "0 0 1 * *" },
+  { name: "Weekdays at 9:00 AM", value: "0 9 * * 1-5" },
+];
+
+function formatList<T>(list: T[], formatFn?: (val: T) => string): string {
+  const formatted = formatFn ? list.map(formatFn) : list.map(String);
+  if (formatted.length === 0) return "";
+  if (formatted.length === 1) return formatted[0];
+  if (formatted.length === 2) return `${formatted[0]} and ${formatted[1]}`;
+  return `${formatted.slice(0, -1).join(", ")}, and ${formatted[formatted.length - 1]}`;
+}
+
+function getOrdinal(n: number): string {
+  const s = ["th", "st", "nd", "rd"];
+  const v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+
+function parseField(field: string, min: number, max: number, names?: string[]): Set<number> {
+  const allowed = new Set<number>();
+  const cleanField = field.toUpperCase().trim();
+  
+  if (cleanField === "*") {
+    for (let i = min; i <= max; i++) allowed.add(i);
+    return allowed;
+  }
+
+  let substituted = cleanField;
+  if (names) {
+    names.forEach((name, index) => {
+      const offset = min;
+      const value = index + offset;
+      substituted = substituted.replace(new RegExp(`\\b${name}\\b`, "g"), String(value));
+    });
+  }
+
+  const parts = substituted.split(",");
+  for (const part of parts) {
+    if (part.includes("/")) {
+      const [rangePart, stepPart] = part.split("/");
+      const step = parseInt(stepPart, 10);
+      if (isNaN(step) || step <= 0) throw new Error(`Invalid step: ${stepPart}`);
+      
+      let start = min;
+      let end = max;
+      
+      if (rangePart !== "*") {
+        if (rangePart.includes("-")) {
+          const [sStr, eStr] = rangePart.split("-");
+          start = parseInt(sStr, 10);
+          end = parseInt(eStr, 10);
+        } else {
+          start = parseInt(rangePart, 10);
+        }
+      }
+      
+      if (isNaN(start) || isNaN(end) || start < min || end > max || start > end) {
+        throw new Error(`Invalid range/values: ${rangePart}`);
+      }
+      
+      for (let i = start; i <= end; i += step) {
+        allowed.add(i);
+      }
+    } else if (part.includes("-")) {
+      const [sStr, eStr] = part.split("-");
+      const start = parseInt(sStr, 10);
+      const end = parseInt(eStr, 10);
+      
+      if (isNaN(start) || isNaN(end) || start < min || end > max || start > end) {
+        throw new Error(`Invalid range: ${part}`);
+      }
+      
+      for (let i = start; i <= end; i++) {
+        allowed.add(i);
+      }
+    } else {
+      const val = parseInt(part, 10);
+      if (isNaN(val) || val < min || val > max) {
+        if (max === 6 && val === 7) {
+          allowed.add(0); // Sunday
+        } else {
+          throw new Error(`Value ${part} out of range [${min}-${max}]`);
+        }
+      } else {
+        allowed.add(val);
+      }
+    }
+  }
+  return allowed;
+}
+
+function fieldToHuman(field: string, type: "minute" | "hour" | "dom" | "month" | "dow"): string {
+  const clean = field.toUpperCase().trim();
+  if (clean === "*") {
+    switch (type) {
+      case "minute": return "every minute";
+      case "hour": return "every hour";
+      case "dom": return "every day of the month";
+      case "month": return "every month";
+      case "dow": return "every day of the week";
+    }
+  }
+
+  const formatVal = (v: number): string => {
+    if (type === "month") return MONTH_FULL[v - 1] || String(v);
+    if (type === "dow") return DAY_FULL[v] || String(v);
+    if (type === "hour") {
+      const ampm = v >= 12 ? "PM" : "AM";
+      const displayHour = v % 12 === 0 ? 12 : v % 12;
+      return `${displayHour} ${ampm}`;
+    }
+    if (type === "minute") return String(v).padStart(2, "0");
+    if (type === "dom") return getOrdinal(v);
+    return String(v);
+  };
+
+  if (clean.includes("/")) {
+    const [rangePart, stepPart] = clean.split("/");
+    const step = stepPart;
+    if (rangePart === "*") {
+      switch (type) {
+        case "minute": return `every ${step} minutes`;
+        case "hour": return `every ${step} hours`;
+        case "dom": return `every ${step} days`;
+        case "month": return `every ${step} months`;
+        case "dow": return `every ${step} days of the week`;
+      }
+    } else if (rangePart.includes("-")) {
+      const [startStr, endStr] = rangePart.split("-");
+      let start = parseInt(startStr, 10);
+      let end = parseInt(endStr, 10);
+      return `every ${step} ${type}s from ${formatVal(start)} through ${formatVal(end)}`;
+    }
+  }
+
+  if (clean.includes("-")) {
+    const [startStr, endStr] = clean.split("-");
+    let start = parseInt(startStr, 10);
+    let end = parseInt(endStr, 10);
+    if (type === "month") {
+      const sIdx = MONTH_NAMES.indexOf(startStr);
+      if (sIdx !== -1) start = sIdx + 1;
+      const eIdx = MONTH_NAMES.indexOf(endStr);
+      if (eIdx !== -1) end = eIdx + 1;
+    }
+    if (type === "dow") {
+      const sIdx = DAY_NAMES.indexOf(startStr);
+      if (sIdx !== -1) start = sIdx;
+      const eIdx = DAY_NAMES.indexOf(endStr);
+      if (eIdx !== -1) end = eIdx;
+    }
+    return `${formatVal(start)} through ${formatVal(end)}`;
+  }
+
+  const parts = clean.split(",");
+  const items = parts.map(p => {
+    if (type === "month") {
+      const idx = MONTH_NAMES.indexOf(p);
+      if (idx !== -1) return idx + 1;
+    }
+    if (type === "dow") {
+      const idx = DAY_NAMES.indexOf(p);
+      if (idx !== -1) return idx;
+    }
+    return parseInt(p, 10);
+  });
+
+  if (items.every(v => !isNaN(v))) {
+    return formatList(items, formatVal);
+  }
+
+  return field;
+}
+
+function getNextExecutions(
+  minSet: Set<number>,
+  hourSet: Set<number>,
+  domSet: Set<number>,
+  monSet: Set<number>,
+  dowSet: Set<number>,
+  isDomRestricted: boolean,
+  isDowRestricted: boolean,
+  count = 5
+): Date[] {
+  const dates: Date[] = [];
+  const current = new Date();
+  current.setSeconds(0);
+  current.setMilliseconds(0);
+  
+  // Start checking from the next minute
+  current.setMinutes(current.getMinutes() + 1);
+
+  // Safeguard boundary (max 5 years search window)
+  const limitDate = new Date(current.getTime() + 5 * 365 * 24 * 60 * 60 * 1000);
+
+  while (dates.length < count && current < limitDate) {
+    const month = current.getMonth() + 1;
+    if (!monSet.has(month)) {
+      current.setMonth(current.getMonth() + 1);
+      current.setDate(1);
+      current.setHours(0);
+      current.setMinutes(0);
+      continue;
+    }
+
+    const dom = current.getDate();
+    const dow = current.getDay();
+    
+    let dayMatches = false;
+    if (isDomRestricted && isDowRestricted) {
+      dayMatches = domSet.has(dom) || dowSet.has(dow);
+    } else {
+      dayMatches = domSet.has(dom) && dowSet.has(dow);
+    }
+
+    if (!dayMatches) {
+      current.setDate(current.getDate() + 1);
+      current.setHours(0);
+      current.setMinutes(0);
+      continue;
+    }
+
+    const hour = current.getHours();
+    if (!hourSet.has(hour)) {
+      current.setHours(current.getHours() + 1);
+      current.setMinutes(0);
+      continue;
+    }
+
+    const min = current.getMinutes();
+    if (!minSet.has(min)) {
+      current.setMinutes(current.getMinutes() + 1);
+      continue;
+    }
+
+    dates.push(new Date(current));
+    current.setMinutes(current.getMinutes() + 1);
+  }
+
+  return dates;
+}
+
+function getRelativeTimeDesc(d: Date): string {
+  const diffMs = d.getTime() - Date.now();
+  if (diffMs <= 0) return "just now";
+  
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMins / 60);
+  const diffDays = Math.floor(diffHours / 24);
+  
+  if (diffDays > 0) {
+    const hoursPart = diffHours % 24;
+    return `in ${diffDays} day${diffDays > 1 ? "s" : ""}${hoursPart > 0 ? `, ${hoursPart} hr${hoursPart > 1 ? "s" : ""}` : ""}`;
+  }
+  if (diffHours > 0) {
+    const minsPart = diffMins % 60;
+    return `in ${diffHours} hr${diffHours > 1 ? "s" : ""}${minsPart > 0 ? `, ${minsPart} min${minsPart > 1 ? "s" : ""}` : ""}`;
+  }
+  if (diffMins > 0) {
+    return `in ${diffMins} min${diffMins > 1 ? "s" : ""}`;
+  }
+  return "in less than a minute";
+}
+
+function parseStringToFieldState(fieldStr: string, minVal: number, maxVal: number): FieldState {
+  const clean = fieldStr.trim().toUpperCase();
+  
+  const defaultState: FieldState = {
+    type: "every",
+    interval: 5,
+    intervalStart: minVal,
+    rangeStart: minVal,
+    rangeEnd: maxVal,
+    specific: []
+  };
+
+  if (clean === "*") {
+    return defaultState;
+  }
+
+  const stepMatch = clean.match(/^(\*|\d+)\/(\d+)$/);
+  if (stepMatch) {
+    const startStr = stepMatch[1];
+    const stepVal = parseInt(stepMatch[2], 10);
+    const startVal = startStr === "*" ? minVal : parseInt(startStr, 10);
+    if (!isNaN(stepVal)) {
+      return {
+        ...defaultState,
+        type: "interval",
+        interval: stepVal,
+        intervalStart: startVal
+      };
+    }
+  }
+
+  const rangeMatch = clean.match(/^(\d+)-(\d+)$/);
+  if (rangeMatch) {
+    const startVal = parseInt(rangeMatch[1], 10);
+    const endVal = parseInt(rangeMatch[2], 10);
+    if (!isNaN(startVal) && !isNaN(endVal)) {
+      return {
+        ...defaultState,
+        type: "range",
+        rangeStart: startVal,
+        rangeEnd: endVal
+      };
+    }
+  }
+
+  const parts = clean.split(",");
+  const specificList: number[] = [];
+  let isSpecificValid = true;
+
+  for (const part of parts) {
+    const p = part.trim();
+    let val = parseInt(p, 10);
+    
+    if (minVal === 1 && maxVal === 12) {
+      const idx = MONTH_NAMES.indexOf(p);
+      if (idx !== -1) val = idx + 1;
+    }
+    if (minVal === 0 && maxVal === 6) {
+      const idx = DAY_NAMES.indexOf(p);
+      if (idx !== -1) val = idx;
+    }
+
+    if (isNaN(val) || val < minVal || val > maxVal) {
+      if (maxVal === 6 && val === 7) {
+        val = 0;
+      } else {
+        isSpecificValid = false;
+        break;
+      }
+    }
+    specificList.push(val);
+  }
+
+  if (isSpecificValid && parts.length > 0) {
+    return {
+      ...defaultState,
+      type: "specific",
+      specific: specificList
+    };
+  }
+
+  // Fallback to specific items calculated from standard parser parsing
+  try {
+    const allowed = parseField(fieldStr, minVal, maxVal, minVal === 1 && maxVal === 12 ? MONTH_NAMES : minVal === 0 && maxVal === 6 ? DAY_NAMES : undefined);
+    return {
+      ...defaultState,
+      type: "specific",
+      specific: Array.from(allowed)
+    };
+  } catch (e) {
+    return defaultState;
+  }
+}
+
+function fieldStateToString(state: FieldState, minVal: number, maxVal: number): string {
+  switch (state.type) {
+    case "every":
+      return "*";
+    case "interval":
+      return state.intervalStart === minVal 
+        ? `*/${state.interval}` 
+        : `${state.intervalStart}/${state.interval}`;
+    case "range":
+      return `${state.rangeStart}-${state.rangeEnd}`;
+    case "specific":
+      if (state.specific.length === 0) return "*";
+      return [...state.specific].sort((a, b) => a - b).join(",");
+    default:
+      return "*";
+  }
+}
+
+function buildHumanDescription(
+  expr: string,
+  minAllowed: Set<number>,
+  hourAllowed: Set<number>,
+  domAllowed: Set<number>,
+  monAllowed: Set<number>,
+  dowAllowed: Set<number>
+): string {
+  const parts = expr.trim().split(/\s+/);
+  if (parts.length !== 5) return "Invalid CRON expression";
+  const [min, hour, dom, mon, dow] = parts;
+
+  const isMinAll = min === "*";
+  const isHourAll = hour === "*";
+  const isDomAll = dom === "*";
+  const isMonAll = mon === "*";
+  const isDowAll = dow === "*";
+
+  if (isMinAll && isHourAll && isDomAll && isMonAll && isDowAll) {
+    return "Runs every minute, every day.";
+  }
+
+  let timeStr = "";
+  if (min.startsWith("*/") && isHourAll) {
+    const interval = min.split("/")[1];
+    timeStr = `Every ${interval} minutes`;
+  } else if (min === "0" && hour.startsWith("*/")) {
+    const interval = hour.split("/")[1];
+    timeStr = `Every ${interval} hours`;
+  } else {
+    const mins = min.split(",").map(Number);
+    const hrs = hour.split(",").map(Number);
+    const isMinsSimple = mins.every(m => !isNaN(m) && m >= 0 && m <= 59);
+    const isHrsSimple = hrs.every(h => !isNaN(h) && h >= 0 && h <= 23);
+
+    if (isMinsSimple && isHrsSimple && min.indexOf("-") === -1 && min.indexOf("/") === -1 && hour.indexOf("-") === -1 && hour.indexOf("/") === -1) {
+      const times: string[] = [];
+      for (const h of hrs) {
+        for (const m of mins) {
+          const ampm = h >= 12 ? "PM" : "AM";
+          const displayHour = h % 12 === 0 ? 12 : h % 12;
+          const displayMin = String(m).padStart(2, "0");
+          times.push(`${displayHour}:${displayMin} ${ampm}`);
+        }
+      }
+      timeStr = `At ${formatList(times)}`;
+    } else {
+      const minDesc = fieldToHuman(min, "minute");
+      const hourDesc = fieldToHuman(hour, "hour");
+      timeStr = `${minDesc.charAt(0).toUpperCase() + minDesc.slice(1)} of ${hourDesc}`;
+    }
+  }
+
+  let dayStr = "";
+  if (!isDomAll && isDowAll) {
+    dayStr = `, on the ${fieldToHuman(dom, "dom")}`;
+  } else if (isDomAll && !isDowAll) {
+    dayStr = `, only on ${fieldToHuman(dow, "dow")}`;
+  } else if (!isDomAll && !isDowAll) {
+    dayStr = `, on the ${fieldToHuman(dom, "dom")} and on ${fieldToHuman(dow, "dow")}`;
+  } else {
+    dayStr = " every day";
+  }
+
+  let monStr = "";
+  if (!isMonAll) {
+    monStr = `, in ${fieldToHuman(mon, "month")}`;
+  }
+
+  let result = `${timeStr}${dayStr}${monStr}.`;
+  result = result.replace(/\s+/g, " ").replace(/ ,/g, ",").replace(/\.\./g, ".");
+  return result;
+}
+
 export function CronParserTool() {
-  const [expr, setExpr] = React.useState("*/5 * * * *")
-  const [description, setDescription] = React.useState("")
+  const [expr, setExpr] = React.useState("*/5 * * * *");
+  const [description, setDescription] = React.useState("");
+  const [nextRuns, setNextRuns] = React.useState<Date[]>([]);
+  const [error, setError] = React.useState<string | null>(null);
+  const [activeTab, setActiveTab] = React.useState<"min" | "hour" | "dom" | "mon" | "dow">("min");
+
+  // Visual generator field states
+  const [minState, setMinState] = React.useState<FieldState>(() => parseStringToFieldState("*/5", 0, 59));
+  const [hourState, setHourState] = React.useState<FieldState>(() => parseStringToFieldState("*", 0, 23));
+  const [domState, setDomState] = React.useState<FieldState>(() => parseStringToFieldState("*", 1, 31));
+  const [monState, setMonState] = React.useState<FieldState>(() => parseStringToFieldState("*", 1, 12));
+  const [dowState, setDowState] = React.useState<FieldState>(() => parseStringToFieldState("*", 0, 6));
+
+  const syncFromExprString = (exprString: string) => {
+    const parts = exprString.trim().split(/\s+/);
+    if (parts.length === 5) {
+      setMinState(parseStringToFieldState(parts[0], 0, 59));
+      setHourState(parseStringToFieldState(parts[1], 0, 23));
+      setDomState(parseStringToFieldState(parts[2], 1, 31));
+      setMonState(parseStringToFieldState(parts[3], 1, 12));
+      setDowState(parseStringToFieldState(parts[4], 0, 6));
+    }
+  };
+
+  const updateFieldState = (field: "min" | "hour" | "dom" | "mon" | "dow", newState: FieldState) => {
+    let nextMin = minState;
+    let nextHour = hourState;
+    let nextDom = domState;
+    let nextMon = monState;
+    let nextDow = dowState;
+
+    if (field === "min") { nextMin = newState; setMinState(newState); }
+    if (field === "hour") { nextHour = newState; setHourState(newState); }
+    if (field === "dom") { nextDom = newState; setDomState(newState); }
+    if (field === "mon") { nextMon = newState; setMonState(newState); }
+    if (field === "dow") { nextDow = newState; setDowState(newState); }
+
+    const cronStr = [
+      fieldStateToString(nextMin, 0, 59),
+      fieldStateToString(nextHour, 0, 23),
+      fieldStateToString(nextDom, 1, 31),
+      fieldStateToString(nextMon, 1, 12),
+      fieldStateToString(nextDow, 0, 6)
+    ].join(" ");
+
+    setExpr(cronStr);
+  };
 
   React.useEffect(() => {
-    if (!expr) {
-      setDescription("")
-      return
+    try {
+      const parts = expr.trim().split(/\s+/);
+      if (parts.length !== 5) {
+        throw new Error("CRON expression must have exactly 5 fields: minute, hour, day of month, month, day of week.");
+      }
+      const [min, hour, dom, mon, dow] = parts;
+      const minSet = parseField(min, 0, 59);
+      const hourSet = parseField(hour, 0, 23);
+      const domSet = parseField(dom, 1, 31);
+      const monSet = parseField(mon, 1, 12, MONTH_NAMES);
+      const dowSet = parseField(dow, 0, 6, DAY_NAMES);
+
+      const desc = buildHumanDescription(expr, minSet, hourSet, domSet, monSet, dowSet);
+      const next = getNextExecutions(minSet, hourSet, domSet, monSet, dowSet, dom !== "*", dow !== "*");
+
+      setDescription(desc);
+      setNextRuns(next);
+      setError(null);
+    } catch (e: any) {
+      setError(e.message || "Invalid CRON expression pattern.");
+      setDescription("");
+      setNextRuns([]);
     }
 
-    const parts = expr.trim().split(/\s+/)
-    if (parts.length !== 5) {
-      setDescription("CRON expression must have exactly 5 elements: minute, hour, day of month, month, day of week.")
-      return
+    // Two-way sync: Update builder controls if the expression was modified directly in text field
+    const currentBuilderStr = [
+      fieldStateToString(minState, 0, 59),
+      fieldStateToString(hourState, 0, 23),
+      fieldStateToString(domState, 1, 31),
+      fieldStateToString(monState, 1, 12),
+      fieldStateToString(dowState, 0, 6)
+    ].join(" ");
+
+    if (expr !== currentBuilderStr) {
+      syncFromExprString(expr);
     }
+  }, [expr]);
 
-    const [min, hour, dom, mon, dow] = parts
-    let desc = "CRON triggers: "
+  const getActiveFieldState = (): { state: FieldState; minVal: number; maxVal: number; key: "min" | "hour" | "dom" | "mon" | "dow" } => {
+    if (activeTab === "min") return { state: minState, minVal: 0, maxVal: 59, key: "min" };
+    if (activeTab === "hour") return { state: hourState, minVal: 0, maxVal: 23, key: "hour" };
+    if (activeTab === "dom") return { state: domState, minVal: 1, maxVal: 31, key: "dom" };
+    if (activeTab === "mon") return { state: monState, minVal: 1, maxVal: 12, key: "mon" };
+    return { state: dowState, minVal: 0, maxVal: 6, key: "dow" };
+  };
 
-    if (min === "*" && hour === "*") desc += "Every minute"
-    else if (min.startsWith("*/") && hour === "*") desc += `Every ${min.split("/")[1]} minutes`
-    else {
-      desc += `At minute ${min} of hour ${hour}`
-    }
+  const renderTabContent = () => {
+    const { state, minVal, maxVal, key } = getActiveFieldState();
 
-    if (dom !== "*") desc += `, on day of month ${dom}`
-    if (mon !== "*") desc += `, in month ${mon}`
-    if (dow !== "*") desc += `, on day of week ${dow}`
+    const handleTypeChange = (type: "every" | "interval" | "range" | "specific") => {
+      updateFieldState(key, { ...state, type });
+    };
 
-    setDescription(desc + ".")
-  }, [expr])
+    const formatItemVal = (val: number): string => {
+      if (key === "mon") return MONTH_FULL[val - 1] || String(val);
+      if (key === "dow") return DAY_FULL[val] || String(val);
+      if (key === "hour") {
+        const ampm = val >= 12 ? "PM" : "AM";
+        const displayHour = val % 12 === 0 ? 12 : val % 12;
+        return `${displayHour} ${ampm} (${val})`;
+      }
+      return String(val).padStart(2, "0");
+    };
+
+    return (
+      <div className="space-y-4 pt-2">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {(["every", "interval", "range", "specific"] as const).map((t) => (
+            <label
+              key={t}
+              className={`border px-3 py-2 text-[10px] font-bold uppercase cursor-pointer flex items-center justify-between transition-all select-none ${
+                state.type === t
+                  ? "border-primary bg-primary/10 text-primary"
+                  : "border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:text-zinc-300"
+              }`}
+            >
+              <span>{t}</span>
+              <input
+                type="radio"
+                name={`radio-${key}`}
+                checked={state.type === t}
+                onChange={() => handleTypeChange(t)}
+                className="sr-only"
+              />
+            </label>
+          ))}
+        </div>
+
+        <div className="border border-zinc-900 bg-zinc-950 p-4 space-y-4 min-h-[140px] flex flex-col justify-center">
+          {state.type === "every" && (
+            <div className="text-center text-xs text-zinc-400 font-bold">
+              Matches every single value for this field. (represented as <code className="text-primary font-mono">*</code>)
+            </div>
+          )}
+
+          {state.type === "interval" && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-[10px] text-zinc-500 font-bold block mb-1">RUN EVERY:</label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="number"
+                      min={1}
+                      max={maxVal - minVal}
+                      value={state.interval}
+                      onChange={(e) => {
+                        const val = Math.max(1, Math.min(maxVal - minVal, parseInt(e.target.value, 10) || 1));
+                        updateFieldState(key, { ...state, interval: val });
+                      }}
+                      className="w-20 border-2 border-foreground bg-black px-2 py-1 text-xs text-foreground text-center"
+                    />
+                    <span className="text-xs text-zinc-400 font-bold">units</span>
+                  </div>
+                </div>
+                <div>
+                  <label className="text-[10px] text-zinc-500 font-bold block mb-1">STARTING OFFSET:</label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="number"
+                      min={minVal}
+                      max={maxVal}
+                      value={state.intervalStart}
+                      onChange={(e) => {
+                        const val = Math.max(minVal, Math.min(maxVal, parseInt(e.target.value, 10) || minVal));
+                        updateFieldState(key, { ...state, intervalStart: val });
+                      }}
+                      className="w-20 border-2 border-foreground bg-black px-2 py-1 text-xs text-foreground text-center"
+                    />
+                    <span className="text-xs text-zinc-400 font-bold">({formatItemVal(state.intervalStart)})</span>
+                  </div>
+                </div>
+              </div>
+              <div className="text-[10px] text-zinc-500 italic">
+                Generated pattern: <code className="text-accent">{state.intervalStart === minVal ? `*/${state.interval}` : `${state.intervalStart}/${state.interval}`}</code>
+              </div>
+            </div>
+          )}
+
+          {state.type === "range" && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-[10px] text-zinc-500 font-bold block mb-1">FROM VALUE:</label>
+                  <select
+                    value={state.rangeStart}
+                    onChange={(e) => {
+                      const start = parseInt(e.target.value, 10);
+                      const end = Math.max(start, state.rangeEnd);
+                      updateFieldState(key, { ...state, rangeStart: start, rangeEnd: end });
+                    }}
+                    className="w-full border-2 border-foreground bg-black p-1 text-xs text-foreground"
+                  >
+                    {Array.from({ length: maxVal - minVal + 1 }, (_, i) => minVal + i).map((num) => (
+                      <option key={num} value={num}>{formatItemVal(num)}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-[10px] text-zinc-500 font-bold block mb-1">TO VALUE:</label>
+                  <select
+                    value={state.rangeEnd}
+                    onChange={(e) => {
+                      const end = parseInt(e.target.value, 10);
+                      const start = Math.min(end, state.rangeStart);
+                      updateFieldState(key, { ...state, rangeStart: start, rangeEnd: end });
+                    }}
+                    className="w-full border-2 border-foreground bg-black p-1 text-xs text-foreground"
+                  >
+                    {Array.from({ length: maxVal - minVal + 1 }, (_, i) => minVal + i).map((num) => (
+                      <option key={num} value={num} disabled={num < state.rangeStart}>{formatItemVal(num)}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="text-[10px] text-zinc-500 italic">
+                Generated pattern: <code className="text-accent">{state.rangeStart}-{state.rangeEnd}</code>
+              </div>
+            </div>
+          )}
+
+          {state.type === "specific" && (
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-[9px] text-zinc-500 font-bold">TOGGLE ACTIVE VALUES:</span>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => {
+                      const allVals = Array.from({ length: maxVal - minVal + 1 }, (_, i) => minVal + i);
+                      updateFieldState(key, { ...state, specific: allVals });
+                    }}
+                    className="text-[9px] text-primary hover:underline font-bold cursor-pointer"
+                  >
+                    Select All
+                  </button>
+                  <span className="text-zinc-800">|</span>
+                  <button
+                    onClick={() => {
+                      updateFieldState(key, { ...state, specific: [] });
+                    }}
+                    className="text-[9px] text-zinc-500 hover:underline font-bold cursor-pointer"
+                  >
+                    Clear All
+                  </button>
+                </div>
+              </div>
+
+              <div className={`grid gap-1 max-h-[160px] overflow-y-auto ${
+                key === "min" 
+                  ? "grid-cols-6 sm:grid-cols-10" 
+                  : key === "hour" 
+                    ? "grid-cols-4 sm:grid-cols-6" 
+                    : key === "dom" 
+                      ? "grid-cols-5 sm:grid-cols-7" 
+                      : "grid-cols-2 sm:grid-cols-4"
+              }`}>
+                {Array.from({ length: maxVal - minVal + 1 }, (_, i) => minVal + i).map((num) => {
+                  const isChecked = state.specific.includes(num);
+                  return (
+                    <button
+                      key={num}
+                      onClick={() => {
+                        const newSpecific = isChecked
+                          ? state.specific.filter((v) => v !== num)
+                          : [...state.specific, num];
+                        updateFieldState(key, { ...state, specific: newSpecific });
+                      }}
+                      className={`p-1 text-[10px] font-bold border transition-all cursor-pointer text-center rounded-[2px] ${
+                        isChecked
+                          ? "border-primary bg-primary text-primary-foreground font-black"
+                          : "border-zinc-900 bg-black text-zinc-500 hover:border-zinc-800 hover:text-zinc-300"
+                      }`}
+                    >
+                      {key === "mon" ? MONTH_NAMES[num - 1] : key === "dow" ? DAY_NAMES[num] : String(num).padStart(2, "0")}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <div className="space-y-4 font-mono">
-      <span className="text-xs font-bold uppercase text-zinc-500 block border-b border-border pb-2">CRON EXPRESSION DESCRIPTOR</span>
+    <div className="space-y-6 font-mono text-zinc-200">
+      <span className="text-xs font-bold uppercase text-zinc-500 block border-b border-border pb-2">CRON EXPRESSION DESCRIPTOR & BUILDER</span>
       
-      <div>
-        <span className="text-[10px] text-zinc-400 font-bold block mb-1">CRON EXPRESSION (5 FIELDS):</span>
-        <input
-          type="text"
-          value={expr}
-          onChange={(e) => setExpr(e.target.value)}
-          placeholder="e.g. 0 0 * * *"
-          className="w-full neo-input h-10 text-accent font-bold"
-        />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-end">
+        <div className="lg:col-span-2 space-y-1">
+          <div className="flex justify-between items-center">
+            <span className="text-[10px] text-zinc-400 font-bold block">CRON EXPRESSION (5 FIELDS):</span>
+            {error ? (
+              <span className="text-[9px] text-red-400 font-bold bg-red-950/20 px-2 py-0.5 border border-red-900 rounded-[2px]">INVALID</span>
+            ) : (
+              <span className="text-[9px] text-green-400 font-bold bg-green-950/20 px-2 py-0.5 border border-green-900 rounded-[2px]">VALID SCHEDULE</span>
+            )}
+          </div>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={expr}
+              onChange={(e) => setExpr(e.target.value)}
+              placeholder="e.g. 0 0 * * *"
+              className="flex-grow neo-input h-10 text-accent font-black tracking-widest text-sm uppercase"
+            />
+            {expr && <CopyBtn value={expr} />}
+          </div>
+        </div>
+        
+        <div className="space-y-1">
+          <span className="text-[10px] text-zinc-400 font-bold block">LOAD COMMON PRESET:</span>
+          <select
+            onChange={(e) => {
+              if (e.target.value) {
+                setExpr(e.target.value);
+                e.target.value = "";
+              }
+            }}
+            className="w-full border-2 border-foreground bg-black px-2 h-10 text-xs text-foreground cursor-pointer"
+            defaultValue=""
+          >
+            <option value="" disabled>Select presets...</option>
+            {PRESETS.map((p) => (
+              <option key={p.value} value={p.value}>{p.name} ({p.value})</option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      <div>
-        <span className="text-[10px] text-zinc-400 font-bold block mb-1">HUMAN-READABLE SCHEDULE DESCRIPTION:</span>
-        <div className="w-full bg-zinc-950 border border-border p-3 text-xs text-foreground font-bold">
-          {description}
+      {error && (
+        <div className="border-2 border-destructive bg-red-950/20 p-3 text-xs text-red-400 font-bold">
+          PARSER ERROR: {error}
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Left Column: Parsed Description and Next Run Predictions */}
+        <div className="lg:col-span-5 space-y-6">
+          <div className="border-2 border-border bg-zinc-950/40 p-4 space-y-2 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-2 opacity-5 group-hover:opacity-15 transition-opacity">
+              <Sparkles className="w-12 h-12 text-accent" />
+            </div>
+            <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider block">HUMAN-READABLE SCHEDULE</span>
+            <div className="text-sm font-bold text-accent leading-relaxed">
+              {error ? "Please enter a valid expression." : description || "Waiting..."}
+            </div>
+          </div>
+
+          {!error && (
+            <div className="border-2 border-border bg-zinc-950 p-4 space-y-3">
+              <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider block">FIELD BREAKDOWN</span>
+              <div className="divide-y divide-zinc-900 text-xs font-bold space-y-2">
+                {FIELDS_META.map((f, idx) => {
+                  const parts = expr.trim().split(/\s+/);
+                  const val = parts[idx] || "*";
+                  let meaning = "";
+                  try {
+                    meaning = fieldToHuman(val, f.key as any);
+                  } catch (e) {
+                    meaning = "Invalid field pattern";
+                  }
+                  return (
+                    <div key={f.key} className="pt-2 flex items-start gap-4 justify-between">
+                      <div className="w-32 shrink-0">
+                        <span className="text-zinc-500 text-[10px] block uppercase">{f.name}</span>
+                        <code className="text-primary text-xs bg-zinc-900 px-1 py-0.5 rounded font-mono">{val}</code>
+                      </div>
+                      <div className="text-zinc-300 text-right select-all text-xs">
+                        {meaning}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {!error && nextRuns.length > 0 && (
+            <div className="border border-foreground bg-black p-4 space-y-3">
+              <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider block">UPCOMING RUNS (LOCAL & UTC)</span>
+              <div className="space-y-2">
+                {nextRuns.map((date, idx) => (
+                  <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-zinc-900 pb-2 text-[11px] gap-1">
+                    <div className="font-bold text-zinc-300">
+                      <span>{date.toLocaleString()}</span>
+                      <span className="text-zinc-600 block text-[9px]">{date.toUTCString()}</span>
+                    </div>
+                    <div className="shrink-0 text-accent font-black text-right self-end sm:self-center">
+                      {getRelativeTimeDesc(date)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Right Column: Visual Builder */}
+        <div className="lg:col-span-7 border-2 border-foreground bg-black p-4 space-y-4">
+          <div className="flex items-center justify-between border-b border-border pb-2">
+            <span className="text-xs font-black uppercase text-zinc-400">VISUAL SCHEDULER BUILDER</span>
+            <button
+              onClick={() => syncFromExprString(expr)}
+              className="text-[10px] font-bold text-primary hover:underline cursor-pointer flex items-center gap-1"
+              title="Reload form settings from current input text"
+            >
+              <RefreshCw className="w-3 h-3" /> Sync Form
+            </button>
+          </div>
+
+          <div className="flex flex-wrap border-b border-zinc-900">
+            {FIELDS_META.map((tab) => (
+              <button
+                key={tab.key}
+                onClick={() => setActiveTab(tab.key as any)}
+                className={`px-3 py-2 text-xs font-bold border-b-2 transition-all cursor-pointer ${
+                  activeTab === tab.key
+                    ? "border-primary text-primary bg-zinc-900"
+                    : "border-transparent text-zinc-500 hover:text-zinc-300 hover:bg-zinc-950"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {renderTabContent()}
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 
