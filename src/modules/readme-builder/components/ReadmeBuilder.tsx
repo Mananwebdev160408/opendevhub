@@ -834,7 +834,7 @@ export function ReadmeBuilder() {
       setSupportBmc("alexrivera");
       setSupportKofi("alexrivera");
       setCustomMarkdown(
-        "### 🚀 My Pinboard\nCheck out my pinned open source projects below!",
+        "### My Pinboard\nCheck out my pinned open source projects below!",
       );
     } else if (type === "widgets") {
       setName("Warp Coder");
@@ -1031,7 +1031,7 @@ export function ReadmeBuilder() {
       jobStatus ||
       location;
     if (hasAbout) {
-      let aboutMd = `### 💫 About Me\n`;
+      let aboutMd = `### About Me\n`;
       if (workingOn)
         aboutMd += `- 🔭 I’m currently working on **${workingOn}**\n`;
       if (learning) aboutMd += `- 🌱 I’m currently learning **${learning}**\n`;
@@ -1054,7 +1054,7 @@ export function ReadmeBuilder() {
 
     // 7. TECH STACK
     if (selectedTechs.length > 0) {
-      let skillsMd = `### 🛠️ Tech Stack & Skills\n`;
+      let skillsMd = `### Tech Stack & Skills\n`;
       if (techStyleMode === "badges") {
         if (techGroupByCat) {
           techCategories.forEach((cat) => {
@@ -1124,7 +1124,7 @@ export function ReadmeBuilder() {
       showLeetcodeCard ||
       showJokesCard;
     if (hasStatsCards && githubUser) {
-      let statsMd = `### 📊 GitHub Dashboard & Metrics\n`;
+      let statsMd = `### GitHub Dashboard & Metrics\n`;
       statsMd += `<p align="left">\n`;
       if (showStatsCard) {
         const showIconsVal = statsShowIcons ? "&show_icons=true" : "";
@@ -1161,7 +1161,7 @@ export function ReadmeBuilder() {
       ([_, val]) => !!val,
     );
     if (activeSocials.length > 0) {
-      let socialsMd = `### 🤝 Connect with Me\n`;
+      let socialsMd = `### Connect with Me\n`;
       socialsMd += `<p align="left">\n`;
       activeSocials.forEach(([key, val]) => {
         let badgeUrl = "";
@@ -1243,7 +1243,7 @@ export function ReadmeBuilder() {
     const hasSupport =
       supportBmc || supportKofi || supportPatreon || supportPaypal;
     if (hasSupport) {
-      let supportMd = `### ☕ Support Me\n`;
+      let supportMd = `### Support Me\n`;
       supportMd += `<p align="left">\n`;
       if (supportBmc) {
         supportMd += `  <a href="https://www.buymeacoffee.com/${supportBmc}" target="_blank"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=${badgeStyle}&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee" /></a>\n`;
@@ -1472,7 +1472,7 @@ export function ReadmeBuilder() {
 
           {/* Form Scroll Container */}
           <div className="p-5 flex-grow overflow-y-auto max-h-[580px] space-y-5 text-xs">
-            {/* 🚀 TAB 1: INTRO & HEADER */}
+            {/* TAB 1: INTRO & HEADER */}
             {activeTab === "intro" && (
               <div className="space-y-5">
                 <div>
@@ -1882,7 +1882,7 @@ export function ReadmeBuilder() {
               </div>
             )}
 
-            {/* 📝 TAB 2: ABOUT ME */}
+            {/* TAB 2: ABOUT ME */}
             {activeTab === "about" && (
               <div className="space-y-4">
                 <h3 className="font-bold text-primary text-xs uppercase">
@@ -2044,7 +2044,7 @@ export function ReadmeBuilder() {
               </div>
             )}
 
-            {/* 🛠️ TAB 3: TECH STACK & SKILLS */}
+            {/* TAB 3: TECH STACK & SKILLS */}
             {activeTab === "skills" && (
               <div className="space-y-4">
                 <h3 className="font-bold text-primary text-xs uppercase">
@@ -2206,7 +2206,7 @@ export function ReadmeBuilder() {
               </div>
             )}
 
-            {/* 📊 TAB 4: GITHUB STATS */}
+            {/* TAB 4: GITHUB STATS */}
             {activeTab === "stats" && (
               <div className="space-y-4">
                 <h3 className="font-bold text-primary text-xs uppercase">
@@ -2544,7 +2544,7 @@ export function ReadmeBuilder() {
               </div>
             )}
 
-            {/* 🤝 TAB 5: SOCIAL CONNECTIONS */}
+            {/* TAB 5: SOCIAL CONNECTIONS */}
             {activeTab === "socials" && (
               <div className="space-y-4">
                 <h3 className="font-bold text-primary text-xs uppercase">
@@ -2587,7 +2587,7 @@ export function ReadmeBuilder() {
               </div>
             )}
 
-            {/* ☕ TAB 6: SUPPORT & COFFEE */}
+            {/* TAB 6: SUPPORT & COFFEE */}
             {activeTab === "support" && (
               <div className="space-y-4">
                 <h3 className="font-bold text-primary text-xs uppercase">
@@ -2659,13 +2659,13 @@ export function ReadmeBuilder() {
                     value={customMarkdown}
                     onChange={(e) => setCustomMarkdown(e.target.value)}
                     className="w-full border border-foreground bg-black px-2 py-1.5 h-32 text-foreground font-mono text-[10px] focus:outline-none focus:border-primary"
-                    placeholder="### 📊 Pinned Projects..."
+                    placeholder="### Pinned Projects..."
                   />
                 </div>
               </div>
             )}
 
-            {/* ⚙️ TAB 7: SECTION LAYOUT ORDER */}
+            {/* TAB 7: SECTION LAYOUT ORDER */}
             {activeTab === "layout" && (
               <div className="space-y-4">
                 <h3 className="font-bold text-primary text-xs uppercase">

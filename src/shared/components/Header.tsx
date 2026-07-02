@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Search, Menu, X, Sparkles } from "lucide-react"
-import { CmdKDialog } from "./CmdKDialog"
+import * as React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Search, Menu, X, Sparkles } from "lucide-react";
+import { CmdKDialog } from "./CmdKDialog";
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -19,124 +19,281 @@ const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
     <path d="M9 18c-4.51 2-5-2-7-2" />
   </svg>
-)
-
+);
 
 export function Header() {
-  const pathname = usePathname()
-  const [openSearch, setOpenSearch] = React.useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
-  const [activeGroup, setActiveGroup] = React.useState<string | null>(null)
+  const pathname = usePathname();
+  const [openSearch, setOpenSearch] = React.useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const [activeGroup, setActiveGroup] = React.useState<string | null>(null);
 
   const groupedLinks = [
     {
       label: "CODE HUBS",
-      description: "Primary developer hubs for searching code repositories, tracing open source issues, and exploring global development trends.",
+      description:
+        "Primary developer hubs for searching code repositories, tracing open source issues, and exploring global development trends.",
       links: [
-        { label: "EXPLORER", href: "/repos", description: "Search and view raw files, stats, and branches for any GitHub repository." },
-        { label: "ISSUES", href: "/issues", description: "Find beginner-friendly 'good first issues' and track live open bugs across GitHub." },
-        { label: "TRENDING", href: "/trending", description: "Analyze what repositories and languages are gaining the most traction today." },
-        { label: "ORGANIZATIONS", href: "/orgs", description: "Explore prominent open source software foundations, communities, and creators." },
-        { label: "README BUILDER", href: "/readme-builder", description: "Generate copy-pasteable Markdown READMEs for your GitHub profile with ease." },
-        { label: "COMMIT BUILDER", href: "/commit-builder", description: "Format and construct git commit messages following Conventional Commits specs." },
-      ]
+        {
+          label: "EXPLORER",
+          href: "/repos",
+          description:
+            "Search and view raw files, stats, and branches for any GitHub repository.",
+        },
+        {
+          label: "ISSUES",
+          href: "/issues",
+          description:
+            "Find beginner-friendly 'good first issues' and track live open bugs across GitHub.",
+        },
+        {
+          label: "TRENDING",
+          href: "/trending",
+          description:
+            "Analyze what repositories and languages are gaining the most traction today.",
+        },
+        {
+          label: "ORGANIZATIONS",
+          href: "/orgs",
+          description:
+            "Explore prominent open source software foundations, communities, and creators.",
+        },
+        {
+          label: "README BUILDER",
+          href: "/readme-builder",
+          description:
+            "Generate copy-pasteable Markdown READMEs for your GitHub profile with ease.",
+        },
+        {
+          label: "COMMIT BUILDER",
+          href: "/commit-builder",
+          description:
+            "Format and construct git commit messages following Conventional Commits specs.",
+        },
+      ],
     },
     {
       label: "DEV TOOLS",
-      description: "Essential developer utilities and helpers to format configurations, inspect tokens, and verify network responses.",
+      description:
+        "Essential developer utilities and helpers to format configurations, inspect tokens, and verify network responses.",
       links: [
-        { label: "TOOLBOX", href: "/tools", description: "Interactive utilities including JWT Decoders, JSON Formatters, Regex Testers, and Base64 Converters." },
-        { label: "HTTP CODES", href: "/http-status", description: "Visual index of HTTP status codes with detailed explanations, headers, and code snippets." },
-        { label: "CSS VISUAL GUIDE", href: "/css-visual-guide", description: "Interactive workspace to visually toggle and test Flexbox and CSS Grid layout parameters." },
-        { label: "CSS BEZIER PLAY", href: "/css-bezier", description: "Drag-and-drop cubic bezier editor with timing physics simulation and CSS transitions." },
-      ]
+        {
+          label: "TOOLBOX",
+          href: "/tools",
+          description:
+            "Interactive utilities including JWT Decoders, JSON Formatters, Regex Testers, and Base64 Converters.",
+        },
+        {
+          label: "HTTP CODES",
+          href: "/http-status",
+          description:
+            "Visual index of HTTP status codes with detailed explanations, headers, and code snippets.",
+        },
+        {
+          label: "CSS VISUAL GUIDE",
+          href: "/css-visual-guide",
+          description:
+            "Interactive workspace to visually toggle and test Flexbox and CSS Grid layout parameters.",
+        },
+        {
+          label: "CSS BEZIER PLAY",
+          href: "/css-bezier",
+          description:
+            "Drag-and-drop cubic bezier editor with timing physics simulation and CSS transitions.",
+        },
+      ],
     },
     {
       label: "CHEAT SHEETS",
-      description: "Comprehensive, searchable, offline-first command references and syntax registries for systems, scripting, and deployment.",
+      description:
+        "Comprehensive, searchable, offline-first command references and syntax registries for systems, scripting, and deployment.",
       links: [
-        { label: "GIT CHEATS", href: "/git-cheatsheets", description: "Universal Git cheatsheet and recovery troubleshooting guide for common command errors." },
-        { label: "YAML CHEATS", href: "/yaml-cheatsheets", description: "Comprehensive YAML cheatsheet defining all options, fields, syntax rules, and usecases." },
-        { label: "DOCKER COMPOSE", href: "/docker-compose-cheatsheets", description: "Comprehensive Docker Compose cheatsheet outlining services, networks, volumes, and deployment options." },
-        { label: "KUBERNETES CHEATS", href: "/k8s-cheatsheets", description: "Kubectl command index covering pod operations, deployments, and cluster debugs." },
-        { label: "LINUX/BASH REF", href: "/bash-cheatsheets", description: "Bash command reference detailing file systems, pipeline flows, and file permissions." },
-        { label: "SECURITY CHEATS", href: "/security-cheatsheets", description: "Secure code guide mapping OWASP defenses, security headers, and crypto APIs." },
-      ]
+        {
+          label: "GIT CHEATS",
+          href: "/git-cheatsheets",
+          description:
+            "Universal Git cheatsheet and recovery troubleshooting guide for common command errors.",
+        },
+        {
+          label: "YAML CHEATS",
+          href: "/yaml-cheatsheets",
+          description:
+            "Comprehensive YAML cheatsheet defining all options, fields, syntax rules, and usecases.",
+        },
+        {
+          label: "DOCKER COMPOSE",
+          href: "/docker-compose-cheatsheets",
+          description:
+            "Comprehensive Docker Compose cheatsheet outlining services, networks, volumes, and deployment options.",
+        },
+        {
+          label: "KUBERNETES CHEATS",
+          href: "/k8s-cheatsheets",
+          description:
+            "Kubectl command index covering pod operations, deployments, and cluster debugs.",
+        },
+        {
+          label: "LINUX/BASH REF",
+          href: "/bash-cheatsheets",
+          description:
+            "Bash command reference detailing file systems, pipeline flows, and file permissions.",
+        },
+        {
+          label: "SECURITY CHEATS",
+          href: "/security-cheatsheets",
+          description:
+            "Secure code guide mapping OWASP defenses, security headers, and crypto APIs.",
+        },
+      ],
     },
     {
       label: "RESOURCES",
-      description: "Curated databases, live calendars, and markdown document parsers for developers.",
+      description:
+        "Curated databases, live calendars, and markdown document parsers for developers.",
       links: [
-        { label: "APIs DIRECTORY", href: "/apis", description: "Searchable catalog of over 700+ free, public REST APIs classified by category." },
-        { label: "MARKDOWN READER", href: "/resources", description: "Read raw GitHub Markdown files and repository READMEs in a clean reader format." },
-        { label: "EVENTS TIMELINE", href: "/events", description: "Schedule of upcoming open-source programs, hackathons, and contribution events." },
-        { label: "FONT EXPLORER", href: "/fonts", description: "Interactive preview and CSS code generator for popular web typography." },
-        { label: "PACKAGE COMPARE", href: "/npm-compare", description: "Compare npm package statistics, bundle sizes, downloads, and metadata." },
-        { label: "DEV GLOSSARY", href: "/glossary", description: "Searchable reference of core developer terms, acronyms, and design patterns." },
-        { label: "COLOR PALETTE", href: "/colors", description: "Neo-brutalist custom color palette generator, picker, and format exporter." },
-      ]
+        {
+          label: "APIs DIRECTORY",
+          href: "/apis",
+          description:
+            "Searchable catalog of over 700+ free, public REST APIs classified by category.",
+        },
+        {
+          label: "MARKDOWN READER",
+          href: "/resources",
+          description:
+            "Read raw GitHub Markdown files and repository READMEs in a clean reader format.",
+        },
+        {
+          label: "EVENTS TIMELINE",
+          href: "/events",
+          description:
+            "Schedule of upcoming open-source programs, hackathons, and contribution events.",
+        },
+        {
+          label: "FONT EXPLORER",
+          href: "/fonts",
+          description:
+            "Interactive preview and CSS code generator for popular web typography.",
+        },
+        {
+          label: "PACKAGE COMPARE",
+          href: "/npm-compare",
+          description:
+            "Compare npm package statistics, bundle sizes, downloads, and metadata.",
+        },
+        {
+          label: "DEV GLOSSARY",
+          href: "/glossary",
+          description:
+            "Searchable reference of core developer terms, acronyms, and design patterns.",
+        },
+        {
+          label: "COLOR PALETTE",
+          href: "/colors",
+          description:
+            "Neo-brutalist custom color palette generator, picker, and format exporter.",
+        },
+      ],
     },
     {
       label: "MORE",
-      description: "Stay up to date with core framework releases, license files, and project specifications.",
+      description:
+        "Stay up to date with core framework releases, license files, and project specifications.",
       links: [
-        { label: "NEWS STREAM", href: "/news", description: "Live feed of programming articles, engineering updates, and dev updates from Dev.to." },
-        { label: "LICENSES", href: "/licenses", description: "A visual reference of open source license permissions, limitations, and terms." },
-        { label: "ABOUT US", href: "/about", description: "Learn about OpenDev Hub vision, SOLID architecture principles, and offline-first vision." },
-        { label: "CONTACT US", href: "/contact", description: "Get in touch with the OpenDev Hub maintainer or submit suggestions." },
-        { label: "PRIVACY POLICY", href: "/privacy", description: "Read about OpenDev Hub security standards, data boundaries, and cookies policy." },
-        { label: "TERMS OF SERVICE", href: "/terms", description: "Read about OpenDev Hub software permissions, licensing, and limits." }
-      ]
-    }
-  ]
+        {
+          label: "NEWS STREAM",
+          href: "/news",
+          description:
+            "Live feed of programming articles, engineering updates, and dev updates from Dev.to.",
+        },
+        {
+          label: "LICENSES",
+          href: "/licenses",
+          description:
+            "A visual reference of open source license permissions, limitations, and terms.",
+        },
+        {
+          label: "ABOUT US",
+          href: "/about",
+          description:
+            "Learn about OpenDev Hub vision, SOLID architecture principles, and offline-first vision.",
+        },
+        {
+          label: "CONTACT US",
+          href: "/contact",
+          description:
+            "Get in touch with the OpenDev Hub maintainer or submit suggestions.",
+        },
+        {
+          label: "PRIVACY POLICY",
+          href: "/privacy",
+          description:
+            "Read about OpenDev Hub security standards, data boundaries, and cookies policy.",
+        },
+        {
+          label: "TERMS OF SERVICE",
+          href: "/terms",
+          description:
+            "Read about OpenDev Hub software permissions, licensing, and limits.",
+        },
+      ],
+    },
+  ];
 
   const categoryExtras = {
     "CODE HUBS": {
       quote: "Talk is cheap. Show me the code. — Linus Torvalds",
-      stat: "DATABASE: 420M+ repos, live issues & trending stats queried via GitHub REST v3."
+      stat: "DATABASE: 420M+ repos, live issues & trending stats queried via GitHub REST v3.",
     },
     "DEV TOOLS": {
       quote: "First, solve the problem. Then, write the code. — John Johnson",
-      stat: "UTILITIES: 30+ client-side JSON formatters, token parsers & regex validators."
+      stat: "UTILITIES: 30+ client-side JSON formatters, token parsers & regex validators.",
     },
     "CHEAT SHEETS": {
-      quote: "Give me six hours to chop down a tree and I will spend the first four sharpening the axe. — Abraham Lincoln",
-      stat: "REFERENCE: 6 comprehensive cheat sheets mapping syntax, configs, commands, and common pitfalls."
+      quote:
+        "Give me six hours to chop down a tree and I will spend the first four sharpening the axe. — Abraham Lincoln",
+      stat: "REFERENCE: 6 comprehensive cheat sheets mapping syntax, configs, commands, and common pitfalls.",
     },
-    "RESOURCES": {
-      quote: "The best error message is the one that never shows up. — Thomas Fuchs",
-      stat: "CATALOG: 770+ APIs, MD reader, events, fonts, npm compare, dev terms & color palettes."
+    RESOURCES: {
+      quote:
+        "The best error message is the one that never shows up. — Thomas Fuchs",
+      stat: "CATALOG: 770+ APIs, MD reader, events, fonts, npm compare, dev terms & color palettes.",
     },
-    "MORE": {
-      quote: "Clean code always looks like it was written by someone who cares. — Michael Feathers",
-      stat: "STREAM: Live framework engineering blogs, licenses dictionary & hourly logs."
-    }
-  }
+    MORE: {
+      quote:
+        "Clean code always looks like it was written by someone who cares. — Michael Feathers",
+      stat: "STREAM: Live framework engineering blogs, licenses dictionary & hourly logs.",
+    },
+  };
 
   const isActive = (href: string) => {
-    if (href === "/") return pathname === "/"
-    return pathname.startsWith(href)
-  }
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
+  };
 
-  const isGroupActive = (group: typeof groupedLinks[0]) => {
-    return group.links.some(link => isActive(link.href))
-  }
+  const isGroupActive = (group: (typeof groupedLinks)[0]) => {
+    return group.links.some((link) => isActive(link.href));
+  };
 
   return (
     <header className="w-full sticky top-0 z-50 bg-black border-b-4 border-foreground text-foreground">
       <div className="w-full bg-primary text-primary-foreground font-mono text-[10px] py-1 px-4 overflow-hidden border-b border-foreground select-none">
         <div className="flex animate-marquee whitespace-nowrap gap-8">
-          <span>⚡ OPENDEV HUB V1.0</span>
-          <span>⚡ API STATUS: 100% OPERATIONAL</span>
-          <span>⚡ CLIENT ENGINE: LOADED & CACHED</span>
-          <span>⚡ TRENDING TECH: TAILWIND V4, NEXT.JS 16, RUST, GO</span>
-          <span>⚡ ZERO AUTH REQUIRED</span>
-          <span className="hidden md:inline">⚡ PRESS CTRL+K TO TRIGGER INSTANT SEARCH COMMAND PALETTE</span>
+          <span>• OPENDEV HUB V1.0</span>
+          <span>• API STATUS: 100% OPERATIONAL</span>
+          <span>• CLIENT ENGINE: LOADED & CACHED</span>
+          <span>• TRENDING TECH: TAILWIND V4, NEXT.JS 16, RUST, GO</span>
+          <span>• ZERO AUTH REQUIRED</span>
+          <span className="hidden md:inline">
+            • PRESS CTRL+K TO TRIGGER INSTANT SEARCH COMMAND PALETTE
+          </span>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between relative">
-        <Link href="/" className="flex items-center gap-1 select-none shrink-0 group">
+        <Link
+          href="/"
+          className="flex items-center gap-1 select-none shrink-0 group"
+        >
           <span className="font-mono font-black text-sm tracking-tighter bg-foreground text-background px-2.5 py-1 border-2 border-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
             OPENDEV
           </span>
@@ -151,8 +308,8 @@ export function Header() {
         >
           <nav className="flex items-center gap-4.5 font-mono text-xs font-bold">
             {groupedLinks.map((group) => {
-              const groupActive = isGroupActive(group)
-              const isHovered = activeGroup === group.label
+              const groupActive = isGroupActive(group);
+              const isHovered = activeGroup === group.label;
               return (
                 <div
                   key={group.label}
@@ -167,10 +324,14 @@ export function Header() {
                     }`}
                   >
                     <span>{group.label}</span>
-                    <span className={`text-[8px] text-zinc-500 transition-transform duration-250 ${isHovered ? "rotate-180" : ""}`}>▼</span>
+                    <span
+                      className={`text-[8px] text-zinc-500 transition-transform duration-250 ${isHovered ? "rotate-180" : ""}`}
+                    >
+                      ▼
+                    </span>
                   </button>
                 </div>
-              )
+              );
             })}
           </nav>
 
@@ -182,7 +343,7 @@ export function Header() {
             }`}
           >
             {groupedLinks.map((group) => {
-              const isSelected = group.label === activeGroup
+              const isSelected = group.label === activeGroup;
               return (
                 <div
                   key={group.label}
@@ -207,10 +368,21 @@ export function Header() {
                         DEVELOPER PROVERB
                       </span>
                       <p>
-                        "{categoryExtras[group.label as keyof typeof categoryExtras]?.quote.split(" — ")[0]}"
+                        "
+                        {
+                          categoryExtras[
+                            group.label as keyof typeof categoryExtras
+                          ]?.quote.split(" — ")[0]
+                        }
+                        "
                       </p>
                       <cite className="text-[9px] text-accent not-italic font-bold block text-right mt-1">
-                        — {categoryExtras[group.label as keyof typeof categoryExtras]?.quote.split(" — ")[1]}
+                        —{" "}
+                        {
+                          categoryExtras[
+                            group.label as keyof typeof categoryExtras
+                          ]?.quote.split(" — ")[1]
+                        }
                       </cite>
                     </div>
 
@@ -219,14 +391,18 @@ export function Header() {
                         ESTATE METRIC
                       </span>
                       <p className="text-zinc-400 leading-normal text-[10px]">
-                        {categoryExtras[group.label as keyof typeof categoryExtras]?.stat}
+                        {
+                          categoryExtras[
+                            group.label as keyof typeof categoryExtras
+                          ]?.stat
+                        }
                       </p>
                     </div>
                   </div>
 
                   <div className="col-span-8 p-6 bg-black grid grid-cols-2 gap-3 content-center">
                     {group.links.map((link) => {
-                      const linkActive = isActive(link.href)
+                      const linkActive = isActive(link.href);
                       return (
                         <Link
                           key={link.href}
@@ -240,24 +416,34 @@ export function Header() {
                         >
                           <div className="space-y-1 text-left">
                             <div className="flex items-center gap-2">
-                              <span className="text-xs font-black uppercase tracking-wide">{link.label}</span>
-                              {linkActive && <span className="h-1.5 w-1.5 bg-accent-foreground rounded-full"></span>}
+                              <span className="text-xs font-black uppercase tracking-wide">
+                                {link.label}
+                              </span>
+                              {linkActive && (
+                                <span className="h-1.5 w-1.5 bg-accent-foreground rounded-full"></span>
+                              )}
                             </div>
-                            <p className={`text-[10px] ${linkActive ? "text-accent-foreground/80" : "text-zinc-500 group-hover/item:text-zinc-400"}`}>
+                            <p
+                              className={`text-[10px] ${linkActive ? "text-accent-foreground/80" : "text-zinc-500 group-hover/item:text-zinc-400"}`}
+                            >
                               {link.description}
                             </p>
                           </div>
-                          <span className={`transition-all text-xs font-bold ${
-                            linkActive ? "text-accent-foreground" : "text-zinc-700 group-hover/item:text-accent group-hover/item:translate-x-1"
-                          }`}>
+                          <span
+                            className={`transition-all text-xs font-bold ${
+                              linkActive
+                                ? "text-accent-foreground"
+                                : "text-zinc-700 group-hover/item:text-accent group-hover/item:translate-x-1"
+                            }`}
+                          >
                             →
                           </span>
                         </Link>
-                      )
+                      );
                     })}
                   </div>
                 </div>
-              )
+              );
             })}
           </div>
         </div>
@@ -289,7 +475,11 @@ export function Header() {
             className="xl:hidden p-1.5 border-2 border-foreground hover:bg-zinc-900 active:translate-y-0.5 transition-all cursor-pointer"
             aria-label="Toggle Menu"
           >
-            {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            {mobileMenuOpen ? (
+              <X className="h-4 w-4" />
+            ) : (
+              <Menu className="h-4 w-4" />
+            )}
           </button>
         </div>
       </div>
@@ -297,7 +487,7 @@ export function Header() {
       {mobileMenuOpen && (
         <div className="xl:hidden w-full bg-black border-t-2 border-foreground p-4 flex flex-col gap-4 font-mono text-sm font-bold max-h-[75vh] overflow-y-auto">
           {groupedLinks.map((group) => {
-            const groupActive = isGroupActive(group)
+            const groupActive = isGroupActive(group);
             return (
               <div
                 key={group.label}
@@ -309,7 +499,9 @@ export function Header() {
               >
                 <div className="text-[10px] text-zinc-500 tracking-wider font-black border-b border-zinc-800 pb-1.5 flex justify-between items-center uppercase">
                   <span>{group.label}</span>
-                  {groupActive && <span className="h-1.5 w-1.5 bg-accent rounded-full"></span>}
+                  {groupActive && (
+                    <span className="h-1.5 w-1.5 bg-accent rounded-full"></span>
+                  )}
                 </div>
                 <div className="flex flex-col gap-1.5">
                   {group.links.map((link) => (
@@ -328,12 +520,12 @@ export function Header() {
                   ))}
                 </div>
               </div>
-            )
+            );
           })}
         </div>
       )}
 
       <CmdKDialog open={openSearch} setOpen={setOpenSearch} />
     </header>
-  )
+  );
 }

@@ -296,9 +296,9 @@ export function ColorPalette() {
                 : "bg-zinc-950 text-muted-foreground hover:text-foreground hover:bg-zinc-900"
             }`}
           >
-            {tab === "generator" && "🎨 Palette Editor"}
-            {tab === "preview" && "👁 UI Layout Preview"}
-            {tab === "export" && "💻 Export Code"}
+            {tab === "generator" && "Palette Editor"}
+            {tab === "preview" && "Layout Preview"}
+            {tab === "export" && "Export Code"}
           </button>
         ))}
       </div>
@@ -467,7 +467,7 @@ export function ColorPalette() {
             >
               <div className="flex justify-between items-center border-b border-foreground/30 pb-4 mb-6">
                 <span className="font-mono text-sm font-black tracking-tight" style={{ color: mainColor }}>
-                  ⚡ MOCKUP.EXE
+                  MOCKUP.EXE
                 </span>
                 <div className="flex gap-2">
                   <span className="h-3 w-3 rounded-full" style={{ backgroundColor: mainColor }}></span>

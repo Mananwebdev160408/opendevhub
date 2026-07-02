@@ -1,8 +1,8 @@
 # OpenDevHub
 
-> **The Ultimate Developer Toolbox & Open Source Directory**
+> **Developer Toolbox & Open Source Directory**
 
-Discover open-source repositories, search good first issues, explore public APIs, access developer tools, browse cheatsheets, and explore CSS/design utilities — all in one high-density, zero-fluff portal.
+Search open-source repositories, browse good first issues, explore public APIs, access developer tools, browse cheatsheets, and explore CSS/design utilities — all in a unified, high-density, offline-first dashboard.
 
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)](https://react.dev/)
@@ -12,23 +12,23 @@ Discover open-source repositories, search good first issues, explore public APIs
 
 ---
 
-## ✨ Highlights
+## Highlights
 
-- 🧰 **40+ Offline Developer Utilities** — all computation happens in the browser
-- 🔍 **Direct GitHub API Exploration** — repos, issues, trending, and orgs
-- 📖 **1200+ HTTP Status Codes** indexed and searchable
-- 🗂 **API Directory** — curated public APIs catalogue
-- 🎨 **CSS Visual Tools** — Bezier playground, Flexbox/Grid guide, Color & Font explorers
-- 📋 **6 Cheatsheet Collections** — Git, Bash, YAML, Docker Compose, Kubernetes, Security
-- 🔨 **Builder Tools** — Commit Builder, README Builder, NPM Package Comparator
-- 📚 **Dev Glossary** — A–Z developer terminology reference
-- 📰 **Dev News & Events** — stay updated with the open-source world
-- 🔐 **Zero cookies, zero tracking, zero sign-up**
-- 🆓 **100% free and open-source** (MIT Licensed)
+- **40+ Offline Developer Utilities** — all computation happens in the browser
+- **Direct GitHub API Exploration** — repos, issues, trending, and orgs
+- **1200+ HTTP Status Codes** indexed and searchable
+- **API Directory** — curated public APIs catalogue
+- **CSS Visual Tools** — Bezier playground, Flexbox/Grid guide, Color & Font explorers
+- **6 Cheatsheet Collections** — Git, Bash, YAML, Docker Compose, Kubernetes, Security
+- **Builder Tools** — Commit Builder, README Builder, NPM Package Comparator
+- **Dev Glossary** — A–Z developer terminology reference
+- **Dev News & Events** — stay updated with the open-source world
+- **Zero cookies, zero tracking, zero sign-up**
+- **100% free and open-source** (MIT Licensed)
 
 ---
 
-## 🗺️ Pages & Routes
+## Pages & Routes
 
 | Route | Description |
 |---|---|
@@ -66,7 +66,7 @@ Discover open-source repositories, search good first issues, explore public APIs
 
 ---
 
-## 🧰 Dev Toolbox
+## Dev Toolbox
 
 All tools run entirely **in-browser** — no server calls, no data leaves your machine.
 
@@ -105,7 +105,7 @@ All tools run entirely **in-browser** — no server calls, no data leaves your m
 
 ---
 
-## 🎨 CSS & Design Tools
+## CSS & Design Tools
 
 Interactive visual utilities for front-end developers:
 
@@ -119,7 +119,7 @@ Interactive visual utilities for front-end developers:
 
 ---
 
-## 📋 Cheatsheet Library
+## Cheatsheet Library
 
 Offline, searchable, categorized references for everyday developer commands:
 
@@ -134,7 +134,7 @@ Offline, searchable, categorized references for everyday developer commands:
 
 ---
 
-## 🔨 Builder Tools
+## Builder Tools
 
 | Tool | Route | Description |
 |---|---|---|
@@ -144,7 +144,7 @@ Offline, searchable, categorized references for everyday developer commands:
 
 ---
 
-## 🔌 GitHub Integration
+## GitHub Integration
 
 OpenDevHub uses the **GitHub REST API v3** to power its exploration features:
 
@@ -158,7 +158,7 @@ OpenDevHub uses the **GitHub REST API v3** to power its exploration features:
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -211,7 +211,7 @@ npm run lint
 
 ---
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 opendevhub/
@@ -294,7 +294,7 @@ opendevhub/
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -313,7 +313,7 @@ opendevhub/
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Here's how you can help:
 
@@ -333,13 +333,13 @@ Contributions are welcome! Here's how you can help:
 
 ---
 
-## 📝 License
+## License
 
 This project is licensed under the **MIT License** — see the [LICENSE](./LICENSE) file for details.
 
 ---
 
-## 🙏 Acknowledgements
+## Acknowledgements
 
 - [GitHub REST API](https://docs.github.com/en/rest) — for powering the open-source exploration features
 - [shadcn/ui](https://ui.shadcn.com/) — for the accessible, composable component primitives
@@ -349,7 +349,7 @@ This project is licensed under the **MIT License** — see the [LICENSE](./LICEN
 ---
 
 <p align="center">
-  Built with ❤️ for developers, by developers.
+  Built for developers, by developers.
   <br/>
   <strong>No Cost · No Signup · 100% Open Source</strong>
 </p>

@@ -28,7 +28,7 @@ export function Footer() {
         </div>
 
         <div>
-          <h5 className="font-mono text-xs font-black tracking-widest text-accent uppercase mb-4 border-b border-foreground/30 pb-1">DISCOVER</h5>
+          <h5 className="font-mono text-xs font-black tracking-widest text-accent uppercase mb-4 border-b border-foreground/30 pb-1">EXPLORE</h5>
           <ul className="space-y-2 font-mono text-xs">
             <li><Link href="/repos" className="text-muted-foreground hover:text-foreground hover:underline">Repository Explorer</Link></li>
             <li><Link href="/issues" className="text-muted-foreground hover:text-foreground hover:underline">Good First Issues</Link></li>

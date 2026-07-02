@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { getRepository, searchIssues } from "@/core/services/github-server"
-import { ArrowLeft, Star, GitFork, AlertCircle, Info, ExternalLink, ShieldAlert, Cpu, Calendar } from "lucide-react"
+import { ArrowLeft, Star, GitFork, AlertCircle, Info, ExternalLink, ShieldAlert, Cpu, Calendar, Eye, MessageSquare } from "lucide-react"
 import { formatDistanceToNow } from "date-fns"
 import { Metadata } from "next"
 
@@ -125,20 +125,20 @@ export default async function RepositoryDetailsPage({ params }: PageProps) {
         <div className="border-4 border-foreground bg-zinc-950 p-5 shadow-[4px_4px_0px_0px_var(--accent)] space-y-4">
           <h3 className="text-xs font-black uppercase text-accent border-b border-zinc-800 pb-2">VITAL STATISTICS</h3>
           <div className="space-y-3 font-bold text-xs">
-            <div className="flex justify-between">
-              <span className="text-zinc-500">STARS</span>
-              <span className="text-yellow-400">★ {repo.stargazers_count.toLocaleString()}</span>
+            <div className="flex justify-between items-center">
+              <span className="text-zinc-500 flex items-center gap-1.5"><Star className="h-3.5 w-3.5" /> STARS</span>
+              <span className="text-yellow-400">{repo.stargazers_count.toLocaleString()}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-zinc-500">FORKS</span>
-              <span>⑂ {repo.forks_count.toLocaleString()}</span>
+            <div className="flex justify-between items-center">
+              <span className="text-zinc-500 flex items-center gap-1.5"><GitFork className="h-3.5 w-3.5" /> FORKS</span>
+              <span>{repo.forks_count.toLocaleString()}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-zinc-500">WATCHERS</span>
-              <span>👁 {repo.watchers_count.toLocaleString()}</span>
+            <div className="flex justify-between items-center">
+              <span className="text-zinc-500 flex items-center gap-1.5"><Eye className="h-3.5 w-3.5" /> WATCHERS</span>
+              <span>{repo.watchers_count.toLocaleString()}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-zinc-500">OPEN ISSUES</span>
+            <div className="flex justify-between items-center">
+              <span className="text-zinc-500 flex items-center gap-1.5"><AlertCircle className="h-3.5 w-3.5" /> OPEN ISSUES</span>
               <span className="text-red-400">{repo.open_issues_count.toLocaleString()}</span>
             </div>
           </div>
@@ -219,7 +219,7 @@ export default async function RepositoryDetailsPage({ params }: PageProps) {
                   </div>
                 </div>
                 <div className="flex items-center gap-4 shrink-0 font-bold text-xs text-zinc-500">
-                  <span>💬 {issue.comments} comments</span>
+                  <span className="flex items-center gap-1"><MessageSquare className="h-3.5 w-3.5" /> {issue.comments} comments</span>
                   <a
                     href={issue.html_url}
                     target="_blank"
@@ -276,7 +276,7 @@ export default async function RepositoryDetailsPage({ params }: PageProps) {
                   </div>
                 </div>
                 <div className="flex items-center gap-4 shrink-0 font-bold text-xs text-zinc-500">
-                  <span>💬 {issue.comments} comments</span>
+                  <span className="flex items-center gap-1"><MessageSquare className="h-3.5 w-3.5" /> {issue.comments} comments</span>
                   <a
                     href={issue.html_url}
                     target="_blank"

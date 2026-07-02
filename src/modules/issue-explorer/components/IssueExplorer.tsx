@@ -588,8 +588,8 @@ export function IssueExplorer() {
           <div className="flex flex-col sm:flex-row gap-4 justify-between items-stretch sm:items-center">
             <div className="text-[9px] font-black uppercase text-accent tracking-wider select-none">
               {famousOrgs.length > 0 
-                ? `🚀 dynamic priority active: bubble issues from ${famousOrgs.length} top starred orgs`
-                : "⚡ fetching high-profile org indices..."
+                ? `dynamic priority active: bubble issues from ${famousOrgs.length} top starred orgs`
+                : "fetching high-profile org indices..."
               }
             </div>
 

@@ -588,11 +588,11 @@ const DAY_FULL = [
 ];
 
 const FIELDS_META = [
-  { label: "🕒 Minutes", name: "Minute", key: "min" },
-  { label: "⏰ Hours", name: "Hour", key: "hour" },
-  { label: "📅 Day of Month", name: "Day of Month", key: "dom" },
-  { label: "🗓️ Month", name: "Month", key: "mon" },
-  { label: "📆 Day of Week", name: "Day of Week", key: "dow" },
+  { label: "Minutes", name: "Minute", key: "min" },
+  { label: "Hours", name: "Hour", key: "hour" },
+  { label: "Day of Month", name: "Day of Month", key: "dom" },
+  { label: "Month", name: "Month", key: "mon" },
+  { label: "Day of Week", name: "Day of Week", key: "dow" },
 ];
 
 const PRESETS = [

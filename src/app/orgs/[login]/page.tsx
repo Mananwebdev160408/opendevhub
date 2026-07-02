@@ -237,8 +237,8 @@ export default async function OrgDetailsPage({ params }: PageProps) {
                 </div>
                 <div className="mt-4 pt-2 border-t border-zinc-900 flex items-center justify-between text-[9px] text-zinc-500 font-bold">
                   <div className="flex items-center gap-3">
-                    <span className="text-yellow-400">★ {repo.stargazers_count.toLocaleString()}</span>
-                    <span>⑂ {repo.forks_count.toLocaleString()}</span>
+                    <span className="text-yellow-400 flex items-center gap-1"><Star className="h-3 w-3" /> {repo.stargazers_count.toLocaleString()}</span>
+                    <span className="flex items-center gap-1"><GitFork className="h-3 w-3" /> {repo.forks_count.toLocaleString()}</span>
                   </div>
                   {repo.language && (
                     <span className="text-accent">{repo.language}</span>

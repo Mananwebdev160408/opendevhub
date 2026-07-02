@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Calendar, Globe, Search, Filter, X } from "lucide-react"
+import { Calendar, Globe, Search, Filter, X, MapPin, Link } from "lucide-react"
 
 interface EventItem {
   name: string
@@ -117,7 +117,7 @@ export function EventTimelineClient({ initialEvents, error }: EventTimelineClien
     <div className="space-y-8">
       {error && (
         <div className="border-2 border-yellow-500 bg-yellow-950/20 text-yellow-400 p-3 text-xs uppercase font-bold">
-          ⚠️ {error}
+          {error}
         </div>
       )}
 
@@ -231,16 +231,16 @@ export function EventTimelineClient({ initialEvents, error }: EventTimelineClien
                       <span className={`text-[9px] border border-foreground px-2 py-0.5 font-bold uppercase tracking-wider ${badgeColor}`}>
                         {category}
                       </span>
-                      <span className="text-[9px] border border-foreground px-2 py-0.5 font-bold bg-zinc-900 text-zinc-300 uppercase tracking-wider">
-                        📍 {region}
+                      <span className="text-[9px] border border-foreground px-2 py-0.5 font-bold bg-zinc-900 text-zinc-300 uppercase tracking-wider flex items-center gap-1 select-none">
+                        <MapPin className="h-3 w-3" /> {region}
                       </span>
                       {event.source && (
-                        <span className="text-[9px] border border-foreground px-2 py-0.5 font-bold bg-zinc-950 text-zinc-400 uppercase tracking-wider">
-                          🔌 {event.source}
+                        <span className="text-[9px] border border-foreground px-2 py-0.5 font-bold bg-zinc-950 text-zinc-400 uppercase tracking-wider flex items-center gap-1 select-none">
+                          <Link className="h-3 w-3" /> {event.source}
                         </span>
                       )}
-                      <span className="text-[10px] text-zinc-500 font-bold uppercase select-none">
-                        📅 {event.timeline}
+                      <span className="text-[10px] text-zinc-500 font-bold uppercase select-none flex items-center gap-1">
+                        <Calendar className="h-3.5 w-3.5" /> {event.timeline}
                       </span>
                     </div>
                     <h3 className="text-lg font-black text-foreground uppercase mt-2">{event.name}</h3>

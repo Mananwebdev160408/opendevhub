@@ -70,7 +70,7 @@ export function FAQ() {
               />
             </div>
             <div className="mt-3 text-center font-mono text-[10px] font-black text-black uppercase tracking-tight">
-              ⚡ SERVER_ENGINE: COFFEE_POWERED
+              SYSTEM: ENGINE_ACTIVE
             </div>
           </div>
         </div>
@@ -85,7 +85,7 @@ export function FAQ() {
               />
             </div>
             <div className="mt-3 text-center font-mono text-[10px] font-black text-black uppercase tracking-tight">
-              🚀 USER_BRAIN: HIGH_ENERGY_OK
+              USER: CONTEXT_LOADED
             </div>
           </div>
         </div>
@@ -127,7 +127,7 @@ export function FAQ() {
                   {isOpen && (
                     <div className="p-4 border-t-2 border-foreground bg-black font-mono text-xs text-muted-foreground leading-relaxed">
                       <div className="text-[9px] text-accent mb-2 uppercase font-black tracking-widest animate-pulse flex items-center gap-1 select-none">
-                        <span>⚡</span> RUNNING LOCAL DECODE... OK
+                        <span>&gt;</span> RUNNING LOCAL DECODE... OK
                       </div>
                       {faq.answer}
                     </div>

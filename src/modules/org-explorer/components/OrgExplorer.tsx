@@ -274,7 +274,7 @@ export function OrgExplorer() {
           </button>
         </div>
         <p className="text-[10.5px] text-zinc-400 mt-2 font-bold uppercase select-none leading-relaxed">
-          ℹ️ Home view displays the top 10 organizations by popularity. Enter a query above to search across the entire GitHub network.
+          Note: Home view displays the top 10 organizations by popularity. Enter a query above to search across the entire GitHub network.
         </p>
       </form>
 

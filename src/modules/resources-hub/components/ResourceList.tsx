@@ -207,7 +207,7 @@ export function ResourceList() {
 
         {importError && (
           <div className="mt-4 border-2 border-red-500 bg-red-950/20 text-red-400 p-2.5 text-xs font-bold uppercase">
-            ⚠️ {importError}
+            {importError}
           </div>
         )}
 
@@ -327,7 +327,7 @@ export function ResourceList() {
 
           {gitHubError && (
             <div className="border-2 border-red-500 bg-red-950/20 text-red-400 p-3 text-xs uppercase font-bold">
-              ⚠️ {gitHubError}
+              {gitHubError}
             </div>
           )}
 
@@ -349,8 +349,8 @@ export function ResourceList() {
                       {repo.language || "RESOURCE"}
                     </span>
                     <div className="flex items-center gap-2 text-[9px] text-zinc-500 font-bold">
-                      <span className="text-yellow-400">★ {repo.stargazers_count.toLocaleString()}</span>
-                      <span>⑂ {repo.forks_count.toLocaleString()}</span>
+                      <span className="text-yellow-400 flex items-center gap-1"><Star className="h-3 w-3" /> {repo.stargazers_count.toLocaleString()}</span>
+                      <span className="flex items-center gap-1"><GitFork className="h-3 w-3" /> {repo.forks_count.toLocaleString()}</span>
                     </div>
                   </div>
 

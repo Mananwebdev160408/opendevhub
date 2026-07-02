@@ -655,7 +655,7 @@ export function DockerComposeCheats() {
             </div>
 
             <div className="border-2 border-foreground bg-card p-4 shadow-[4px_4px_0px_0px_var(--primary)] text-xs leading-relaxed space-y-2">
-              <span className="font-black text-foreground uppercase block text-[10px]">🚀 Deployment instructions:</span>
+              <span className="font-black text-foreground uppercase block text-[10px]">Deployment instructions:</span>
               <p className="text-muted-foreground text-[10px]">
                 Create a file named <code className="text-foreground bg-zinc-900 px-1 border border-border">docker-compose.yml</code> in your directory, copy the code content above into it, and launch your stack by executing:
               </p>

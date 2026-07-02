@@ -55,17 +55,16 @@ export function Hero() {
         </div>
 
         <h1 className="font-mono text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tighter text-foreground uppercase leading-none">
-          DISCOVER & BUILD <br />
+          EXPLORE & BUILD <br />
           <span className="text-primary bg-foreground px-3 py-1 inline-block mt-3 shadow-[4px_4px_0px_0px_var(--accent)]">
             OPEN SOURCE
           </span>
         </h1>
 
         <p className="max-w-3xl mx-auto font-mono text-sm sm:text-base lg:text-lg text-muted-foreground leading-relaxed">
-          OpenDev Hub compiles everything you need to discover new repositories,
-          find good first issues, read public APIs, explore open-source
-          licenses, and access 32+ developer utilities in one supercharged, boxy
-          dashboard.
+          OpenDev Hub compiles utilities and databases to search new repositories,
+          find good first issues, read public APIs, view licenses, and access
+          32+ offline developer tools in a unified, high-density dashboard.
         </p>
 
         <form onSubmit={handleSearchSubmit} className="max-w-2xl mx-auto pt-4">

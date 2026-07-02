@@ -100,7 +100,7 @@
         "name": "Double-Quoted Strings",
         "description": "Strings enclosed in double quotes. Processes escape sequences like '\\n' (newline), '\\t' (tab), and unicode characters.",
         "syntax": "key: \"string content\"",
-        "example": "welcome_message: \"Welcome to OpenDev Hub!\\nEnjoy your stay.\\t🚀\"",
+        "example": "welcome_message: \"Welcome to OpenDev Hub!\\nEnjoy your stay.\"",
         "mistake": "Forgetting to escape backslashes when they should be literal (e.g., 'path: \"C:\\temp\"' will escape '\\t' as a tab). Use double backslashes: 'path: \"C:\\\\temp\"'."
       },
       {
