@@ -45,3 +45,5 @@ testsprite_tests/
 .testsprite/
 
 PRD.md
+
+testsprite_tests\tmp\config.json
