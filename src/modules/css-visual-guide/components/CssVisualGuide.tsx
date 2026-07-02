@@ -2,11 +2,22 @@
 
 import * as React from "react"
 import { LayoutGrid, Layers } from "lucide-react"
+import { useSearchParams } from "next/navigation"
 import { FlexboxPlayground } from "./FlexboxPlayground"
 import { GridPlayground } from "./GridPlayground"
 
 export function CssVisualGuide() {
+  const searchParams = useSearchParams()
+  const tabParam = searchParams?.get("tab")
   const [activeTab, setActiveTab] = React.useState<"flex" | "grid">("flex")
+
+  React.useEffect(() => {
+    if (tabParam === "grid") {
+      setActiveTab("grid")
+    } else if (tabParam === "flex") {
+      setActiveTab("flex")
+    }
+  }, [tabParam])
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-mono space-y-8">

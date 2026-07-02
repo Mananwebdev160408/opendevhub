@@ -168,17 +168,13 @@ export function CmdKDialog({ open, setOpen }: CmdKDialogProps) {
             <Terminal className="mr-2 h-4 w-4 text-purple-400" />
             <span>CSS Grid & Flexbox Visual Guide</span>
           </CommandItem>
+          <CommandItem onSelect={() => runCommand(() => router.push("/flex"))} className="font-mono text-xs border border-transparent hover:border-border">
+            <Terminal className="mr-2 h-4 w-4 text-accent" />
+            <span>Flexbox Playground</span>
+          </CommandItem>
           <CommandItem onSelect={() => runCommand(() => router.push("/security-cheatsheets"))} className="font-mono text-xs border border-transparent hover:border-border">
             <Terminal className="mr-2 h-4 w-4 text-green-400" />
             <span>Security & Hashing Cheatsheet</span>
-          </CommandItem>
-          <CommandItem onSelect={() => runCommand(() => router.push("/regex-visualizer"))} className="font-mono text-xs border border-transparent hover:border-border">
-            <Terminal className="mr-2 h-4 w-4 text-accent" />
-            <span>Regex Visualizer</span>
-          </CommandItem>
-          <CommandItem onSelect={() => runCommand(() => router.push("/cron-builder"))} className="font-mono text-xs border border-transparent hover:border-border">
-            <Terminal className="mr-2 h-4 w-4 text-primary" />
-            <span>Cron Builder & Visualizer</span>
           </CommandItem>
           <CommandItem onSelect={() => runCommand(() => router.push("/css-bezier"))} className="font-mono text-xs border border-transparent hover:border-border">
             <Terminal className="mr-2 h-4 w-4 text-purple-400" />

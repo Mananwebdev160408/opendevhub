@@ -48,8 +48,7 @@ export function Header() {
         { label: "TOOLBOX", href: "/tools", description: "Interactive utilities including JWT Decoders, JSON Formatters, Regex Testers, and Base64 Converters." },
         { label: "HTTP CODES", href: "/http-status", description: "Visual index of HTTP status codes with detailed explanations, headers, and code snippets." },
         { label: "CSS VISUAL GUIDE", href: "/css-visual-guide", description: "Interactive workspace to visually toggle and test Flexbox and CSS Grid layout parameters." },
-        { label: "REGEX VISUALIZER", href: "/regex-visualizer", description: "Visualize regular expression parsing trees and sequence paths in live schematics." },
-        { label: "CRON BUILDER", href: "/cron-builder", description: "Build CRON expressions interactively and visualize the next 10 calculated trigger dates." },
+        { label: "FLEX PLAYGROUND", href: "/flex", description: "Advanced Flexbox workspace with drag-reordering, resizing, presets, and quizzes." },
         { label: "CSS BEZIER PLAY", href: "/css-bezier", description: "Drag-and-drop cubic bezier editor with timing physics simulation and CSS transitions." },
       ]
     },

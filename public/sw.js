@@ -16,8 +16,6 @@ const PRECACHE_ASSETS = [
   '/bash-cheatsheets',
   '/security-cheatsheets',
   '/css-visual-guide',
-  '/regex-visualizer',
-  '/cron-builder',
   '/css-bezier',
   '/http-status',
   '/licenses',
